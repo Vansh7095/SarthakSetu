@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "ekJs9y_ifT8ipjDog9mb9"
+uri = "file://artifacts/annsetu/public/hero.png"
+type = "image"
+title = "Hero image for AnnSetu"
+
+[[generated]]
+id = "jMo5A5czmM5vLuKVvAEf3"
+uri = "file://artifacts/annsetu/public/community.png"
+type = "image"
+title = "Food donation community"

@@ -3,13 +3,22 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AnnSetu API - Food donation platform connecting donors with NGOs and volunteers
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: users
+    description: User profile management
+  - name: donations
+    description: Food donation listings
+  - name: claims
+    description: NGO/volunteer claim system
+  - name: stats
+    description: Dashboard analytics
+
 paths:
   /healthz:
     get:
@@ -24,6 +33,306 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /users/me:
+    get:
+      operationId: getMyProfile
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "404":
+          description: Profile not found
+    put:
+      operationId: upsertMyProfile
+      tags: [users]
+      summary: Create or update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileInput"
+      responses:
+        "200":
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /donations:
+    get:
+      operationId: listDonations
+      tags: [donations]
+      summary: List food donations
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, claimed, picked_up, completed]
+        - name: foodType
+          in: query
+          schema:
+            type: string
+            enum: [veg, non_veg, both]
+        - name: donorCategory
+          in: query
+          schema:
+            type: string
+            enum: [restaurant, hotel, caterer, event_org, household]
+        - name: lat
+          in: query
+          schema:
+            type: number
+        - name: lng
+          in: query
+          schema:
+            type: number
+        - name: radiusKm
+          in: query
+          schema:
+            type: number
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: List of donations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Donation"
+    post:
+      operationId: createDonation
+      tags: [donations]
+      summary: Create a new food donation listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DonationInput"
+      responses:
+        "201":
+          description: Donation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+
+  /donations/{id}:
+    get:
+      operationId: getDonation
+      tags: [donations]
+      summary: Get a single donation by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Donation detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateDonation
+      tags: [donations]
+      summary: Update a donation listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DonationUpdate"
+      responses:
+        "200":
+          description: Updated donation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+    delete:
+      operationId: deleteDonation
+      tags: [donations]
+      summary: Delete a donation listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /donations/{id}/claim:
+    post:
+      operationId: claimDonation
+      tags: [claims]
+      summary: NGO/volunteer claims a donation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Claim created, OTP sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Claim"
+
+  /donations/{id}/verify:
+    post:
+      operationId: verifyPickup
+      tags: [claims]
+      summary: Verify pickup with OTP
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OtpVerifyInput"
+      responses:
+        "200":
+          description: Pickup verified, donation marked completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+        "400":
+          description: Invalid OTP
+
+  /donations/{id}/unclaim:
+    post:
+      operationId: unclaimDonation
+      tags: [claims]
+      summary: Release a claim on a donation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Claim released
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+
+  /stats/donor:
+    get:
+      operationId: getDonorStats
+      tags: [stats]
+      summary: Get stats for current donor
+      responses:
+        "200":
+          description: Donor analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DonorStats"
+
+  /stats/ngo:
+    get:
+      operationId: getNgoStats
+      tags: [stats]
+      summary: Get stats for current NGO/volunteer
+      responses:
+        "200":
+          description: NGO analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NgoStats"
+
+  /stats/platform:
+    get:
+      operationId: getPlatformStats
+      tags: [stats]
+      summary: Get platform-wide aggregate stats (public)
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+
+  /donations/my:
+    get:
+      operationId: getMyDonations
+      tags: [donations]
+      summary: Get donations created by the current user
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, claimed, picked_up, completed]
+      responses:
+        "200":
+          description: My donation listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Donation"
+
+  /claims/my:
+    get:
+      operationId: getMyClaims
+      tags: [claims]
+      summary: Get claims made by the current NGO/volunteer
+      responses:
+        "200":
+          description: My claims
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Claim"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +343,274 @@ components:
       required:
         - status
 
+    UserProfile:
+      type: object
+      required: [id, clerkId, role, name, phone]
+      properties:
+        id:
+          type: integer
+        clerkId:
+          type: string
+        role:
+          type: string
+          enum: [donor, ngo, volunteer]
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        lat:
+          type: ["number", "null"]
+        lng:
+          type: ["number", "null"]
+        donorCategory:
+          type: ["string", "null"]
+          enum: [restaurant, hotel, caterer, event_org, household, null]
+        licenseNumber:
+          type: ["string", "null"]
+        orgName:
+          type: ["string", "null"]
+        registrationNumber:
+          type: ["string", "null"]
+        operatingRadiusKm:
+          type: ["number", "null"]
+        vehicleType:
+          type: ["string", "null"]
+        availabilityStatus:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    UserProfileInput:
+      type: object
+      required: [role, name, phone]
+      properties:
+        role:
+          type: string
+          enum: [donor, ngo, volunteer]
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        donorCategory:
+          type: string
+          enum: [restaurant, hotel, caterer, event_org, household]
+        licenseNumber:
+          type: string
+        orgName:
+          type: string
+        registrationNumber:
+          type: string
+        operatingRadiusKm:
+          type: number
+        vehicleType:
+          type: string
+        availabilityStatus:
+          type: string
+
+    Donation:
+      type: object
+      required: [id, donorId, foodName, foodType, quantityPlates, status, createdAt]
+      properties:
+        id:
+          type: integer
+        donorId:
+          type: integer
+        donor:
+          $ref: "#/components/schemas/UserProfile"
+        foodName:
+          type: string
+        foodType:
+          type: string
+          enum: [veg, non_veg, both]
+        quantityPlates:
+          type: integer
+        estimatedServings:
+          type: ["integer", "null"]
+        preparedAt:
+          type: ["string", "null"]
+          format: date-time
+        pickupDeadline:
+          type: string
+          format: date-time
+        description:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        address:
+          type: ["string", "null"]
+        lat:
+          type: ["number", "null"]
+        lng:
+          type: ["number", "null"]
+        status:
+          type: string
+          enum: [available, claimed, picked_up, completed]
+        claimedByUserId:
+          type: ["integer", "null"]
+        claimedBy:
+          oneOf:
+            - $ref: "#/components/schemas/UserProfile"
+            - type: "null"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    DonationInput:
+      type: object
+      required: [foodName, foodType, quantityPlates, pickupDeadline]
+      properties:
+        foodName:
+          type: string
+        foodType:
+          type: string
+          enum: [veg, non_veg, both]
+        quantityPlates:
+          type: integer
+          minimum: 1
+        estimatedServings:
+          type: integer
+        preparedAt:
+          type: string
+          format: date-time
+        pickupDeadline:
+          type: string
+          format: date-time
+        description:
+          type: string
+        imageUrl:
+          type: string
+        address:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+
+    DonationUpdate:
+      type: object
+      properties:
+        foodName:
+          type: string
+        foodType:
+          type: string
+          enum: [veg, non_veg, both]
+        quantityPlates:
+          type: integer
+        estimatedServings:
+          type: integer
+        preparedAt:
+          type: string
+          format: date-time
+        pickupDeadline:
+          type: string
+          format: date-time
+        description:
+          type: string
+        imageUrl:
+          type: string
+        address:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        status:
+          type: string
+          enum: [available, claimed, picked_up, completed]
+
+    Claim:
+      type: object
+      required: [id, donationId, claimedByUserId, otp, createdAt]
+      properties:
+        id:
+          type: integer
+        donationId:
+          type: integer
+        claimedByUserId:
+          type: integer
+        claimedBy:
+          $ref: "#/components/schemas/UserProfile"
+        otp:
+          type: string
+        otpVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: ["string", "null"]
+          format: date-time
+
+    OtpVerifyInput:
+      type: object
+      required: [otp]
+      properties:
+        otp:
+          type: string
+
+    DonorStats:
+      type: object
+      required: [totalDonations, totalPlates, completedDonations, activeDonations, claimedDonations]
+      properties:
+        totalDonations:
+          type: integer
+        totalPlates:
+          type: integer
+        completedDonations:
+          type: integer
+        activeDonations:
+          type: integer
+        claimedDonations:
+          type: integer
+        recentDonations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Donation"
+
+    NgoStats:
+      type: object
+      required: [totalClaims, completedPickups, totalPlatesCollected, activeClaims]
+      properties:
+        totalClaims:
+          type: integer
+        completedPickups:
+          type: integer
+        totalPlatesCollected:
+          type: integer
+        activeClaims:
+          type: integer
+        recentClaims:
+          type: array
+          items:
+            $ref: "#/components/schemas/Claim"
+
+    PlatformStats:
+      type: object
+      required: [totalDonors, totalNgos, totalDonations, totalPlatesSaved, activeDonations]
+      properties:
+        totalDonors:
+          type: integer
+        totalNgos:
+          type: integer
+        totalDonations:
+          type: integer
+        totalPlatesSaved:
+          type: integer
+        activeDonations:
+          type: integer
