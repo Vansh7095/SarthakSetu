@@ -13,4 +13,5 @@ export const UserProfileInputRole = {
   donor: 'donor',
   ngo: 'ngo',
   volunteer: 'volunteer',
+  admin: 'admin',
 } as const;

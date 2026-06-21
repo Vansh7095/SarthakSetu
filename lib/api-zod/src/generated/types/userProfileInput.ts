@@ -23,4 +23,5 @@ export interface UserProfileInput {
   operatingRadiusKm?: number;
   vehicleType?: string;
   availabilityStatus?: string;
+  darpanId?: string;
 }

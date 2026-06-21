@@ -23,7 +23,7 @@ export const HealthCheckResponse = zod.object({
 export const GetMyProfileResponse = zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -37,6 +37,7 @@ export const GetMyProfileResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 })
 
@@ -45,7 +46,7 @@ export const GetMyProfileResponse = zod.object({
  * @summary Create or update current user profile
  */
 export const UpsertMyProfileBody = zod.object({
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().optional(),
@@ -58,13 +59,14 @@ export const UpsertMyProfileBody = zod.object({
   "registrationNumber": zod.string().optional(),
   "operatingRadiusKm": zod.number().optional(),
   "vehicleType": zod.string().optional(),
-  "availabilityStatus": zod.string().optional()
+  "availabilityStatus": zod.string().optional(),
+  "darpanId": zod.string().optional()
 })
 
 export const UpsertMyProfileResponse = zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -78,6 +80,7 @@ export const UpsertMyProfileResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 })
 
@@ -105,7 +108,7 @@ export const ListDonationsResponseItem = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -119,6 +122,7 @@ export const ListDonationsResponseItem = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -137,7 +141,7 @@ export const ListDonationsResponseItem = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -151,6 +155,7 @@ export const ListDonationsResponseItem = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -193,7 +198,7 @@ export const GetDonationResponse = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -207,6 +212,7 @@ export const GetDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -225,7 +231,7 @@ export const GetDonationResponse = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -239,6 +245,7 @@ export const GetDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -274,7 +281,7 @@ export const UpdateDonationResponse = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -288,6 +295,7 @@ export const UpdateDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -306,7 +314,7 @@ export const UpdateDonationResponse = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -320,6 +328,7 @@ export const UpdateDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -349,7 +358,7 @@ export const ClaimDonationResponse = zod.object({
   "claimedBy": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -363,6 +372,7 @@ export const ClaimDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "otp": zod.string(),
@@ -389,7 +399,7 @@ export const VerifyPickupResponse = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -403,6 +413,7 @@ export const VerifyPickupResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -421,7 +432,7 @@ export const VerifyPickupResponse = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -435,6 +446,7 @@ export const VerifyPickupResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -455,7 +467,7 @@ export const UnclaimDonationResponse = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -469,6 +481,7 @@ export const UnclaimDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -487,7 +500,7 @@ export const UnclaimDonationResponse = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -501,6 +514,7 @@ export const UnclaimDonationResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -523,7 +537,7 @@ export const GetDonorStatsResponse = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -537,6 +551,7 @@ export const GetDonorStatsResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -555,7 +570,7 @@ export const GetDonorStatsResponse = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -569,6 +584,7 @@ export const GetDonorStatsResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -592,7 +608,7 @@ export const GetNgoStatsResponse = zod.object({
   "claimedBy": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -606,6 +622,7 @@ export const GetNgoStatsResponse = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "otp": zod.string(),
@@ -641,7 +658,7 @@ export const GetMyDonationsResponseItem = zod.object({
   "donor": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -655,6 +672,7 @@ export const GetMyDonationsResponseItem = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "foodName": zod.string(),
@@ -673,7 +691,7 @@ export const GetMyDonationsResponseItem = zod.object({
   "claimedBy": zod.union([zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -687,6 +705,7 @@ export const GetMyDonationsResponseItem = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
@@ -705,7 +724,7 @@ export const GetMyClaimsResponseItem = zod.object({
   "claimedBy": zod.object({
   "id": zod.number(),
   "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer']),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
   "name": zod.string(),
   "phone": zod.string(),
   "address": zod.string().nullish(),
@@ -719,6 +738,7 @@ export const GetMyClaimsResponseItem = zod.object({
   "operatingRadiusKm": zod.number().nullish(),
   "vehicleType": zod.string().nullish(),
   "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
   "otp": zod.string(),

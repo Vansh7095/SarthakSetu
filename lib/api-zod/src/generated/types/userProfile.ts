@@ -36,5 +36,7 @@ export interface UserProfile {
   vehicleType?: string | null;
   /** @nullable */
   availabilityStatus?: string | null;
+  /** @nullable */
+  darpanId?: string | null;
   createdAt?: Date;
 }

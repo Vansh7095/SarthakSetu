@@ -9,7 +9,7 @@ import {
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const roleEnum = pgEnum("role", ["donor", "ngo", "volunteer"]);
+export const roleEnum = pgEnum("role", ["donor", "ngo", "volunteer", "admin"]);
 export const donorCategoryEnum = pgEnum("donor_category", [
   "restaurant",
   "hotel",
@@ -35,6 +35,7 @@ export const usersTable = pgTable("users", {
   operatingRadiusKm: doublePrecision("operating_radius_km"),
   vehicleType: text("vehicle_type"),
   availabilityStatus: text("availability_status"),
+  darpanId: text("darpan_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

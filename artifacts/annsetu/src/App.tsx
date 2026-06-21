@@ -57,8 +57,8 @@ const clerkAppearance = {
     borderRadius: "0.75rem",
   },
   elements: {
-    rootBox: "w-full flex justify-center",
-    cardBox: "bg-card rounded-2xl w-[440px] max-w-full overflow-hidden border border-border shadow-sm",
+    rootBox: "w-full",
+    cardBox: "bg-card rounded-2xl w-full max-w-full overflow-hidden border border-border shadow-sm",
     card: "!shadow-none !border-0 !bg-transparent !rounded-none",
     footer: "!shadow-none !border-0 !bg-transparent !rounded-none",
     headerTitle: "text-foreground font-serif font-bold text-2xl",
@@ -74,18 +74,104 @@ const clerkAppearance = {
   },
 };
 
+const impactStats = [
+  { value: "2.4M+", label: "Plates shared" },
+  { value: "340+", label: "NGOs onboard" },
+  { value: "28", label: "Cities covered" },
+];
+
 function SignInPage() {
   return (
-    <div className="flex min-h-[calc(100dvh-4rem)] items-center justify-center bg-background px-4 py-8">
-      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+    <div className="min-h-[calc(100dvh-4rem)] grid lg:grid-cols-2">
+      <div className="hidden lg:flex flex-col justify-between bg-[hsl(20,40%,12%)] p-12 text-white">
+        <div>
+          <div className="text-primary font-serif font-bold text-2xl mb-1">अन्नसेतु</div>
+          <div className="text-white/50 text-sm">AnnSetu — Bridge of Food</div>
+        </div>
+        <div>
+          <blockquote className="text-3xl font-serif leading-snug mb-6 text-white/90">
+            "Every meal you share<br />is hope on a plate."
+          </blockquote>
+          <div className="flex gap-8">
+            {impactStats.map((s) => (
+              <div key={s.label}>
+                <div className="text-primary font-bold text-2xl">{s.value}</div>
+                <div className="text-white/60 text-sm">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="text-white/30 text-xs">Combating food waste across India, one donation at a time.</div>
+      </div>
+
+      <div className="flex flex-col items-center justify-center bg-background px-6 py-12">
+        <div className="w-full max-w-sm">
+          <div className="mb-8 text-center lg:text-left">
+            <h1 className="text-2xl font-serif font-bold text-foreground">Welcome back</h1>
+            <p className="text-muted-foreground text-sm mt-1">Sign in to continue making a difference</p>
+          </div>
+          <SignIn
+            routing="path"
+            path={`${basePath}/sign-in`}
+            signUpUrl={`${basePath}/sign-up`}
+            appearance={clerkAppearance}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
 function SignUpPage() {
   return (
-    <div className="flex min-h-[calc(100dvh-4rem)] items-center justify-center bg-background px-4 py-8">
-      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+    <div className="min-h-[calc(100dvh-4rem)] grid lg:grid-cols-2">
+      <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-primary to-orange-600 p-12 text-white">
+        <div>
+          <div className="font-serif font-bold text-2xl mb-1">अन्नसेतु</div>
+          <div className="text-white/70 text-sm">AnnSetu — Bridge of Food</div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <h2 className="text-3xl font-serif font-bold leading-tight">
+            Join thousands who<br />fight hunger every day
+          </h2>
+          <p className="text-white/80 text-sm leading-relaxed">
+            Whether you're a restaurant with surplus food, an NGO serving communities, or a volunteer with wheels — AnnSetu connects you to where you're needed most.
+          </p>
+          <div className="grid grid-cols-1 gap-3 mt-2">
+            {[
+              { emoji: "🏪", title: "Donors", desc: "List surplus food in under 2 minutes" },
+              { emoji: "🤝", title: "NGOs", desc: "Discover & claim nearby donations" },
+              { emoji: "🚴", title: "Volunteers", desc: "Help transport food to those in need" },
+            ].map((item) => (
+              <div key={item.title} className="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
+                <span className="text-xl">{item.emoji}</span>
+                <div>
+                  <div className="font-semibold text-sm">{item.title}</div>
+                  <div className="text-white/70 text-xs">{item.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="text-white/40 text-xs">Free to join. No subscription required.</div>
+      </div>
+
+      <div className="flex flex-col items-center justify-center bg-background px-6 py-12">
+        <div className="w-full max-w-sm">
+          <div className="mb-8 text-center lg:text-left">
+            <h1 className="text-2xl font-serif font-bold text-foreground">Create your account</h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              You'll set up your role after signing up
+            </p>
+          </div>
+          <SignUp
+            routing="path"
+            path={`${basePath}/sign-up`}
+            signInUrl={`${basePath}/sign-in`}
+            appearance={clerkAppearance}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -158,10 +244,10 @@ function ClerkProviderWithRoutes() {
             <Route path="/" component={HomeRedirect} />
             <Route path="/sign-in/*?" component={SignInPage} />
             <Route path="/sign-up/*?" component={SignUpPage} />
-            
+
             <Route path="/dashboard"><ProtectedRoute component={Dashboard} /></Route>
             <Route path="/onboarding"><ProtectedRoute component={Onboarding} /></Route>
-            
+
             <Route path="/donate"><ProtectedRoute component={Donate} /></Route>
             <Route path="/donations"><ProtectedRoute component={Donations} /></Route>
             <Route path="/donations/:id"><ProtectedRoute component={DonationDetail} /></Route>
@@ -169,7 +255,7 @@ function ClerkProviderWithRoutes() {
             <Route path="/my-donations"><ProtectedRoute component={MyDonations} /></Route>
             <Route path="/my-claims"><ProtectedRoute component={MyClaims} /></Route>
             <Route path="/profile"><ProtectedRoute component={Profile} /></Route>
-            
+
             <Route component={() => <div className="p-8 text-center">404 Not Found</div>} />
           </Switch>
         </Layout>

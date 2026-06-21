@@ -16,6 +16,7 @@ export const UserProfileRole = {
   donor: 'donor',
   ngo: 'ngo',
   volunteer: 'volunteer',
+  admin: 'admin',
 } as const;
 
 /**
@@ -60,6 +61,8 @@ export interface UserProfile {
   vehicleType?: string | null;
   /** @nullable */
   availabilityStatus?: string | null;
+  /** @nullable */
+  darpanId?: string | null;
   createdAt?: string;
 }
 
@@ -70,6 +73,7 @@ export const UserProfileInputRole = {
   donor: 'donor',
   ngo: 'ngo',
   volunteer: 'volunteer',
+  admin: 'admin',
 } as const;
 
 export type UserProfileInputDonorCategory = typeof UserProfileInputDonorCategory[keyof typeof UserProfileInputDonorCategory];
@@ -98,6 +102,7 @@ export interface UserProfileInput {
   operatingRadiusKm?: number;
   vehicleType?: string;
   availabilityStatus?: string;
+  darpanId?: string;
 }
 
 export type DonationFoodType = typeof DonationFoodType[keyof typeof DonationFoodType];
