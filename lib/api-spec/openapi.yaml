@@ -18,6 +18,10 @@ tags:
     description: NGO/volunteer claim system
   - name: stats
     description: Dashboard analytics
+  - name: verify
+    description: License and ID verification
+  - name: admin
+    description: Admin registry management
 
 paths:
   /healthz:
@@ -333,6 +337,216 @@ paths:
                 items:
                   $ref: "#/components/schemas/Claim"
 
+  /verify/fssai:
+    post:
+      operationId: verifyFssai
+      tags: [verify]
+      summary: Verify an FSSAI license number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FssaiVerifyRequest"
+      responses:
+        "200":
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FssaiVerifyResult"
+
+  /verify/darpan:
+    post:
+      operationId: verifyDarpan
+      tags: [verify]
+      summary: Verify a NITI Aayog Darpan ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DarpanVerifyRequest"
+      responses:
+        "200":
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DarpanVerifyResult"
+
+  /verify/admin-code:
+    post:
+      operationId: verifyAdminCode
+      tags: [verify]
+      summary: Verify a platform admin access code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminCodeVerifyRequest"
+      responses:
+        "200":
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminCodeVerifyResult"
+
+  /admin/registry/fssai:
+    get:
+      operationId: listFssaiLicenses
+      tags: [admin]
+      summary: List all FSSAI licenses in the registry
+      responses:
+        "200":
+          description: List of FSSAI licenses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FssaiLicense"
+    post:
+      operationId: addFssaiLicense
+      tags: [admin]
+      summary: Add a new FSSAI license to the registry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FssaiLicenseInput"
+      responses:
+        "201":
+          description: License added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FssaiLicense"
+
+  /admin/registry/fssai/{id}:
+    delete:
+      operationId: deleteFssaiLicense
+      tags: [admin]
+      summary: Remove an FSSAI license from the registry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+
+  /admin/registry/darpan:
+    get:
+      operationId: listDarpanIds
+      tags: [admin]
+      summary: List all Darpan IDs in the registry
+      responses:
+        "200":
+          description: List of Darpan IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DarpanIdEntry"
+    post:
+      operationId: addDarpanId
+      tags: [admin]
+      summary: Add a new Darpan ID to the registry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DarpanIdInput"
+      responses:
+        "201":
+          description: Darpan ID added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DarpanIdEntry"
+
+  /admin/registry/darpan/{id}:
+    delete:
+      operationId: deleteDarpanId
+      tags: [admin]
+      summary: Remove a Darpan ID from the registry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+
+  /admin/registry/codes:
+    get:
+      operationId: listAdminCodes
+      tags: [admin]
+      summary: List all admin access codes
+      responses:
+        "200":
+          description: List of admin codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminCodeEntry"
+    post:
+      operationId: addAdminCode
+      tags: [admin]
+      summary: Add a new admin access code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminCodeInput"
+      responses:
+        "201":
+          description: Code added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminCodeEntry"
+
+  /admin/registry/codes/{id}:
+    delete:
+      operationId: deleteAdminCode
+      tags: [admin]
+      summary: Remove an admin access code
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessage"
+
 components:
   schemas:
     HealthStatus:
@@ -618,3 +832,163 @@ components:
           type: integer
         activeDonations:
           type: integer
+
+    SuccessMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+
+    FssaiVerifyRequest:
+      type: object
+      required: [licenseNumber]
+      properties:
+        licenseNumber:
+          type: string
+
+    FssaiVerifyResult:
+      type: object
+      required: [valid]
+      properties:
+        valid:
+          type: boolean
+        businessName:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        state:
+          type: ["string", "null"]
+        category:
+          type: ["string", "null"]
+
+    DarpanVerifyRequest:
+      type: object
+      required: [darpanId]
+      properties:
+        darpanId:
+          type: string
+
+    DarpanVerifyResult:
+      type: object
+      required: [valid]
+      properties:
+        valid:
+          type: boolean
+        orgName:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        state:
+          type: ["string", "null"]
+
+    AdminCodeVerifyRequest:
+      type: object
+      required: [code]
+      properties:
+        code:
+          type: string
+
+    AdminCodeVerifyResult:
+      type: object
+      required: [valid]
+      properties:
+        valid:
+          type: boolean
+
+    FssaiLicense:
+      type: object
+      required: [id, licenseNumber, businessName, city, state, category, isActive, addedAt]
+      properties:
+        id:
+          type: integer
+        licenseNumber:
+          type: string
+        businessName:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        category:
+          type: string
+        isActive:
+          type: boolean
+        addedAt:
+          type: string
+          format: date-time
+
+    FssaiLicenseInput:
+      type: object
+      required: [licenseNumber, businessName, city, state, category]
+      properties:
+        licenseNumber:
+          type: string
+        businessName:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        category:
+          type: string
+
+    DarpanIdEntry:
+      type: object
+      required: [id, darpanId, orgName, city, state, isActive, addedAt]
+      properties:
+        id:
+          type: integer
+        darpanId:
+          type: string
+        orgName:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        isActive:
+          type: boolean
+        addedAt:
+          type: string
+          format: date-time
+
+    DarpanIdInput:
+      type: object
+      required: [darpanId, orgName, city, state]
+      properties:
+        darpanId:
+          type: string
+        orgName:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+
+    AdminCodeEntry:
+      type: object
+      required: [id, code, label, isActive, createdAt]
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        label:
+          type: string
+        isActive:
+          type: boolean
+        usedByClerkId:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    AdminCodeInput:
+      type: object
+      required: [code, label]
+      properties:
+        code:
+          type: string
+        label:
+          type: string

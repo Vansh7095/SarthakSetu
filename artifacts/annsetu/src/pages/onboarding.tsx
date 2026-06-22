@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetMyProfile, useUpsertMyProfile, getGetMyProfileQueryKey } from "@workspace/api-client-react";
+import { useGetMyProfile, useUpsertMyProfile, getGetMyProfileQueryKey, useVerifyFssai, useVerifyDarpan, useVerifyAdminCode } from "@workspace/api-client-react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,11 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Loader2, ChevronRight, ChevronLeft, Store, HeartHandshake, Bike, ShieldCheck } from "lucide-react";
+import { Loader2, ChevronRight, ChevronLeft, Store, HeartHandshake, Bike, ShieldCheck, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 
 type Role = "donor" | "ngo" | "volunteer" | "admin";
-
-const ADMIN_SECRET = "ANNSETU_ADMIN_2024";
 
 const baseSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -29,17 +27,6 @@ const donorSchema = baseSchema.extend({
     required_error: "Select your donor type",
   }),
   licenseNumber: z.string().optional(),
-}).superRefine((data, ctx) => {
-  if (
-    data.donorCategory !== "household" &&
-    (!data.licenseNumber || data.licenseNumber.trim().length < 14)
-  ) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["licenseNumber"],
-      message: "FSSAI License Number is required for commercial food businesses (min 14 digits)",
-    });
-  }
 });
 
 const ngoSchema = baseSchema.extend({
@@ -105,21 +92,75 @@ const roleCards = [
   },
 ];
 
+type VerifyState = "idle" | "checking" | "valid" | "invalid";
+
+function VerifyBadge({ state, validMsg }: { state: VerifyState; validMsg: string }) {
+  if (state === "idle") return null;
+  if (state === "checking") return (
+    <div className="flex items-center gap-1.5 text-muted-foreground text-sm mt-1">
+      <Loader2 className="w-3.5 h-3.5 animate-spin" /> Checking database…
+    </div>
+  );
+  if (state === "valid") return (
+    <div className="flex items-center gap-1.5 text-green-700 text-sm mt-1">
+      <CheckCircle2 className="w-3.5 h-3.5" /> {validMsg}
+    </div>
+  );
+  return (
+    <div className="flex items-center gap-1.5 text-destructive text-sm mt-1">
+      <XCircle className="w-3.5 h-3.5" /> Not found in registry. Contact support if this is an error.
+    </div>
+  );
+}
+
 function DonorForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubmit: (v: any) => void; isPending: boolean }) {
   const form = useForm<z.infer<typeof donorSchema>>({
     resolver: zodResolver(donorSchema),
     defaultValues: { name: "", phone: "", city: "", address: "", licenseNumber: "" },
   });
   const category = form.watch("donorCategory");
+  const licenseValue = form.watch("licenseNumber");
   const needsLicense = category && category !== "household";
+
+  const [verifyState, setVerifyState] = useState<VerifyState>("idle");
+  const [verifiedBusiness, setVerifiedBusiness] = useState<{ businessName?: string | null; city?: string | null } | null>(null);
+  const verifyFssai = useVerifyFssai();
+
+  const handleVerify = async () => {
+    if (!licenseValue || licenseValue.trim().length < 14) return;
+    setVerifyState("checking");
+    verifyFssai.mutate(
+      { data: { licenseNumber: licenseValue.trim() } },
+      {
+        onSuccess: (result) => {
+          if (result.valid) {
+            setVerifyState("valid");
+            setVerifiedBusiness(result);
+          } else {
+            setVerifyState("invalid");
+            setVerifiedBusiness(null);
+          }
+        },
+        onError: () => { setVerifyState("invalid"); setVerifiedBusiness(null); },
+      }
+    );
+  };
+
+  const handleSubmit = (values: z.infer<typeof donorSchema>) => {
+    if (needsLicense && verifyState !== "valid") {
+      form.setError("licenseNumber", { message: "Please verify your FSSAI License Number before continuing" });
+      return;
+    }
+    onSubmit(values);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
         <FormField control={form.control} name="donorCategory" render={({ field }) => (
           <FormItem>
             <FormLabel>Donor Type <span className="text-destructive">*</span></FormLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select onValueChange={(v) => { field.onChange(v); setVerifyState("idle"); setVerifiedBusiness(null); }} value={field.value}>
               <FormControl><SelectTrigger><SelectValue placeholder="What kind of food donor are you?" /></SelectTrigger></FormControl>
               <SelectContent>
                 <SelectItem value="restaurant">🍽️ Restaurant</SelectItem>
@@ -173,9 +214,31 @@ function DonorForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubm
               <FormLabel>
                 FSSAI License Number <span className="text-destructive">*</span>
               </FormLabel>
-              <FormControl><Input placeholder="14-digit FSSAI number e.g. 10014012000086" maxLength={14} {...field} /></FormControl>
+              <div className="flex gap-2">
+                <FormControl>
+                  <Input
+                    placeholder="14-digit number e.g. 10014012000086"
+                    maxLength={14}
+                    {...field}
+                    onChange={(e) => { field.onChange(e); setVerifyState("idle"); setVerifiedBusiness(null); }}
+                  />
+                </FormControl>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleVerify}
+                  disabled={verifyState === "checking" || !licenseValue || licenseValue.length < 14}
+                  className="flex-shrink-0"
+                >
+                  {verifyState === "checking" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Verify"}
+                </Button>
+              </div>
+              <VerifyBadge
+                state={verifyState}
+                validMsg={verifiedBusiness?.businessName ? `✓ ${verifiedBusiness.businessName}, ${verifiedBusiness.city}` : "License verified"}
+              />
               <p className="text-xs text-muted-foreground mt-1">
-                Required for restaurants, hotels, caterers, and event organizers under the Food Safety and Standards Authority of India.
+                Required under Food Safety and Standards Authority of India (FSSAI).
               </p>
               <FormMessage />
             </FormItem>
@@ -207,10 +270,42 @@ function NgoForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubmit
     resolver: zodResolver(ngoSchema),
     defaultValues: { name: "", phone: "", city: "", orgName: "", registrationNumber: "", darpanId: "", operatingRadiusKm: 10 },
   });
+  const darpanValue = form.watch("darpanId");
+  const [verifyState, setVerifyState] = useState<VerifyState>("idle");
+  const [verifiedOrg, setVerifiedOrg] = useState<{ orgName?: string | null; city?: string | null } | null>(null);
+  const verifyDarpan = useVerifyDarpan();
+
+  const handleVerify = () => {
+    if (!darpanValue || darpanValue.trim().length < 4) return;
+    setVerifyState("checking");
+    verifyDarpan.mutate(
+      { data: { darpanId: darpanValue.trim() } },
+      {
+        onSuccess: (result) => {
+          if (result.valid) {
+            setVerifyState("valid");
+            setVerifiedOrg(result);
+          } else {
+            setVerifyState("invalid");
+            setVerifiedOrg(null);
+          }
+        },
+        onError: () => { setVerifyState("invalid"); setVerifiedOrg(null); },
+      }
+    );
+  };
+
+  const handleSubmit = (values: z.infer<typeof ngoSchema>) => {
+    if (verifyState !== "valid") {
+      form.setError("darpanId", { message: "Please verify your Darpan ID before continuing" });
+      return;
+    }
+    onSubmit(values);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
         <FormField control={form.control} name="orgName" render={({ field }) => (
           <FormItem>
             <FormLabel>Organization Name <span className="text-destructive">*</span></FormLabel>
@@ -245,17 +340,6 @@ function NgoForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubmit
               <FormMessage />
             </FormItem>
           )} />
-          <FormField control={form.control} name="darpanId" render={({ field }) => (
-            <FormItem>
-              <FormLabel>NITI Aayog Darpan ID <span className="text-destructive">*</span></FormLabel>
-              <FormControl><Input placeholder="e.g. MH/2010/0123456" {...field} /></FormControl>
-              <p className="text-xs text-muted-foreground mt-1">From ngodarpan.gov.in</p>
-              <FormMessage />
-            </FormItem>
-          )} />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
           <FormField control={form.control} name="city" render={({ field }) => (
             <FormItem>
               <FormLabel>City <span className="text-destructive">*</span></FormLabel>
@@ -263,17 +347,51 @@ function NgoForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubmit
               <FormMessage />
             </FormItem>
           )} />
-          <FormField control={form.control} name="operatingRadiusKm" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Operating Radius (km) <span className="text-destructive">*</span></FormLabel>
-              <FormControl><Input type="number" min={1} max={500} placeholder="e.g. 20" {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-800">
-          📋 Your registration details will be verified before donations can be claimed. Ensure documents match NITI Aayog records.
+        <FormField control={form.control} name="darpanId" render={({ field }) => (
+          <FormItem>
+            <FormLabel>NITI Aayog Darpan ID <span className="text-destructive">*</span></FormLabel>
+            <div className="flex gap-2">
+              <FormControl>
+                <Input
+                  placeholder="e.g. MH/2010/0012345"
+                  {...field}
+                  onChange={(e) => { field.onChange(e); setVerifyState("idle"); setVerifiedOrg(null); }}
+                />
+              </FormControl>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleVerify}
+                disabled={verifyState === "checking" || !darpanValue || darpanValue.length < 4}
+                className="flex-shrink-0"
+              >
+                {verifyState === "checking" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Verify"}
+              </Button>
+            </div>
+            <VerifyBadge
+              state={verifyState}
+              validMsg={verifiedOrg?.orgName ? `✓ ${verifiedOrg.orgName}, ${verifiedOrg.city}` : "Darpan ID verified"}
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              From <a href="https://ngodarpan.gov.in" target="_blank" rel="noreferrer" className="underline">ngodarpan.gov.in</a>
+            </p>
+            <FormMessage />
+          </FormItem>
+        )} />
+
+        <FormField control={form.control} name="operatingRadiusKm" render={({ field }) => (
+          <FormItem>
+            <FormLabel>Operating Radius (km) <span className="text-destructive">*</span></FormLabel>
+            <FormControl><Input type="number" min={1} max={500} placeholder="e.g. 20" {...field} /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-800 flex gap-2">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <span>Your Darpan ID is verified against NITI Aayog records in our database. Ensure it matches your registration exactly.</span>
         </div>
 
         <div className="flex gap-3 pt-2">
@@ -315,7 +433,6 @@ function VolunteerForm({ onBack, onSubmit, isPending }: { onBack: () => void; on
             </FormItem>
           )} />
         </div>
-
         <FormField control={form.control} name="city" render={({ field }) => (
           <FormItem>
             <FormLabel>City <span className="text-destructive">*</span></FormLabel>
@@ -323,7 +440,6 @@ function VolunteerForm({ onBack, onSubmit, isPending }: { onBack: () => void; on
             <FormMessage />
           </FormItem>
         )} />
-
         <div className="grid grid-cols-2 gap-4">
           <FormField control={form.control} name="vehicleType" render={({ field }) => (
             <FormItem>
@@ -356,7 +472,6 @@ function VolunteerForm({ onBack, onSubmit, isPending }: { onBack: () => void; on
             </FormItem>
           )} />
         </div>
-
         <div className="flex gap-3 pt-2">
           <Button type="button" variant="outline" onClick={onBack} className="flex-1">
             <ChevronLeft className="w-4 h-4 mr-1" /> Back
@@ -376,11 +491,33 @@ function AdminForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubm
     resolver: zodResolver(adminSchema),
     defaultValues: { name: "", phone: "", city: "", adminCode: "" },
   });
+  const codeValue = form.watch("adminCode");
+  const [verifyState, setVerifyState] = useState<VerifyState>("idle");
+  const verifyAdminCode = useVerifyAdminCode();
   const { toast } = useToast();
 
+  const handleVerify = () => {
+    if (!codeValue || codeValue.trim().length < 1) return;
+    setVerifyState("checking");
+    verifyAdminCode.mutate(
+      { data: { code: codeValue.trim() } },
+      {
+        onSuccess: (result) => {
+          if (result.valid) {
+            setVerifyState("valid");
+          } else {
+            setVerifyState("invalid");
+            toast({ variant: "destructive", title: "Invalid code", description: "This access code is not in the registry or has been deactivated." });
+          }
+        },
+        onError: () => { setVerifyState("invalid"); },
+      }
+    );
+  };
+
   const handleSubmit = (values: z.infer<typeof adminSchema>) => {
-    if (values.adminCode !== ADMIN_SECRET) {
-      toast({ variant: "destructive", title: "Invalid access code", description: "The admin access code you entered is incorrect." });
+    if (verifyState !== "valid") {
+      form.setError("adminCode", { message: "Please verify your admin access code first" });
       return;
     }
     onSubmit(values);
@@ -391,9 +528,8 @@ function AdminForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubm
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
           <p className="text-sm text-purple-800 font-medium">🔐 Admin Access</p>
-          <p className="text-xs text-purple-700 mt-1">Admin accounts are only for authorized AnnSetu personnel. You will need a valid access code issued by the platform team.</p>
+          <p className="text-xs text-purple-700 mt-1">Admin accounts require a valid access code from the AnnSetu operations team. Codes are stored and verified against our secure database.</p>
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           <FormField control={form.control} name="name" render={({ field }) => (
             <FormItem>
@@ -410,7 +546,6 @@ function AdminForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubm
             </FormItem>
           )} />
         </div>
-
         <FormField control={form.control} name="city" render={({ field }) => (
           <FormItem>
             <FormLabel>City <span className="text-destructive">*</span></FormLabel>
@@ -418,21 +553,37 @@ function AdminForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubm
             <FormMessage />
           </FormItem>
         )} />
-
         <FormField control={form.control} name="adminCode" render={({ field }) => (
           <FormItem>
             <FormLabel>Admin Access Code <span className="text-destructive">*</span></FormLabel>
-            <FormControl><Input type="password" placeholder="Enter access code" {...field} /></FormControl>
-            <p className="text-xs text-muted-foreground mt-1">Contact the AnnSetu team to receive your access code.</p>
+            <div className="flex gap-2">
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Enter access code"
+                  {...field}
+                  onChange={(e) => { field.onChange(e); setVerifyState("idle"); }}
+                />
+              </FormControl>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleVerify}
+                disabled={verifyState === "checking" || !codeValue}
+                className="flex-shrink-0"
+              >
+                {verifyState === "checking" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Verify"}
+              </Button>
+            </div>
+            <VerifyBadge state={verifyState} validMsg="Access code verified — admin access granted" />
             <FormMessage />
           </FormItem>
         )} />
-
         <div className="flex gap-3 pt-2">
           <Button type="button" variant="outline" onClick={onBack} className="flex-1">
             <ChevronLeft className="w-4 h-4 mr-1" /> Back
           </Button>
-          <Button type="submit" className="flex-1" disabled={isPending}>
+          <Button type="submit" className="flex-1" disabled={isPending || verifyState !== "valid"}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Complete Setup <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
@@ -487,7 +638,7 @@ export default function Onboarding() {
     <div className="max-w-2xl mx-auto py-10 px-4">
       <div className="mb-8 text-center">
         <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 text-sm font-medium mb-4">
-          <span>Step {step === "role" ? "1" : "2"} of 2</span>
+          Step {step === "role" ? "1" : "2"} of 2
         </div>
         <h1 className="text-3xl font-serif font-bold text-foreground mb-2">
           {step === "role" ? "How will you use AnnSetu?" : `Setting up your ${selectedRole === "ngo" ? "NGO" : selectedRole} profile`}
@@ -495,7 +646,7 @@ export default function Onboarding() {
         <p className="text-muted-foreground">
           {step === "role"
             ? "Choose your role — you can update this later from your profile"
-            : "We need a few details to verify your account"}
+            : "We verify your details against our database before activating your account"}
         </p>
       </div>
 
@@ -531,7 +682,7 @@ export default function Onboarding() {
       ) : (
         <div className="bg-card border border-border p-6 rounded-2xl shadow-sm">
           {selectedRole && (
-            <div className={`flex items-center gap-2 mb-6 pb-5 border-b border-border`}>
+            <div className="flex items-center gap-2 mb-6 pb-5 border-b border-border">
               {roleCards.filter(c => c.role === selectedRole).map(card => {
                 const Icon = card.icon;
                 return (

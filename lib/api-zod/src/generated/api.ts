@@ -749,3 +749,159 @@ export const GetMyClaimsResponseItem = zod.object({
 export const GetMyClaimsResponse = zod.array(GetMyClaimsResponseItem)
 
 
+/**
+ * @summary Verify an FSSAI license number
+ */
+export const VerifyFssaiBody = zod.object({
+  "licenseNumber": zod.string()
+})
+
+export const VerifyFssaiResponse = zod.object({
+  "valid": zod.boolean(),
+  "businessName": zod.string().nullish(),
+  "city": zod.string().nullish(),
+  "state": zod.string().nullish(),
+  "category": zod.string().nullish()
+})
+
+
+/**
+ * @summary Verify a NITI Aayog Darpan ID
+ */
+export const VerifyDarpanBody = zod.object({
+  "darpanId": zod.string()
+})
+
+export const VerifyDarpanResponse = zod.object({
+  "valid": zod.boolean(),
+  "orgName": zod.string().nullish(),
+  "city": zod.string().nullish(),
+  "state": zod.string().nullish()
+})
+
+
+/**
+ * @summary Verify a platform admin access code
+ */
+export const VerifyAdminCodeBody = zod.object({
+  "code": zod.string()
+})
+
+export const VerifyAdminCodeResponse = zod.object({
+  "valid": zod.boolean()
+})
+
+
+/**
+ * @summary List all FSSAI licenses in the registry
+ */
+export const ListFssaiLicensesResponseItem = zod.object({
+  "id": zod.number(),
+  "licenseNumber": zod.string(),
+  "businessName": zod.string(),
+  "city": zod.string(),
+  "state": zod.string(),
+  "category": zod.string(),
+  "isActive": zod.boolean(),
+  "addedAt": zod.coerce.date()
+})
+export const ListFssaiLicensesResponse = zod.array(ListFssaiLicensesResponseItem)
+
+
+/**
+ * @summary Add a new FSSAI license to the registry
+ */
+export const AddFssaiLicenseBody = zod.object({
+  "licenseNumber": zod.string(),
+  "businessName": zod.string(),
+  "city": zod.string(),
+  "state": zod.string(),
+  "category": zod.string()
+})
+
+
+/**
+ * @summary Remove an FSSAI license from the registry
+ */
+export const DeleteFssaiLicenseParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteFssaiLicenseResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary List all Darpan IDs in the registry
+ */
+export const ListDarpanIdsResponseItem = zod.object({
+  "id": zod.number(),
+  "darpanId": zod.string(),
+  "orgName": zod.string(),
+  "city": zod.string(),
+  "state": zod.string(),
+  "isActive": zod.boolean(),
+  "addedAt": zod.coerce.date()
+})
+export const ListDarpanIdsResponse = zod.array(ListDarpanIdsResponseItem)
+
+
+/**
+ * @summary Add a new Darpan ID to the registry
+ */
+export const AddDarpanIdBody = zod.object({
+  "darpanId": zod.string(),
+  "orgName": zod.string(),
+  "city": zod.string(),
+  "state": zod.string()
+})
+
+
+/**
+ * @summary Remove a Darpan ID from the registry
+ */
+export const DeleteDarpanIdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteDarpanIdResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary List all admin access codes
+ */
+export const ListAdminCodesResponseItem = zod.object({
+  "id": zod.number(),
+  "code": zod.string(),
+  "label": zod.string(),
+  "isActive": zod.boolean(),
+  "usedByClerkId": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+export const ListAdminCodesResponse = zod.array(ListAdminCodesResponseItem)
+
+
+/**
+ * @summary Add a new admin access code
+ */
+export const AddAdminCodeBody = zod.object({
+  "code": zod.string(),
+  "label": zod.string()
+})
+
+
+/**
+ * @summary Remove an admin access code
+ */
+export const DeleteAdminCodeParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteAdminCodeResponse = zod.object({
+  "message": zod.string()
+})
+
+

@@ -253,6 +253,99 @@ export interface PlatformStats {
   activeDonations: number;
 }
 
+export interface SuccessMessage {
+  message: string;
+}
+
+export interface FssaiVerifyRequest {
+  licenseNumber: string;
+}
+
+export interface FssaiVerifyResult {
+  valid: boolean;
+  /** @nullable */
+  businessName?: string | null;
+  /** @nullable */
+  city?: string | null;
+  /** @nullable */
+  state?: string | null;
+  /** @nullable */
+  category?: string | null;
+}
+
+export interface DarpanVerifyRequest {
+  darpanId: string;
+}
+
+export interface DarpanVerifyResult {
+  valid: boolean;
+  /** @nullable */
+  orgName?: string | null;
+  /** @nullable */
+  city?: string | null;
+  /** @nullable */
+  state?: string | null;
+}
+
+export interface AdminCodeVerifyRequest {
+  code: string;
+}
+
+export interface AdminCodeVerifyResult {
+  valid: boolean;
+}
+
+export interface FssaiLicense {
+  id: number;
+  licenseNumber: string;
+  businessName: string;
+  city: string;
+  state: string;
+  category: string;
+  isActive: boolean;
+  addedAt: string;
+}
+
+export interface FssaiLicenseInput {
+  licenseNumber: string;
+  businessName: string;
+  city: string;
+  state: string;
+  category: string;
+}
+
+export interface DarpanIdEntry {
+  id: number;
+  darpanId: string;
+  orgName: string;
+  city: string;
+  state: string;
+  isActive: boolean;
+  addedAt: string;
+}
+
+export interface DarpanIdInput {
+  darpanId: string;
+  orgName: string;
+  city: string;
+  state: string;
+}
+
+export interface AdminCodeEntry {
+  id: number;
+  code: string;
+  label: string;
+  isActive: boolean;
+  /** @nullable */
+  usedByClerkId?: string | null;
+  createdAt: string;
+}
+
+export interface AdminCodeInput {
+  code: string;
+  label: string;
+}
+
 export type ListDonationsParams = {
 status?: ListDonationsStatus;
 foodType?: ListDonationsFoodType;

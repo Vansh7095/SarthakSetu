@@ -17,6 +17,7 @@ import MapView from "./pages/map";
 import MyDonations from "./pages/my-donations";
 import MyClaims from "./pages/my-claims";
 import Profile from "./pages/profile";
+import AdminRegistry from "./pages/admin-registry";
 
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -255,6 +256,7 @@ function ClerkProviderWithRoutes() {
             <Route path="/my-donations"><ProtectedRoute component={MyDonations} /></Route>
             <Route path="/my-claims"><ProtectedRoute component={MyClaims} /></Route>
             <Route path="/profile"><ProtectedRoute component={Profile} /></Route>
+            <Route path="/admin-registry"><ProtectedRoute component={AdminRegistry} /></Route>
 
             <Route component={() => <div className="p-8 text-center">404 Not Found</div>} />
           </Switch>

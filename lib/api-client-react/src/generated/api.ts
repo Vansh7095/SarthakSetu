@@ -20,17 +20,30 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminCodeEntry,
+  AdminCodeInput,
+  AdminCodeVerifyRequest,
+  AdminCodeVerifyResult,
   Claim,
+  DarpanIdEntry,
+  DarpanIdInput,
+  DarpanVerifyRequest,
+  DarpanVerifyResult,
   Donation,
   DonationInput,
   DonationUpdate,
   DonorStats,
+  FssaiLicense,
+  FssaiLicenseInput,
+  FssaiVerifyRequest,
+  FssaiVerifyResult,
   GetMyDonationsParams,
   HealthStatus,
   ListDonationsParams,
   NgoStats,
   OtpVerifyInput,
   PlatformStats,
+  SuccessMessage,
   UserProfile,
   UserProfileInput
 } from './api.schemas';
@@ -1250,4 +1263,871 @@ export function useGetMyClaims<TData = Awaited<ReturnType<typeof getMyClaims>>, 
 
 
 
+
+export const getVerifyFssaiUrl = () => {
+
+
+
+
+  return `/api/verify/fssai`
+}
+
+/**
+ * @summary Verify an FSSAI license number
+ */
+export const verifyFssai = async (fssaiVerifyRequest: FssaiVerifyRequest, options?: RequestInit): Promise<FssaiVerifyResult> => {
+
+  return customFetch<FssaiVerifyResult>(getVerifyFssaiUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      fssaiVerifyRequest,)
+  }
+);}
+
+
+
+
+export const getVerifyFssaiMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyFssai>>, TError,{data: BodyType<FssaiVerifyRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof verifyFssai>>, TError,{data: BodyType<FssaiVerifyRequest>}, TContext> => {
+
+const mutationKey = ['verifyFssai'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyFssai>>, {data: BodyType<FssaiVerifyRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  verifyFssai(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type VerifyFssaiMutationResult = NonNullable<Awaited<ReturnType<typeof verifyFssai>>>
+    export type VerifyFssaiMutationBody = BodyType<FssaiVerifyRequest>
+    export type VerifyFssaiMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Verify an FSSAI license number
+ */
+export const useVerifyFssai = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyFssai>>, TError,{data: BodyType<FssaiVerifyRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof verifyFssai>>,
+        TError,
+        {data: BodyType<FssaiVerifyRequest>},
+        TContext
+      > => {
+      return useMutation(getVerifyFssaiMutationOptions(options));
+    }
+
+export const getVerifyDarpanUrl = () => {
+
+
+
+
+  return `/api/verify/darpan`
+}
+
+/**
+ * @summary Verify a NITI Aayog Darpan ID
+ */
+export const verifyDarpan = async (darpanVerifyRequest: DarpanVerifyRequest, options?: RequestInit): Promise<DarpanVerifyResult> => {
+
+  return customFetch<DarpanVerifyResult>(getVerifyDarpanUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      darpanVerifyRequest,)
+  }
+);}
+
+
+
+
+export const getVerifyDarpanMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyDarpan>>, TError,{data: BodyType<DarpanVerifyRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof verifyDarpan>>, TError,{data: BodyType<DarpanVerifyRequest>}, TContext> => {
+
+const mutationKey = ['verifyDarpan'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyDarpan>>, {data: BodyType<DarpanVerifyRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  verifyDarpan(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type VerifyDarpanMutationResult = NonNullable<Awaited<ReturnType<typeof verifyDarpan>>>
+    export type VerifyDarpanMutationBody = BodyType<DarpanVerifyRequest>
+    export type VerifyDarpanMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Verify a NITI Aayog Darpan ID
+ */
+export const useVerifyDarpan = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyDarpan>>, TError,{data: BodyType<DarpanVerifyRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof verifyDarpan>>,
+        TError,
+        {data: BodyType<DarpanVerifyRequest>},
+        TContext
+      > => {
+      return useMutation(getVerifyDarpanMutationOptions(options));
+    }
+
+export const getVerifyAdminCodeUrl = () => {
+
+
+
+
+  return `/api/verify/admin-code`
+}
+
+/**
+ * @summary Verify a platform admin access code
+ */
+export const verifyAdminCode = async (adminCodeVerifyRequest: AdminCodeVerifyRequest, options?: RequestInit): Promise<AdminCodeVerifyResult> => {
+
+  return customFetch<AdminCodeVerifyResult>(getVerifyAdminCodeUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      adminCodeVerifyRequest,)
+  }
+);}
+
+
+
+
+export const getVerifyAdminCodeMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyAdminCode>>, TError,{data: BodyType<AdminCodeVerifyRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof verifyAdminCode>>, TError,{data: BodyType<AdminCodeVerifyRequest>}, TContext> => {
+
+const mutationKey = ['verifyAdminCode'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyAdminCode>>, {data: BodyType<AdminCodeVerifyRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  verifyAdminCode(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type VerifyAdminCodeMutationResult = NonNullable<Awaited<ReturnType<typeof verifyAdminCode>>>
+    export type VerifyAdminCodeMutationBody = BodyType<AdminCodeVerifyRequest>
+    export type VerifyAdminCodeMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Verify a platform admin access code
+ */
+export const useVerifyAdminCode = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyAdminCode>>, TError,{data: BodyType<AdminCodeVerifyRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof verifyAdminCode>>,
+        TError,
+        {data: BodyType<AdminCodeVerifyRequest>},
+        TContext
+      > => {
+      return useMutation(getVerifyAdminCodeMutationOptions(options));
+    }
+
+export const getListFssaiLicensesUrl = () => {
+
+
+
+
+  return `/api/admin/registry/fssai`
+}
+
+/**
+ * @summary List all FSSAI licenses in the registry
+ */
+export const listFssaiLicenses = async ( options?: RequestInit): Promise<FssaiLicense[]> => {
+
+  return customFetch<FssaiLicense[]>(getListFssaiLicensesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListFssaiLicensesQueryKey = () => {
+    return [
+    `/api/admin/registry/fssai`
+    ] as const;
+    }
+
+
+export const getListFssaiLicensesQueryOptions = <TData = Awaited<ReturnType<typeof listFssaiLicenses>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listFssaiLicenses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListFssaiLicensesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listFssaiLicenses>>> = ({ signal }) => listFssaiLicenses({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listFssaiLicenses>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListFssaiLicensesQueryResult = NonNullable<Awaited<ReturnType<typeof listFssaiLicenses>>>
+export type ListFssaiLicensesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all FSSAI licenses in the registry
+ */
+
+export function useListFssaiLicenses<TData = Awaited<ReturnType<typeof listFssaiLicenses>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listFssaiLicenses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListFssaiLicensesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAddFssaiLicenseUrl = () => {
+
+
+
+
+  return `/api/admin/registry/fssai`
+}
+
+/**
+ * @summary Add a new FSSAI license to the registry
+ */
+export const addFssaiLicense = async (fssaiLicenseInput: FssaiLicenseInput, options?: RequestInit): Promise<FssaiLicense> => {
+
+  return customFetch<FssaiLicense>(getAddFssaiLicenseUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      fssaiLicenseInput,)
+  }
+);}
+
+
+
+
+export const getAddFssaiLicenseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFssaiLicense>>, TError,{data: BodyType<FssaiLicenseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addFssaiLicense>>, TError,{data: BodyType<FssaiLicenseInput>}, TContext> => {
+
+const mutationKey = ['addFssaiLicense'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFssaiLicense>>, {data: BodyType<FssaiLicenseInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  addFssaiLicense(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddFssaiLicenseMutationResult = NonNullable<Awaited<ReturnType<typeof addFssaiLicense>>>
+    export type AddFssaiLicenseMutationBody = BodyType<FssaiLicenseInput>
+    export type AddFssaiLicenseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Add a new FSSAI license to the registry
+ */
+export const useAddFssaiLicense = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFssaiLicense>>, TError,{data: BodyType<FssaiLicenseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof addFssaiLicense>>,
+        TError,
+        {data: BodyType<FssaiLicenseInput>},
+        TContext
+      > => {
+      return useMutation(getAddFssaiLicenseMutationOptions(options));
+    }
+
+export const getDeleteFssaiLicenseUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/registry/fssai/${id}`
+}
+
+/**
+ * @summary Remove an FSSAI license from the registry
+ */
+export const deleteFssaiLicense = async (id: number, options?: RequestInit): Promise<SuccessMessage> => {
+
+  return customFetch<SuccessMessage>(getDeleteFssaiLicenseUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteFssaiLicenseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFssaiLicense>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteFssaiLicense>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteFssaiLicense'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFssaiLicense>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteFssaiLicense(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteFssaiLicenseMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFssaiLicense>>>
+
+    export type DeleteFssaiLicenseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Remove an FSSAI license from the registry
+ */
+export const useDeleteFssaiLicense = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFssaiLicense>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteFssaiLicense>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteFssaiLicenseMutationOptions(options));
+    }
+
+export const getListDarpanIdsUrl = () => {
+
+
+
+
+  return `/api/admin/registry/darpan`
+}
+
+/**
+ * @summary List all Darpan IDs in the registry
+ */
+export const listDarpanIds = async ( options?: RequestInit): Promise<DarpanIdEntry[]> => {
+
+  return customFetch<DarpanIdEntry[]>(getListDarpanIdsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListDarpanIdsQueryKey = () => {
+    return [
+    `/api/admin/registry/darpan`
+    ] as const;
+    }
+
+
+export const getListDarpanIdsQueryOptions = <TData = Awaited<ReturnType<typeof listDarpanIds>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listDarpanIds>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListDarpanIdsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listDarpanIds>>> = ({ signal }) => listDarpanIds({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listDarpanIds>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListDarpanIdsQueryResult = NonNullable<Awaited<ReturnType<typeof listDarpanIds>>>
+export type ListDarpanIdsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all Darpan IDs in the registry
+ */
+
+export function useListDarpanIds<TData = Awaited<ReturnType<typeof listDarpanIds>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listDarpanIds>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListDarpanIdsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAddDarpanIdUrl = () => {
+
+
+
+
+  return `/api/admin/registry/darpan`
+}
+
+/**
+ * @summary Add a new Darpan ID to the registry
+ */
+export const addDarpanId = async (darpanIdInput: DarpanIdInput, options?: RequestInit): Promise<DarpanIdEntry> => {
+
+  return customFetch<DarpanIdEntry>(getAddDarpanIdUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      darpanIdInput,)
+  }
+);}
+
+
+
+
+export const getAddDarpanIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addDarpanId>>, TError,{data: BodyType<DarpanIdInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addDarpanId>>, TError,{data: BodyType<DarpanIdInput>}, TContext> => {
+
+const mutationKey = ['addDarpanId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addDarpanId>>, {data: BodyType<DarpanIdInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  addDarpanId(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddDarpanIdMutationResult = NonNullable<Awaited<ReturnType<typeof addDarpanId>>>
+    export type AddDarpanIdMutationBody = BodyType<DarpanIdInput>
+    export type AddDarpanIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Add a new Darpan ID to the registry
+ */
+export const useAddDarpanId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addDarpanId>>, TError,{data: BodyType<DarpanIdInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof addDarpanId>>,
+        TError,
+        {data: BodyType<DarpanIdInput>},
+        TContext
+      > => {
+      return useMutation(getAddDarpanIdMutationOptions(options));
+    }
+
+export const getDeleteDarpanIdUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/registry/darpan/${id}`
+}
+
+/**
+ * @summary Remove a Darpan ID from the registry
+ */
+export const deleteDarpanId = async (id: number, options?: RequestInit): Promise<SuccessMessage> => {
+
+  return customFetch<SuccessMessage>(getDeleteDarpanIdUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteDarpanIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDarpanId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDarpanId>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteDarpanId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDarpanId>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteDarpanId(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteDarpanIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDarpanId>>>
+
+    export type DeleteDarpanIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Remove a Darpan ID from the registry
+ */
+export const useDeleteDarpanId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDarpanId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteDarpanId>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteDarpanIdMutationOptions(options));
+    }
+
+export const getListAdminCodesUrl = () => {
+
+
+
+
+  return `/api/admin/registry/codes`
+}
+
+/**
+ * @summary List all admin access codes
+ */
+export const listAdminCodes = async ( options?: RequestInit): Promise<AdminCodeEntry[]> => {
+
+  return customFetch<AdminCodeEntry[]>(getListAdminCodesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminCodesQueryKey = () => {
+    return [
+    `/api/admin/registry/codes`
+    ] as const;
+    }
+
+
+export const getListAdminCodesQueryOptions = <TData = Awaited<ReturnType<typeof listAdminCodes>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAdminCodes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminCodesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminCodes>>> = ({ signal }) => listAdminCodes({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminCodes>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListAdminCodesQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminCodes>>>
+export type ListAdminCodesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all admin access codes
+ */
+
+export function useListAdminCodes<TData = Awaited<ReturnType<typeof listAdminCodes>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAdminCodes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListAdminCodesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAddAdminCodeUrl = () => {
+
+
+
+
+  return `/api/admin/registry/codes`
+}
+
+/**
+ * @summary Add a new admin access code
+ */
+export const addAdminCode = async (adminCodeInput: AdminCodeInput, options?: RequestInit): Promise<AdminCodeEntry> => {
+
+  return customFetch<AdminCodeEntry>(getAddAdminCodeUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      adminCodeInput,)
+  }
+);}
+
+
+
+
+export const getAddAdminCodeMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAdminCode>>, TError,{data: BodyType<AdminCodeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addAdminCode>>, TError,{data: BodyType<AdminCodeInput>}, TContext> => {
+
+const mutationKey = ['addAdminCode'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addAdminCode>>, {data: BodyType<AdminCodeInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  addAdminCode(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddAdminCodeMutationResult = NonNullable<Awaited<ReturnType<typeof addAdminCode>>>
+    export type AddAdminCodeMutationBody = BodyType<AdminCodeInput>
+    export type AddAdminCodeMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Add a new admin access code
+ */
+export const useAddAdminCode = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAdminCode>>, TError,{data: BodyType<AdminCodeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof addAdminCode>>,
+        TError,
+        {data: BodyType<AdminCodeInput>},
+        TContext
+      > => {
+      return useMutation(getAddAdminCodeMutationOptions(options));
+    }
+
+export const getDeleteAdminCodeUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/registry/codes/${id}`
+}
+
+/**
+ * @summary Remove an admin access code
+ */
+export const deleteAdminCode = async (id: number, options?: RequestInit): Promise<SuccessMessage> => {
+
+  return customFetch<SuccessMessage>(getDeleteAdminCodeUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteAdminCodeMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminCode>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminCode>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteAdminCode'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminCode>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminCode(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminCodeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminCode>>>
+
+    export type DeleteAdminCodeMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Remove an admin access code
+ */
+export const useDeleteAdminCode = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminCode>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminCode>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteAdminCodeMutationOptions(options));
+    }
 
