@@ -600,7 +600,7 @@ export default function Onboarding() {
   const [step, setStep] = useState<"role" | "details">("role");
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 
-  const { data: profile, isLoading } = useGetMyProfile({ query: { retry: false } });
+  const { data: profile, isLoading } = useGetMyProfile();
   const upsertProfile = useUpsertMyProfile();
 
   useEffect(() => {

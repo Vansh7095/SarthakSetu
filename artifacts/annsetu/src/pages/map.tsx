@@ -150,8 +150,8 @@ export default function MapView() {
 
           {donations?.map((donation) => {
             if (!donation.lat || !donation.lng) return null;
-            const deadline = new Date(donation.pickupDeadline);
-            const hoursLeft = (deadline.getTime() - Date.now()) / (1000 * 60 * 60);
+            const deadline = donation.pickupDeadline ? new Date(donation.pickupDeadline) : null;
+            const hoursLeft = deadline ? (deadline.getTime() - Date.now()) / (1000 * 60 * 60) : 999;
             return (
               <Marker
                 key={donation.id}
@@ -165,7 +165,7 @@ export default function MapView() {
                     <div className="text-xs text-muted-foreground space-y-1 mb-3">
                       <p className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {hoursLeft <= 0 ? "⚠️ Expired" : hoursLeft <= 2 ? `⚠️ ${Math.round(hoursLeft * 60)}m left` : `Due ${deadline.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+                        {hoursLeft <= 0 ? "⚠️ Expired" : hoursLeft <= 2 ? `⚠️ ${Math.round(hoursLeft * 60)}m left` : deadline ? `Due ${deadline.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "Due soon"}
                       </p>
                       <p className="flex items-start gap-1">
                         <MapPin className="w-3 h-3 mt-0.5" />

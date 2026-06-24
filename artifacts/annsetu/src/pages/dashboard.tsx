@@ -6,9 +6,7 @@ import { useEffect } from "react";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
-  const { data: profile, isLoading, error } = useGetMyProfile({
-    query: { retry: false }
-  });
+  const { data: profile, isLoading, error } = useGetMyProfile();
 
   useEffect(() => {
     if (error) setLocation("/onboarding");
@@ -82,7 +80,7 @@ function DonorDashboard() {
                   </span>
                 </div>
                 <div className="text-sm text-muted-foreground flex flex-col gap-1">
-                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> By {new Date(donation.pickupDeadline).toLocaleTimeString()}</span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> By {donation.pickupDeadline ? new Date(donation.pickupDeadline).toLocaleTimeString() : 'N/A'}</span>
                   <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {donation.address || 'Location provided'}</span>
                 </div>
               </div>
@@ -140,7 +138,7 @@ function NgoDashboard() {
                 </div>
                 <p className="text-sm font-medium text-foreground">{donation.donor?.name || 'Anonymous Donor'}</p>
                 <div className="text-sm text-muted-foreground flex flex-col gap-1">
-                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> Due: {new Date(donation.pickupDeadline).toLocaleTimeString()}</span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> Due: {donation.pickupDeadline ? new Date(donation.pickupDeadline).toLocaleTimeString() : 'N/A'}</span>
                   <span className="flex items-center gap-1 truncate"><MapPin className="w-4 h-4" /> {donation.address || 'Location provided'}</span>
                 </div>
                 <Link href={`/donations/${donation.id}`} className="mt-2">
@@ -191,7 +189,7 @@ function AdminDashboard() {
           </div>
           <div className="bg-card border p-5 rounded-2xl">
             <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">Plates Shared</p>
-            <p className="text-3xl font-bold text-orange-500 mt-2">{stats?.totalPlatesShared ?? "—"}</p>
+            <p className="text-3xl font-bold text-orange-500 mt-2">{stats?.totalPlatesSaved ?? "—"}</p>
           </div>
           <div className="bg-card border p-5 rounded-2xl">
             <p className="text-muted-foreground text-xs font-medium uppercase tracking-wide">Active Listings</p>

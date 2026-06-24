@@ -19,10 +19,8 @@ export default function DonationDetail() {
 
   const [otp, setOtp] = useState("");
 
-  const { data: donation, isLoading, error } = useGetDonation(donationId, {
-    query: { enabled: !!donationId }
-  });
-  const { data: myProfile } = useGetMyProfile({ query: { retry: false } });
+  const { data: donation, isLoading, error } = useGetDonation(donationId, !!donationId ? undefined : { query: { enabled: false } as any });
+  const { data: myProfile } = useGetMyProfile();
   const isAdmin = myProfile?.role === "admin";
 
   const claimDonation = useClaimDonation();
@@ -35,7 +33,7 @@ export default function DonationDetail() {
 
   const handleClaim = () => {
     claimDonation.mutate(
-      { params: { id: donationId } },
+      { id: donationId },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getGetDonationQueryKey(donationId) });
@@ -49,7 +47,7 @@ export default function DonationDetail() {
 
   const handleUnclaim = () => {
     unclaimDonation.mutate(
-      { params: { id: donationId } },
+      { id: donationId },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getGetDonationQueryKey(donationId) });
@@ -64,7 +62,7 @@ export default function DonationDetail() {
   const handleVerify = () => {
     if (otp.length < 4) return;
     verifyPickup.mutate(
-      { params: { id: donationId }, data: { otp } },
+      { id: donationId, data: { otp } },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getGetDonationQueryKey(donationId) });
@@ -154,7 +152,7 @@ export default function DonationDetail() {
                 </p>
                 <p className="text-sm flex items-center gap-2 text-destructive font-medium">
                   <AlertTriangle className="w-4 h-4" />
-                  Pickup by {new Date(donation.pickupDeadline).toLocaleString()}
+                  Pickup by {donation.pickupDeadline ? new Date(donation.pickupDeadline).toLocaleString() : 'N/A'}
                 </p>
                 {donation.lat && donation.lng && (
                   <Button variant="outline" size="sm" className="gap-2 mt-1" onClick={handleGetDirections}>

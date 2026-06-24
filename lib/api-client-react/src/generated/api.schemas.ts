@@ -222,6 +222,7 @@ export interface Claim {
   createdAt: string;
   /** @nullable */
   completedAt?: string | null;
+  donation?: Donation | null;
 }
 
 export interface OtpVerifyInput {

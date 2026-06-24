@@ -76,7 +76,7 @@ export default function Donations() {
                   <span className="text-xs text-muted-foreground">Deadline</span>
                   <span className="font-semibold flex items-center gap-1">
                     <Clock className="w-3 h-3 text-destructive" />
-                    {new Date(donation.pickupDeadline).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                    {donation.pickupDeadline ? new Date(donation.pickupDeadline).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A'}
                   </span>
                 </div>
               </div>

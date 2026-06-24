@@ -18,9 +18,9 @@ export default function MyClaims() {
       ) : claims && claims.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {claims.map(claim => {
-            const donation = claim.donation as any; // Need to handle types if nested not fully defined
+            const donation = claim.donation;
             if (!donation) return null;
-            
+            const deadline = donation.pickupDeadline ? new Date(donation.pickupDeadline) : null;
             return (
               <div key={claim.id} className="bg-card border rounded-2xl p-5 flex flex-col gap-4">
                 <div className="flex justify-between items-start">
@@ -37,8 +37,8 @@ export default function MyClaims() {
                 </div>
                 
                 <div className="text-sm text-muted-foreground flex flex-col gap-2">
-                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> Pick up by {new Date(donation.pickupDeadline).toLocaleString([], {month:'short', day:'numeric', hour: '2-digit', minute:'2-digit'})}</span>
-                  <span className="flex items-start gap-1"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /> {donation.address}</span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> Pick up by {deadline ? deadline.toLocaleString([], {month:'short', day:'numeric', hour: '2-digit', minute:'2-digit'}) : 'N/A'}</span>
+                  <span className="flex items-start gap-1"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /> {donation.address || 'Address not provided'}</span>
                 </div>
 
                 {donation.status === 'claimed' && (
@@ -50,7 +50,7 @@ export default function MyClaims() {
 
                 {donation.status === 'completed' && (
                   <div className="flex items-center gap-2 text-secondary text-sm font-medium mt-2 p-3 bg-secondary/5 rounded-xl border border-secondary/10">
-                    <CheckCircle2 className="w-5 h-5" /> Completed on {new Date(claim.completedAt!).toLocaleDateString()}
+                    <CheckCircle2 className="w-5 h-5" /> Completed on {claim.completedAt ? new Date(claim.completedAt).toLocaleDateString() : 'N/A'}
                   </div>
                 )}
 

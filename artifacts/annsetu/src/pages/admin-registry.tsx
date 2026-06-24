@@ -348,7 +348,7 @@ function AdminCodesPanel() {
 
 export default function AdminRegistry() {
   const [activeTab, setActiveTab] = useState("FSSAI Licenses");
-  const { data: profile, isLoading } = useGetMyProfile({ query: { retry: false } });
+  const { data: profile, isLoading } = useGetMyProfile();
   const [, setLocation] = useLocation();
 
   if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;

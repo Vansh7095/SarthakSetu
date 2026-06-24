@@ -24,7 +24,7 @@ export default function MyDonations() {
 
   const handleDelete = (id: number) => {
     deleteDonation.mutate(
-      { params: { id } },
+      { id },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getGetMyDonationsQueryKey() });
@@ -72,7 +72,7 @@ export default function MyDonations() {
               
               <div className="text-sm text-muted-foreground flex items-center gap-1">
                 <Clock className="w-4 h-4" /> 
-                Deadline: {new Date(donation.pickupDeadline).toLocaleString([], {month:'short', day:'numeric', hour: '2-digit', minute:'2-digit'})}
+                Deadline: {donation.pickupDeadline ? new Date(donation.pickupDeadline).toLocaleString([], {month:'short', day:'numeric', hour: '2-digit', minute:'2-digit'}) : 'N/A'}
               </div>
 
               {donation.status === 'claimed' && (

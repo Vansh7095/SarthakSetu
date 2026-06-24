@@ -9,7 +9,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { isSignedIn } = useAuth();
   const { signOut } = useClerk();
   const [, setLocation] = useLocation();
-  const { data: profile } = useGetMyProfile({ query: { enabled: !!isSignedIn } });
+  const { data: profile } = useGetMyProfile(!!isSignedIn ? undefined : { query: { enabled: false } as any });
 
   const navigation = isSignedIn ? [
     { name: "Dashboard", href: "/dashboard", icon: Home },

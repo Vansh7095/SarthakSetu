@@ -774,6 +774,10 @@ components:
         completedAt:
           type: ["string", "null"]
           format: date-time
+        donation:
+          oneOf:
+            - $ref: "#/components/schemas/Donation"
+            - type: "null"
 
     OtpVerifyInput:
       type: object
