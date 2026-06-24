@@ -1,7 +1,7 @@
-import { useGetDonation, useClaimDonation, useUnclaimDonation, useVerifyPickup, getGetDonationQueryKey, getListDonationsQueryKey } from "@workspace/api-client-react";
+import { useGetDonation, useClaimDonation, useUnclaimDonation, useVerifyPickup, useDeleteDonation, useGetMyProfile, getGetDonationQueryKey, getListDonationsQueryKey } from "@workspace/api-client-react";
 import { useParams, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Loader2, MapPin, Clock, User, Phone, CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
+import { Loader2, MapPin, Clock, User, Phone, CheckCircle2, AlertTriangle, ShieldCheck, Trash2, Navigation } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -22,10 +22,13 @@ export default function DonationDetail() {
   const { data: donation, isLoading, error } = useGetDonation(donationId, {
     query: { enabled: !!donationId }
   });
+  const { data: myProfile } = useGetMyProfile({ query: { retry: false } });
+  const isAdmin = myProfile?.role === "admin";
 
   const claimDonation = useClaimDonation();
   const unclaimDonation = useUnclaimDonation();
   const verifyPickup = useVerifyPickup();
+  const deleteDonation = useDeleteDonation();
 
   if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (error || !donation) return <div className="text-center p-12 text-destructive">Donation not found</div>;
@@ -73,7 +76,30 @@ export default function DonationDetail() {
     );
   };
 
-  // Check if current user is the donor of this donation
+  const handleAdminDelete = () => {
+    if (!confirm("Delete this donation permanently? This cannot be undone.")) return;
+    deleteDonation.mutate(
+      { id: donationId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: getListDonationsQueryKey() });
+          toast({ title: "Donation Removed", description: "The donation has been permanently deleted." });
+          setLocation("/donations");
+        },
+        onError: () => toast({ variant: "destructive", title: "Error", description: "Failed to delete donation." })
+      }
+    );
+  };
+
+  const handleGetDirections = () => {
+    if (!donation.lat || !donation.lng) {
+      toast({ variant: "destructive", title: "No location", description: "This donation does not have GPS coordinates." });
+      return;
+    }
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${donation.lat},${donation.lng}&travelmode=driving`;
+    window.open(url, "_blank");
+  };
+
   const isDonor = donation.donor?.clerkId === currentUserId;
   const isClaimer = donation.claimedBy?.clerkId === currentUserId;
 
@@ -89,12 +115,8 @@ export default function DonationDetail() {
             <div>
               <h1 className="text-3xl font-serif font-bold text-foreground mb-2">{donation.foodName}</h1>
               <div className="flex items-center gap-3">
-                <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                  donation.foodType === 'veg' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                  donation.foodType === 'non_veg' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                  'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
-                }`}>
-                  {donation.foodType.replace('_', '-').toUpperCase()}
+                <span className="text-xs px-2 py-1 rounded-full font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                  🌿 VEG
                 </span>
                 <span className={`text-xs px-2 py-1 rounded-full font-medium ${
                   donation.status === 'available' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
@@ -134,6 +156,11 @@ export default function DonationDetail() {
                   <AlertTriangle className="w-4 h-4" />
                   Pickup by {new Date(donation.pickupDeadline).toLocaleString()}
                 </p>
+                {donation.lat && donation.lng && (
+                  <Button variant="outline" size="sm" className="gap-2 mt-1" onClick={handleGetDirections}>
+                    <Navigation className="w-4 h-4" /> Get Directions
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -207,6 +234,28 @@ export default function DonationDetail() {
               <CheckCircle2 className="w-12 h-12 text-secondary mb-3" />
               <h4 className="font-bold text-xl text-secondary">Donation Completed</h4>
               <p className="text-muted-foreground">This food was successfully picked up and distributed.</p>
+            </div>
+          )}
+
+          {/* Admin controls */}
+          {isAdmin && donation.status !== 'completed' && (
+            <div className="mt-6 pt-6 border-t border-destructive/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-destructive">Admin Controls</p>
+                  <p className="text-xs text-muted-foreground">Permanently remove this donation from the platform</p>
+                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleAdminDelete}
+                  disabled={deleteDonation.isPending}
+                  className="gap-2"
+                >
+                  {deleteDonation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                  Remove Donation
+                </Button>
+              </div>
             </div>
           )}
         </div>

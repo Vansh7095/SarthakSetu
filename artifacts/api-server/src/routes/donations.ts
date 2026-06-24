@@ -255,8 +255,15 @@ router.delete("/donations/:id", async (req, res) => {
     .where(eq(donationsTable.id, parsed.data.id))
     .limit(1);
 
-  if (!existing || existing.donorId !== user.id) {
+  if (!existing) {
     res.status(404).json({ error: "Not found" });
+    return;
+  }
+
+  // Admins can delete any donation; donors can only delete their own
+  const isAdmin = user.role === "admin";
+  if (!isAdmin && existing.donorId !== user.id) {
+    res.status(403).json({ error: "Not authorized to delete this donation" });
     return;
   }
 

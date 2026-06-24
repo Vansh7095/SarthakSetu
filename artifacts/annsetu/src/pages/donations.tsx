@@ -29,10 +29,8 @@ export default function Donations() {
               <SelectValue placeholder="Food Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="veg">Vegetarian</SelectItem>
-              <SelectItem value="non_veg">Non-Vegetarian</SelectItem>
-              <SelectItem value="both">Mixed</SelectItem>
+              <SelectItem value="all">All Donations</SelectItem>
+              <SelectItem value="veg">🌿 Vegetarian</SelectItem>
             </SelectContent>
           </Select>
           

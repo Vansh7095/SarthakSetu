@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react";
 
 const donateSchema = z.object({
   foodName: z.string().min(2, "Food name is required"),
-  foodType: z.enum(["veg", "non_veg", "both"]),
+  foodType: z.enum(["veg"]),
   quantityPlates: z.coerce.number().min(1, "Must be at least 1 plate"),
   estimatedServings: z.coerce.number().optional(),
   pickupDeadline: z.string().min(1, "Pickup deadline is required"),
@@ -94,30 +94,11 @@ export default function Donate() {
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="foodType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dietary Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="veg">Vegetarian</SelectItem>
-                        <SelectItem value="non_veg">Non-Vegetarian</SelectItem>
-                        <SelectItem value="both">Both</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-4 py-2 text-green-800 text-sm font-medium mb-2">
+              🌿 AnnSetu lists only <strong>vegetarian food</strong> — all donations are 100% veg.
+            </div>
 
+            <div className="grid grid-cols-1 gap-4">
               <FormField
                 control={form.control}
                 name="quantityPlates"
