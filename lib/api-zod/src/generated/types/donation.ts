@@ -35,6 +35,7 @@ export interface Donation {
   /** @nullable */
   claimedByUserId?: number | null;
   claimedBy?: UserProfile | null;
+  otp?: string | null;
   createdAt: Date;
   updatedAt?: Date;
 }

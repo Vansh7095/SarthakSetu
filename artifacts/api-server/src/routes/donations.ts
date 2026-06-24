@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { getAuth } from "@clerk/express";
 import { eq, and, desc, gte, lte, sql } from "drizzle-orm";
-import { db, usersTable, donationsTable } from "@workspace/db";
+import { db, usersTable, donationsTable, claimsTable } from "@workspace/db";
 import {
   CreateDonationBody,
   UpdateDonationBody,
@@ -31,6 +31,8 @@ async function enrichDonation(donation: typeof donationsTable.$inferSelect) {
     .limit(1);
 
   let claimedBy = null;
+  let otp: string | null = null;
+
   if (donation.claimedByUserId) {
     const [claimer] = await db
       .select()
@@ -38,9 +40,17 @@ async function enrichDonation(donation: typeof donationsTable.$inferSelect) {
       .where(eq(usersTable.id, donation.claimedByUserId))
       .limit(1);
     claimedBy = claimer ?? null;
+
+    const [latestClaim] = await db
+      .select()
+      .from(claimsTable)
+      .where(eq(claimsTable.donationId, donation.id))
+      .orderBy(desc(claimsTable.createdAt))
+      .limit(1);
+    otp = latestClaim?.otp ?? null;
   }
 
-  return { ...donation, donor: donor ?? null, claimedBy };
+  return { ...donation, donor: donor ?? null, claimedBy, otp };
 }
 
 router.get("/donations/my", async (req, res) => {
@@ -76,7 +86,7 @@ router.get("/donations/my", async (req, res) => {
 
 router.get("/donations", async (req, res) => {
   const parsed = ListDonationsQueryParams.safeParse(req.query);
-  const params = parsed.success ? parsed.data : {};
+  const params = parsed.success ? parsed.data : ListDonationsQueryParams.parse({});
 
   const conditions = [];
 
@@ -87,8 +97,8 @@ router.get("/donations", async (req, res) => {
     conditions.push(eq(donationsTable.foodType, params.foodType as any));
   }
 
-  const limit = params.limit ?? 50;
-  const offset = params.offset ?? 0;
+  const limit = params.limit;
+  const offset = params.offset;
 
   const rows = await db
     .select()

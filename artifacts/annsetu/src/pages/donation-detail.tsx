@@ -221,7 +221,10 @@ export default function DonationDetail() {
               </div>
               
               <div className="mt-4 pt-4 border-t border-border">
-                <p className="text-sm font-medium">Claimed by: {donation.claimedBy?.name}</p>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-medium">Claimed by: {donation.claimedBy?.name}</p>
+                  <p className="text-sm font-mono font-bold bg-primary text-primary-foreground px-3 py-1 rounded-lg">OTP: {donation.otp}</p>
+                </div>
                 <p className="text-sm text-muted-foreground">{donation.claimedBy?.phone}</p>
               </div>
             </div>

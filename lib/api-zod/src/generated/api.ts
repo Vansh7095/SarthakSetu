@@ -158,6 +158,7 @@ export const ListDonationsResponseItem = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -248,6 +249,7 @@ export const GetDonationResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -331,6 +333,7 @@ export const UpdateDonationResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -435,6 +438,7 @@ export const ClaimDonationResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 }),zod.null()]).optional()
@@ -508,6 +512,7 @@ export const VerifyPickupResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -576,6 +581,7 @@ export const UnclaimDonationResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -646,6 +652,7 @@ export const GetDonorStatsResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })).optional()
@@ -744,6 +751,7 @@ export const GetNgoStatsResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 }),zod.null()]).optional()
@@ -826,6 +834,7 @@ export const GetMyDonationsResponseItem = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -919,6 +928,7 @@ export const GetMyClaimsResponseItem = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 }),zod.null()]).optional()
