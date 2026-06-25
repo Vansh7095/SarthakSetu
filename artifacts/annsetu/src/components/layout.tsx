@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const handleNavClick = (href: string) => {
     setSheetOpen(false);
-    setLocation(href);
+    setTimeout(() => setLocation(href), 200);
   };
 
   return (
