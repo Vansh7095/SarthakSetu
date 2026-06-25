@@ -528,7 +528,7 @@ function AdminForm({ onBack, onSubmit, isPending }: { onBack: () => void; onSubm
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
           <p className="text-sm text-purple-800 font-medium">🔐 Admin Access</p>
-          <p className="text-xs text-purple-700 mt-1">Admin accounts require a valid access code from the AnnSetu operations team. Codes are stored and verified against our secure database.</p>
+          <p className="text-xs text-purple-700 mt-1">Admin accounts require a valid access code from the SarthakSetu operations team. Codes are stored and verified against our secure database.</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <FormField control={form.control} name="name" render={({ field }) => (
@@ -616,7 +616,7 @@ export default function Onboarding() {
       {
         onSuccess: (data) => {
           queryClient.setQueryData(getGetMyProfileQueryKey(), data);
-          toast({ title: "Welcome to AnnSetu!", description: "Your profile is set up and ready." });
+          toast({ title: "Welcome to SarthakSetu!", description: "Your profile is set up and ready." });
           setLocation("/dashboard");
         },
         onError: () => {
@@ -641,7 +641,7 @@ export default function Onboarding() {
           Step {step === "role" ? "1" : "2"} of 2
         </div>
         <h1 className="text-3xl font-serif font-bold text-foreground mb-2">
-          {step === "role" ? "How will you use AnnSetu?" : `Setting up your ${selectedRole === "ngo" ? "NGO" : selectedRole} profile`}
+          {step === "role" ? "How will you use SarthakSetu?" : `Setting up your ${selectedRole === "ngo" ? "NGO" : selectedRole} profile`}
         </h1>
         <p className="text-muted-foreground">
           {step === "role"

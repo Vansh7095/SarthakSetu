@@ -26,7 +26,7 @@ export default function Home() {
               <span className="text-primary">Spread hope.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              AnnSetu connects surplus food from restaurants, events, and households with NGOs and volunteers who can deliver it to those in need.
+              SarthakSetu connects surplus food from restaurants, events, and households with NGOs and volunteers who can deliver it to those in need.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Link href="/sign-up">
@@ -75,7 +75,7 @@ export default function Home() {
       {/* How it works */}
       <section className="flex flex-col gap-12 items-center">
         <div className="text-center max-w-2xl mx-auto flex flex-col gap-4">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold">How AnnSetu Works</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold">How SarthakSetu Works</h2>
           <p className="text-muted-foreground text-lg">A simple, transparent process to ensure surplus food reaches those who need it most.</p>
         </div>
 

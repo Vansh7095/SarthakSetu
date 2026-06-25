@@ -1,6 +1,6 @@
-# AnnSetu (अन्नसेतु)
+# SarthakSetu (सार्थकसेतु)
 
-AnnSetu is a food donation platform that connects surplus food donors (restaurants, hotels, caterers, households) with NGOs and volunteers to reduce food waste in India.
+SarthakSetu is a food donation platform that connects surplus food donors (restaurants, hotels, caterers, households) with NGOs and volunteers to reduce food waste in India.
 
 ## Run & Operate
 

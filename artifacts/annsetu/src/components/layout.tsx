@@ -1,19 +1,21 @@
 import { Link, useLocation } from "wouter";
-import { useAuth, useUser, useClerk } from "@clerk/react";
+import { useAuth, useClerk } from "@clerk/react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogOut, Map as MapIcon, Home, Heart, List, User } from "lucide-react";
 import { useGetMyProfile } from "@workspace/api-client-react";
+import { useState } from "react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { isSignedIn } = useAuth();
   const { signOut } = useClerk();
   const [, setLocation] = useLocation();
   const { data: profile } = useGetMyProfile(!!isSignedIn ? undefined : { query: { enabled: false } as any });
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const navigation = isSignedIn ? [
     { name: "Dashboard", href: "/dashboard", icon: Home },
-    ...(profile?.role === "donor" 
+    ...(profile?.role === "donor"
       ? [
           { name: "Donate Food", href: "/donate", icon: Heart },
           { name: "My Listings", href: "/my-donations", icon: List },
@@ -29,12 +31,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { name: "Home", href: "/", icon: Home },
   ];
 
+  const handleNavClick = (href: string) => {
+    setSheetOpen(false);
+    setLocation(href);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-            <Sheet>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">
                   <Menu className="h-5 w-5" />
@@ -44,18 +51,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <SheetContent side="left" className="w-64 pr-0">
                 <nav className="flex flex-col gap-4 mt-8">
                   {navigation.map((item) => (
-                    <Link key={item.href} href={item.href}>
-                      <span className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
-                        <item.icon className="h-5 w-5" />
-                        {item.name}
-                      </span>
-                    </Link>
+                    <span
+                      key={item.href}
+                      className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+                      onClick={() => handleNavClick(item.href)}
+                    >
+                      <item.icon className="h-5 w-5" />
+                      {item.name}
+                    </span>
                   ))}
                   {isSignedIn && (
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       className="justify-start px-0 text-lg font-medium text-destructive hover:text-destructive hover:bg-transparent"
-                      onClick={() => signOut({ redirectUrl: "/" })}
+                      onClick={() => {
+                        setSheetOpen(false);
+                        signOut({ redirectUrl: "/" });
+                      }}
                     >
                       <LogOut className="mr-3 h-5 w-5" />
                       Sign Out
@@ -66,7 +78,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Sheet>
             <Link href={isSignedIn ? "/dashboard" : "/"}>
               <span className="flex items-center gap-2 font-serif text-2xl font-bold text-primary cursor-pointer">
-                AnnSetu
+                SarthakSetu
               </span>
             </Link>
           </div>

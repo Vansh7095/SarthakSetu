@@ -87,7 +87,7 @@ function SignInPage() {
       <div className="hidden lg:flex flex-col justify-between bg-[hsl(20,40%,12%)] p-12 text-white">
         <div>
           <div className="text-primary font-serif font-bold text-2xl mb-1">अन्नसेतु</div>
-          <div className="text-white/50 text-sm">AnnSetu — Bridge of Food</div>
+          <div className="text-white/50 text-sm">SarthakSetu — Bridge of Food</div>
         </div>
         <div>
           <blockquote className="text-3xl font-serif leading-snug mb-6 text-white/90">
@@ -129,14 +129,14 @@ function SignUpPage() {
       <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-primary to-orange-600 p-12 text-white">
         <div>
           <div className="font-serif font-bold text-2xl mb-1">अन्नसेतु</div>
-          <div className="text-white/70 text-sm">AnnSetu — Bridge of Food</div>
+          <div className="text-white/70 text-sm">SarthakSetu — Bridge of Food</div>
         </div>
         <div className="flex flex-col gap-4">
           <h2 className="text-3xl font-serif font-bold leading-tight">
             Join thousands who<br />fight hunger every day
           </h2>
           <p className="text-white/80 text-sm leading-relaxed">
-            Whether you're a restaurant with surplus food, an NGO serving communities, or a volunteer with wheels — AnnSetu connects you to where you're needed most.
+            Whether you're a restaurant with surplus food, an NGO serving communities, or a volunteer with wheels — SarthakSetu connects you to where you're needed most.
           </p>
           <div className="grid grid-cols-1 gap-3 mt-2">
             {[
