@@ -31,9 +31,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { name: "Home", href: "/", icon: Home },
   ];
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
     setSheetOpen(false);
-    setTimeout(() => setLocation(href), 200);
+    setTimeout(() => setLocation(href), 350);
   };
 
   return (
@@ -54,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <span
                       key={item.href}
                       className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
-                      onClick={() => handleNavClick(item.href)}
+                      onClick={handleNavClick(item.href)}
                     >
                       <item.icon className="h-5 w-5" />
                       {item.name}
@@ -64,9 +65,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <Button
                       variant="ghost"
                       className="justify-start px-0 text-lg font-medium text-destructive hover:text-destructive hover:bg-transparent"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         setSheetOpen(false);
-                        signOut({ redirectUrl: "/" });
+                        setTimeout(() => signOut({ redirectUrl: "/" }), 350);
                       }}
                     >
                       <LogOut className="mr-3 h-5 w-5" />
