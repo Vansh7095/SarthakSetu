@@ -29,3 +29,9 @@ id = "pE0Mwhy795ZH_ACsethfm"
 uri = "file://docs/DATABASE_DICTIONARY.md"
 type = "text"
 title = "SarthakSetu Database Dictionary"
+
+[[outputs]]
+id = "Bh2S-_eS5PvR3Nyo6HuqS"
+uri = "file://docs/SYSTEM_MAINTENANCE.md"
+type = "text"
+title = "SarthakSetu System Maintenance Guide"

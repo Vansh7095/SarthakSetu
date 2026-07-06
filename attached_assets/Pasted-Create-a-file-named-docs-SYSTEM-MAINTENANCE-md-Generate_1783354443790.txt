@@ -1,0 +1,174 @@
+Create a file named `docs/SYSTEM_MAINTENANCE.md`.
+
+Generate complete operational documentation for maintaining this application in production.
+
+Include:
+
+# System Maintenance Guide
+
+## System Overview
+
+Explain:
+
+* Components
+* Services
+* Runtime
+* Startup sequence
+
+## Server Requirements
+
+Minimum
+
+Recommended
+
+High traffic
+
+Include:
+
+* CPU
+* RAM
+* Storage
+* Network
+* OS
+
+## Installation
+
+Step-by-step production installation.
+
+## Updating
+
+Explain how to safely update:
+
+* Frontend
+* Backend
+* Database
+* Dependencies
+
+Include rollback procedures.
+
+## Monitoring
+
+Recommend:
+
+* CPU monitoring
+* RAM monitoring
+* Logs
+* Database monitoring
+* Error tracking
+* Alerts
+
+## Logging
+
+Explain:
+
+* Log locations
+* Log rotation
+* Error logs
+* Access logs
+* Debug logs
+
+## Backups
+
+Document:
+
+* Database backups
+* File backups
+* Environment variables
+* Restore procedures
+* Backup schedule
+
+## Disaster Recovery
+
+Explain:
+
+* Server failure
+* Database corruption
+* Lost secrets
+* Rollback strategy
+* Recovery time
+
+## Scaling
+
+Explain:
+
+* Vertical scaling
+* Horizontal scaling
+* Load balancing
+* CDN
+* Database scaling
+
+## Performance Maintenance
+
+Explain:
+
+* Cache cleaning
+* Database optimization
+* Index maintenance
+* Storage cleanup
+* Memory optimization
+
+## Security Maintenance
+
+Document:
+
+* Certificate renewal
+* Dependency updates
+* Secret rotation
+* User audits
+* Firewall maintenance
+
+## Docker Maintenance
+
+Explain:
+
+* Image updates
+* Container management
+* Persistent volumes
+* Networking
+
+## Android (Termux) Deployment
+
+Explain how to maintain the application when hosted on Android.
+
+Include:
+
+* PM2
+* Cloudflare Tunnel
+* Backups
+* Auto-start
+* Updates
+* Storage management
+* Battery optimization
+
+## VPS Maintenance
+
+Explain:
+
+* Ubuntu updates
+* SSH hardening
+* UFW firewall
+* Nginx
+* PM2
+* Docker
+
+## Monthly Maintenance Checklist
+
+Generate a monthly checklist.
+
+## Weekly Checklist
+
+Generate a weekly checklist.
+
+## Daily Checklist
+
+Generate a daily checklist.
+
+## Troubleshooting
+
+Include common problems and fixes.
+
+## Long-Term Roadmap
+
+Recommend improvements for reliability, maintainability, scalability, observability, and production readiness.
+
+Only document procedures that apply to this project's actual architecture and technologies.
