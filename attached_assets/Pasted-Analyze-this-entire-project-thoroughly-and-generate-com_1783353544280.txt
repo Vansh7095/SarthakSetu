@@ -1,0 +1,155 @@
+Analyze this entire project thoroughly and generate complete technical documentation.
+
+I don't want a summary. I want a deep, comprehensive explanation as if you're onboarding a new developer who will maintain this project.
+
+Please cover **every** important aspect, including:
+
+1. **Project Overview**
+
+   * Purpose of the application
+   * Main features
+   * Overall architecture
+   * Technology stack
+   * Design patterns used
+
+2. **Folder & File Structure**
+
+   * Explain every folder.
+   * Explain every important file.
+   * Describe the responsibility of each component.
+   * Show how files depend on one another.
+
+3. **Frontend**
+
+   * Explain the UI architecture.
+   * Routing and navigation.
+   * Components and their relationships.
+   * State management.
+   * Forms, validation, and user interactions.
+   * Styling system.
+   * How data flows through the frontend.
+
+4. **Backend**
+
+   * Explain the server architecture.
+   * Request lifecycle.
+   * Middleware.
+   * Controllers.
+   * Services.
+   * Models.
+   * Utilities.
+   * Business logic.
+   * Error handling.
+   * Security measures.
+
+5. **Database**
+
+   * Database type.
+   * Schema.
+   * Tables/collections.
+   * Relationships.
+   * Constraints.
+   * Indexes.
+   * ORM or query system.
+   * Migration system.
+   * How data flows between the application and the database.
+
+6. **Authentication & Authorization**
+
+   * Login flow.
+   * Registration flow.
+   * Session or JWT handling.
+   * Roles and permissions.
+   * Password storage.
+   * Security mechanisms.
+
+7. **API Documentation**
+
+   * List every API endpoint.
+   * HTTP method.
+   * URL.
+   * Request body.
+   * Response body.
+   * Authentication requirements.
+   * Which files implement each endpoint.
+   * Complete request lifecycle from frontend to backend to database and back.
+
+8. **Application Flow**
+
+   * Explain how a user action travels through the entire application.
+   * Include examples for important features.
+
+9. **Dependencies**
+
+   * Explain every important dependency and why it exists.
+   * Identify unused dependencies.
+   * Suggest better alternatives where appropriate.
+
+10. **Configuration**
+
+* Environment variables.
+* Config files.
+* Build configuration.
+* Deployment configuration.
+
+11. **Architecture Diagrams**
+    Generate Mermaid diagrams for:
+
+* Overall architecture
+* Frontend architecture
+* Backend architecture
+* Database relationships
+* Request flow
+* Authentication flow
+* Deployment architecture
+* Component relationships
+
+12. **Performance**
+
+* Bottlenecks.
+* Expensive operations.
+* Memory usage.
+* Database optimization.
+* Caching opportunities.
+* Scalability improvements.
+
+13. **Security Audit**
+
+* Security risks.
+* Vulnerabilities.
+* Input validation.
+* Authentication weaknesses.
+* Authorization issues.
+* OWASP recommendations.
+* Suggested fixes.
+
+14. **Code Quality Review**
+
+* Code smells.
+* Duplicate code.
+* Refactoring opportunities.
+* Naming improvements.
+* SOLID principles.
+* Maintainability score.
+
+15. **Deployment**
+
+* Explain exactly how to run the project locally.
+* Explain how to deploy it.
+* Explain how to host it on a VPS.
+* Explain how to host it on an Android phone using Termux.
+* Explain how to host it with Docker.
+* Explain production best practices.
+
+16. **Future Improvements**
+
+* Missing features.
+* Scalability roadmap.
+* Performance roadmap.
+* Security roadmap.
+* Suggested architecture improvements.
+
+17. **README**
+    Generate a complete professional README.md containing installation instructions, project overview, usage, architecture, deployment, troubleshooting, and contribution guidelines.
+
+If the response exceeds your context window, continue automatically across multiple responses until every section is fully documented. Do not skip any files or important implementation details. Be as detailed as possible and explain the reasoning behind design decisions, not just what the code does.
