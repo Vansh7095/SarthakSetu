@@ -17,3 +17,9 @@ id = "1Lq093Wo-pOtnDxhibd4d"
 uri = "file://TECHNICAL_DOCUMENTATION.md"
 type = "text"
 title = "SarthakSetu — Complete Technical Documentation"
+
+[[outputs]]
+id = "G9rIORwA1s8NR5xSKhDIB"
+uri = "file://docs/SECURITY_AUDIT.md"
+type = "text"
+title = "SarthakSetu Security Audit"
