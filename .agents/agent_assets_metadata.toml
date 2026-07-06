@@ -23,3 +23,9 @@ id = "G9rIORwA1s8NR5xSKhDIB"
 uri = "file://docs/SECURITY_AUDIT.md"
 type = "text"
 title = "SarthakSetu Security Audit"
+
+[[outputs]]
+id = "pE0Mwhy795ZH_ACsethfm"
+uri = "file://docs/DATABASE_DICTIONARY.md"
+type = "text"
+title = "SarthakSetu Database Dictionary"
