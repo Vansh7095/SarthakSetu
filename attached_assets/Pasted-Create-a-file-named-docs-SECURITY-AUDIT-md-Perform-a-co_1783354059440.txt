@@ -1,0 +1,170 @@
+Create a file named `docs/SECURITY_AUDIT.md`.
+
+Perform a complete security audit of the entire project by analyzing the actual source code rather than giving generic advice.
+
+Include the following sections:
+
+# Security Audit
+
+## Executive Summary
+
+* Overall security score (0–10)
+* Production readiness score
+* Critical vulnerabilities
+* High-risk issues
+* Medium-risk issues
+* Low-risk issues
+
+## Authentication
+
+* Authentication flow
+* Session management
+* JWT or Clerk implementation
+* Token validation
+* Token expiration
+* Session security
+* Refresh mechanism
+* Logout flow
+* Password handling
+* MFA support
+
+## Authorization
+
+* Route protection
+* Role-based access control
+* Permission checks
+* Admin-only routes
+* Missing authorization checks
+* Broken access control risks
+
+## API Security
+
+Review every endpoint.
+
+For each endpoint:
+
+* Authentication required
+* Authorization required
+* Possible attack vectors
+* Missing validation
+* Rate limiting
+* CSRF protection
+* CORS configuration
+* Sensitive data exposure
+
+## Input Validation
+
+Review every endpoint and form.
+
+Identify:
+
+* Missing validation
+* SQL injection risks
+* NoSQL injection
+* XSS
+* HTML injection
+* Command injection
+* Path traversal
+* Unsafe parsing
+
+## Database Security
+
+Review:
+
+* SQL queries
+* ORM usage
+* Transactions
+* Secrets
+* Database credentials
+* Connection security
+
+## Environment Variables
+
+Review every environment variable.
+
+Determine:
+
+* Which are required
+* Which are optional
+* Whether secrets are exposed
+* Whether secrets are committed
+
+## File Upload Security
+
+If uploads exist:
+
+* MIME validation
+* File size limits
+* Virus scanning
+* Filename sanitization
+* Storage security
+
+## Frontend Security
+
+Review:
+
+* Local storage usage
+* Session storage
+* Cookies
+* CSP
+* XSS prevention
+* React security
+* Routing security
+
+## Backend Security
+
+Review:
+
+* Middleware
+* Logging
+* Error handling
+* Stack trace exposure
+* Sensitive information leakage
+
+## Dependencies
+
+Audit dependencies.
+
+List:
+
+* Outdated packages
+* Known vulnerabilities
+* Recommended updates
+
+## OWASP Top 10
+
+Check the project against every OWASP Top 10 category.
+
+State:
+
+* Safe
+* Needs improvement
+* Vulnerable
+
+Explain why.
+
+## Deployment Security
+
+Review:
+
+* HTTPS
+* Reverse proxy
+* Docker
+* Environment variables
+* Firewalls
+* SSH
+* Database exposure
+
+## Production Checklist
+
+Generate a detailed checklist.
+
+## Prioritized Fixes
+
+Rank improvements by priority.
+
+## Final Score
+
+Give a final security score with reasoning.
+
+Only include findings based on the actual codebase.
