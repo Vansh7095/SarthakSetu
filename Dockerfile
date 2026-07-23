@@ -8,7 +8,7 @@ FROM node:24-slim AS deps
 WORKDIR /app
 
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.26.1
 
 # Copy workspace definition and lockfile first for layer caching
 COPY pnpm-workspace.yaml package.json ./
@@ -23,6 +23,7 @@ COPY lib/api-zod/package.json ./lib/api-zod/
 COPY lib/api-client-react/package.json ./lib/api-client-react/
 
 # Install dependencies (frozen lockfile for reproducible builds)
+# onlyBuiltDependencies in pnpm-workspace.yaml handles build script permissions
 RUN pnpm install --frozen-lockfile
 
 # ---------------------------------------------------------------------------
@@ -31,7 +32,7 @@ RUN pnpm install --frozen-lockfile
 FROM node:24-slim AS builder
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.26.1
 
 # Copy installed dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
