@@ -4,6 +4,8 @@ A food donation platform connecting surplus food donors (restaurants, hotels, ca
 
 **Built with:** React + Vite · Express 5 · PostgreSQL · Drizzle ORM · Clerk Auth · OpenStreetMap
 
+> **New to this project?** Start with [GETTING_STARTED.md](GETTING_STARTED.md) — a complete, beginner-friendly, step-by-step setup guide that assumes zero prior knowledge of Node.js, PostgreSQL, Docker, or Clerk.
+
 ---
 
 ## Table of Contents

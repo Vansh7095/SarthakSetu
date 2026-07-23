@@ -1,0 +1,285 @@
+The application is now functionally complete. **Do not modify the source code, project structure, configuration, Docker files, scripts, dependencies, or documentation unless you discover an actual error.**
+
+Your task is **only** to make the setup process as easy as possible for someone who has never used this project before.
+
+## OBJECTIVE
+
+Write a complete, beginner-friendly setup guide that assumes the user knows absolutely nothing.
+
+Do not skip any steps.
+
+Explain everything in the exact order it should be done.
+
+Imagine you are helping someone over a voice call who has never used Node.js, PostgreSQL, Docker, Clerk, or pnpm before.
+
+---
+
+# WRITE A TRUE STEP-BY-STEP GUIDE
+
+Every step must be numbered.
+
+For every step include:
+
+* What to do
+* Why this step is needed
+* Exactly where to click (if using a website)
+* Exactly what command to run
+* What output is expected
+* How to know the step succeeded
+* What to do if it fails
+
+Do not assume the reader knows anything.
+
+---
+
+# INCLUDE EVERYTHING
+
+Start from zero.
+
+Include every required step, including but not limited to:
+
+## Installing Git
+
+Explain:
+
+* where to download it
+* installation options
+* how to verify installation
+
+---
+
+## Installing Node.js
+
+Explain:
+
+* which version
+* where to download
+* installation
+* verification
+
+---
+
+## Installing pnpm
+
+Explain:
+
+* command
+* verification
+
+---
+
+## Installing PostgreSQL
+
+Create separate guides for:
+
+* Windows
+* Linux
+* macOS
+
+Explain:
+
+* installation
+* opening PostgreSQL
+* creating user
+* creating database
+* setting password
+* testing connection
+
+---
+
+## Installing Docker (Optional)
+
+Explain:
+
+* installation
+* verification
+* Docker Desktop (Windows/macOS)
+* Docker Engine (Linux)
+
+---
+
+## Creating Clerk Account
+
+Explain every click.
+
+Include:
+
+* creating account
+* creating application
+* obtaining keys
+* configuring redirect URLs
+* where to paste every key
+
+---
+
+## Downloading the Project
+
+Explain:
+
+* cloning with Git
+* downloading ZIP
+* opening the folder
+
+---
+
+## Installing Dependencies
+
+Explain:
+
+```bash
+pnpm install
+```
+
+Explain what happens.
+
+Explain how long it normally takes.
+
+---
+
+## Creating .env
+
+Explain:
+
+* copying .env.example
+* editing it
+* what every variable means
+* exactly what value should go there
+
+---
+
+## Creating the Database
+
+Explain:
+
+* running db:push
+* expected output
+* common errors
+* fixes
+
+---
+
+## Starting the Project
+
+Explain:
+
+```bash
+pnpm dev
+```
+
+Explain:
+
+* frontend URL
+* backend URL
+* health endpoint
+* expected console messages
+
+---
+
+## Logging In
+
+Explain:
+
+* creating first account
+* onboarding
+* first donation
+* first verification
+
+---
+
+## Docker Setup
+
+Explain every command:
+
+```bash
+docker compose up -d
+docker compose logs
+docker compose ps
+docker compose down
+```
+
+Explain exactly what each command does.
+
+---
+
+## Production Deployment
+
+Create separate sections for:
+
+* Windows Server
+* Ubuntu Server
+* Home Server
+* VPS
+* Cloud VM
+
+---
+
+## Updating
+
+Explain exactly how to update the application safely.
+
+---
+
+## Backup
+
+Explain how to back up:
+
+* PostgreSQL
+* environment variables
+* uploaded files
+
+---
+
+## Restore
+
+Explain how to restore from backup.
+
+---
+
+## Troubleshooting
+
+For every common issue include:
+
+Problem
+
+Cause
+
+Solution
+
+Example command
+
+Expected result
+
+---
+
+# COMMANDS
+
+Every command should be inside code blocks.
+
+Every code block should be explained.
+
+---
+
+# SCREENSHOTS
+
+Where appropriate, indicate:
+
+"Insert screenshot here showing..."
+
+for important steps like:
+
+* Clerk dashboard
+* PostgreSQL installer
+* Docker Desktop
+* Terminal output
+* Successful login
+* Running application
+
+---
+
+# FINAL CHECKLIST
+
+Finish with a complete checklist.
+
+The user should be able to tick off every step one by one and know the project has been set up correctly.
+
+Do not modify the project unless you discover a real documentation mistake. Focus entirely on making the setup guide so detailed that even a complete beginner can successfully install and run the application without outside help.
