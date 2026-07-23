@@ -4,13 +4,25 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "dev": "concurrently --names \"API,FE\" --prefix-colors cyan,magenta \"pnpm --filter @workspace/api-server run dev\" \"pnpm --filter @workspace/annsetu run dev\"",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "start": "pnpm --filter @workspace/api-server run start",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "db:push": "pnpm --filter @workspace/db run push",
+    "db:push-force": "pnpm --filter @workspace/db run push-force",
+    "db:seed": "echo 'Seeding runs automatically on API server startup. Start the API with pnpm dev.'",
+    "codegen": "pnpm --filter @workspace/api-spec run codegen",
+    "doctor": "tsx scripts/src/doctor.ts",
+    "lint": "prettier --check \"**/*.{ts,tsx,js,json,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "test": "echo 'Tests not yet configured. Add test runner and test files to enable.' && exit 0"
   },
   "private": true,
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "prettier": "^3.8.3",
+    "tsx": "catalog:",
     "typescript": "~5.9.3"
   }
 }

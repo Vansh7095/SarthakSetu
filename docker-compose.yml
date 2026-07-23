@@ -1,0 +1,91 @@
+# SarthakSetu — Docker Compose Production Stack
+# Starts: PostgreSQL + Backend API + Frontend (via nginx)
+#
+# Usage:
+#   1. Copy .env.production.example to .env and fill in real values.
+#   2. docker compose up -d
+#   3. Open http://localhost
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: sarthaksetu-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sarthaksetu
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: sarthaksetu
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sarthaksetu -d sarthaksetu"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - sarthaksetu-net
+
+  # ---------------------------------------------------------------------------
+  # Backend API
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: sarthaksetu-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 8080
+      BASE_PATH: /
+      DATABASE_URL: postgres://sarthaksetu:${POSTGRES_PASSWORD:-changeme}@postgres:5432/sarthaksetu
+      CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY}
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
+      VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY}
+      VITE_CLERK_PROXY_URL: ${VITE_CLERK_PROXY_URL:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8080/healthz', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - sarthaksetu-net
+
+  # ---------------------------------------------------------------------------
+  # Nginx Reverse Proxy + Static Frontend
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: sarthaksetu-nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./artifacts/annsetu/dist/public:/usr/share/nginx/html:ro
+    ports:
+      - "80:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - sarthaksetu-net
+
+volumes:
+  postgres-data:
+
+networks:
+  sarthaksetu-net:
+    driver: bridge

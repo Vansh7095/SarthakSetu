@@ -1,0 +1,274 @@
+You have now completed a full inspection of the repository and have a detailed understanding of its architecture. Based on that understanding, proceed with the infrastructure and deployment refactor.
+
+## PRIMARY OBJECTIVE
+
+Refactor this project so it can run on **any standard environment** (Windows, Linux, macOS, Docker, VPS, Home Server, Cloud VM, or local machine) while preserving **100% of the existing application behavior**.
+
+This is **NOT** a feature update, security update, or application redesign.
+
+The application must look, behave, and function **exactly the same** after your work is complete.
+
+---
+
+# DO NOT CHANGE
+
+You must NOT modify:
+
+* UI or UX
+* Styling
+* Components
+* React pages
+* Routing
+* API routes or paths
+* API request/response formats
+* Business logic
+* Authentication flow
+* Clerk integration behavior
+* Database schema (unless absolutely required for portability)
+* OpenAPI specification
+* Generated API clients
+* Generated Zod schemas
+* Drizzle models
+* Existing features
+* Existing functionality
+* Existing performance characteristics
+
+Do NOT:
+
+* Introduce `/api/v1`
+* Change endpoint URLs
+* Add rate limiting
+* Restrict CORS beyond making it configurable
+* Hash OTPs
+* Change authorization logic
+* Modify validation rules
+* Rewrite existing code unnecessarily
+* Replace frameworks or libraries
+* Refactor for style only
+
+The only acceptable changes are deployment, configuration, portability, tooling, documentation, and developer experience improvements.
+
+---
+
+# USE THE EXISTING ARCHITECTURE
+
+Preserve:
+
+* pnpm workspace
+* React + Vite frontend
+* Express backend
+* PostgreSQL
+* Drizzle ORM
+* Clerk authentication
+* OpenAPI contract-first workflow
+* Generated API client
+* Generated Zod schemas
+
+Do not replace any of these.
+
+---
+
+# REMOVE REPLIT DEPENDENCIES
+
+Completely remove or isolate every Replit-specific dependency, including:
+
+* Replit runtime assumptions
+* Replit environment detection
+* REPL_ID usage
+* Replit Vite plugins (remove if unused, otherwise make optional)
+* .replit-artifact
+* Replit workflow assumptions
+* Replit deployment configuration
+* Replit-only scripts
+
+If keeping any Replit compatibility requires essentially no extra maintenance, keep it optional without affecting portability.
+
+---
+
+# ENVIRONMENT VARIABLES
+
+Create:
+
+* `.env.example`
+* `.env.production.example`
+
+Document every required variable.
+
+Provide sensible defaults where possible.
+
+Fail with clear error messages when required variables are missing.
+
+Support configurable:
+
+* DATABASE_URL
+* PORT
+* FRONTEND_PORT
+* BASE_PATH
+* CLERK_PUBLISHABLE_KEY
+* CLERK_SECRET_KEY
+* VITE_CLERK_PUBLISHABLE_KEY
+
+---
+
+# DATABASE
+
+Use standard PostgreSQL.
+
+Continue using Drizzle ORM.
+
+Continue supporting existing schema generation.
+
+Continue supporting existing database commands.
+
+Do not modify schema unless absolutely necessary.
+
+---
+
+# DOCKER
+
+Create production-ready Docker support.
+
+Include:
+
+* Dockerfile(s)
+* docker-compose.yml
+
+Prefer multi-stage builds.
+
+Pin image versions instead of using `latest`.
+
+Docker Compose should start:
+
+* PostgreSQL
+* Backend
+* Frontend (or production static server)
+
+Running:
+
+```bash
+docker compose up -d
+```
+
+should be sufficient after configuring environment variables.
+
+Include health checks where appropriate.
+
+---
+
+# DEVELOPMENT
+
+Running locally should be extremely simple.
+
+Support:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Avoid Unix-only shell scripts.
+
+Use cross-platform tooling.
+
+Support Windows, Linux, and macOS.
+
+---
+
+# PACKAGE SCRIPTS
+
+Create or improve scripts for:
+
+* pnpm dev
+* pnpm build
+* pnpm start
+* pnpm db:push
+* pnpm db:migrate
+* pnpm db:seed
+* pnpm lint
+* pnpm test
+* pnpm doctor
+
+The doctor script should verify:
+
+* Node version
+* pnpm version
+* PostgreSQL availability
+* Required environment variables
+* Required dependencies
+
+---
+
+# README
+
+Rewrite the README from scratch.
+
+Include:
+
+* Project overview
+* Architecture
+* Requirements
+* Installation
+* Environment variables
+* PostgreSQL setup
+* Clerk setup
+* Development
+* Production
+* Docker
+* Windows deployment
+* Linux deployment
+* Home server deployment
+* VPS deployment
+* Cloud VM deployment
+* Troubleshooting
+
+---
+
+# CLEANUP
+
+Remove:
+
+* dead code
+* unused dependencies
+* duplicate scripts
+* unnecessary configuration
+
+Only remove items after verifying they are actually unused.
+
+Do not modify application behavior.
+
+---
+
+# VERIFY
+
+Automatically verify everything that can be verified.
+
+Run builds where possible.
+
+Confirm:
+
+* Frontend builds
+* Backend builds
+* Workspace builds
+* Docker configuration is valid
+* Database configuration is valid
+* Environment variables are documented
+* No Replit dependency remains
+
+If something cannot be verified because credentials or external services are unavailable (for example Clerk keys or a PostgreSQL instance), clearly state what could not be verified and why. Do not claim verification that was not actually performed.
+
+---
+
+# FINAL REPORT
+
+At completion, provide:
+
+1. Every file created.
+2. Every file modified.
+3. Every dependency added.
+4. Every dependency removed.
+5. Every Replit dependency removed.
+6. Every deployment improvement made.
+7. Any manual setup still required.
+8. Anything that could not be automatically verified.
+
+Think carefully before modifying any file. Make the smallest changes necessary to maximize portability while preserving all existing functionality exactly.

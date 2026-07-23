@@ -4,18 +4,13 @@ import { seedVerificationsIfEmpty } from "./lib/seed";
 import { db, donationsTable } from "@workspace/db";
 import { and, lte, eq, not } from "drizzle-orm";
 
-const rawPort = process.env["PORT"];
-
-if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
-}
-
+const rawPort = process.env["PORT"] ?? "8080";
 const port = Number(rawPort);
 
 if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
+  throw new Error(
+    `Invalid PORT value: "${rawPort}". Set PORT (default 8080).`,
+  );
 }
 
 seedVerificationsIfEmpty().catch((err) => {
