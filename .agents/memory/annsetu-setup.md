@@ -18,11 +18,13 @@ If `src/lib/queryClient.ts` doesn't exist when Vite first loads, it caches the e
 ## react-leaflet setup (no API key)
 
 Uses OpenStreetMap tiles (free) instead of Google Maps. Must fix the default icon bug:
+
 ```ts
 import L from 'leaflet';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({ iconUrl: ..., shadowUrl: ... });
 ```
+
 Packages: `leaflet`, `react-leaflet`, `@types/leaflet` in devDependencies of `@workspace/annsetu`.
 
 ## OTP pickup verification

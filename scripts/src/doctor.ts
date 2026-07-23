@@ -147,9 +147,19 @@ const keyPackages = [
 
 for (const { name: pkg, from: pkgFrom } of keyPackages) {
   // Check in the workspace package's node_modules (pnpm may not hoist everything)
-  const pkgPath = resolve(process.cwd(), pkgFrom, "node_modules", pkg, "package.json");
+  const pkgPath = resolve(
+    process.cwd(),
+    pkgFrom,
+    "node_modules",
+    pkg,
+    "package.json",
+  );
   const rootPkgPath = resolve(nodeModules, pkg, "package.json");
-  const foundPath = existsSync(pkgPath) ? pkgPath : existsSync(rootPkgPath) ? rootPkgPath : null;
+  const foundPath = existsSync(pkgPath)
+    ? pkgPath
+    : existsSync(rootPkgPath)
+      ? rootPkgPath
+      : null;
 
   if (foundPath) {
     const version = JSON.parse(readFileSync(foundPath, "utf-8")).version;
@@ -164,12 +174,17 @@ for (const { name: pkg, from: pkgFrom } of keyPackages) {
 // ---------------------------------------------------------------------------
 section("Build Status");
 const apiDist = resolve(process.cwd(), "artifacts/api-server/dist/index.mjs");
-const feDist = resolve(process.cwd(), "artifacts/annsetu/dist/public/index.html");
+const feDist = resolve(
+  process.cwd(),
+  "artifacts/annsetu/dist/public/index.html",
+);
 
 if (existsSync(apiDist)) {
   ok("Backend built (dist/index.mjs)");
 } else {
-  warn("Backend not built — run: pnpm --filter @workspace/api-server run build");
+  warn(
+    "Backend not built — run: pnpm --filter @workspace/api-server run build",
+  );
 }
 
 if (existsSync(feDist)) {
@@ -184,9 +199,13 @@ if (existsSync(feDist)) {
 console.log("\n" + "─".repeat(50));
 if (exitCode === 0) {
   console.log("\x1b[32mAll checks passed. You're good to go!\x1b[0m");
-  console.log("\nRun \x1b[1mpnpm dev\x1b[0m to start the development environment.");
+  console.log(
+    "\nRun \x1b[1mpnpm dev\x1b[0m to start the development environment.",
+  );
 } else {
-  console.log("\x1b[33mSome checks failed. Fix the issues above and run again.\x1b[0m");
+  console.log(
+    "\x1b[33mSome checks failed. Fix the issues above and run again.\x1b[0m",
+  );
 }
 console.log("─".repeat(50) + "\n");
 

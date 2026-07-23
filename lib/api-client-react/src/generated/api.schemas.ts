@@ -9,28 +9,29 @@ export interface HealthStatus {
   status: string;
 }
 
-export type UserProfileRole = typeof UserProfileRole[keyof typeof UserProfileRole];
-
+export type UserProfileRole =
+  (typeof UserProfileRole)[keyof typeof UserProfileRole];
 
 export const UserProfileRole = {
-  donor: 'donor',
-  ngo: 'ngo',
-  volunteer: 'volunteer',
-  admin: 'admin',
+  donor: "donor",
+  ngo: "ngo",
+  volunteer: "volunteer",
+  admin: "admin",
 } as const;
 
 /**
  * @nullable
  */
-export type UserProfileDonorCategory = typeof UserProfileDonorCategory[keyof typeof UserProfileDonorCategory] | null;
-
+export type UserProfileDonorCategory =
+  | (typeof UserProfileDonorCategory)[keyof typeof UserProfileDonorCategory]
+  | null;
 
 export const UserProfileDonorCategory = {
-  restaurant: 'restaurant',
-  hotel: 'hotel',
-  caterer: 'caterer',
-  event_org: 'event_org',
-  household: 'household',
+  restaurant: "restaurant",
+  hotel: "hotel",
+  caterer: "caterer",
+  event_org: "event_org",
+  household: "household",
 } as const;
 
 export interface UserProfile {
@@ -66,25 +67,25 @@ export interface UserProfile {
   createdAt?: string;
 }
 
-export type UserProfileInputRole = typeof UserProfileInputRole[keyof typeof UserProfileInputRole];
-
+export type UserProfileInputRole =
+  (typeof UserProfileInputRole)[keyof typeof UserProfileInputRole];
 
 export const UserProfileInputRole = {
-  donor: 'donor',
-  ngo: 'ngo',
-  volunteer: 'volunteer',
-  admin: 'admin',
+  donor: "donor",
+  ngo: "ngo",
+  volunteer: "volunteer",
+  admin: "admin",
 } as const;
 
-export type UserProfileInputDonorCategory = typeof UserProfileInputDonorCategory[keyof typeof UserProfileInputDonorCategory];
-
+export type UserProfileInputDonorCategory =
+  (typeof UserProfileInputDonorCategory)[keyof typeof UserProfileInputDonorCategory];
 
 export const UserProfileInputDonorCategory = {
-  restaurant: 'restaurant',
-  hotel: 'hotel',
-  caterer: 'caterer',
-  event_org: 'event_org',
-  household: 'household',
+  restaurant: "restaurant",
+  hotel: "hotel",
+  caterer: "caterer",
+  event_org: "event_org",
+  household: "household",
 } as const;
 
 export interface UserProfileInput {
@@ -105,23 +106,23 @@ export interface UserProfileInput {
   darpanId?: string;
 }
 
-export type DonationFoodType = typeof DonationFoodType[keyof typeof DonationFoodType];
-
+export type DonationFoodType =
+  (typeof DonationFoodType)[keyof typeof DonationFoodType];
 
 export const DonationFoodType = {
-  veg: 'veg',
-  non_veg: 'non_veg',
-  both: 'both',
+  veg: "veg",
+  non_veg: "non_veg",
+  both: "both",
 } as const;
 
-export type DonationStatus = typeof DonationStatus[keyof typeof DonationStatus];
-
+export type DonationStatus =
+  (typeof DonationStatus)[keyof typeof DonationStatus];
 
 export const DonationStatus = {
-  available: 'available',
-  claimed: 'claimed',
-  picked_up: 'picked_up',
-  completed: 'completed',
+  available: "available",
+  claimed: "claimed",
+  picked_up: "picked_up",
+  completed: "completed",
 } as const;
 
 export interface Donation {
@@ -155,13 +156,13 @@ export interface Donation {
   updatedAt?: string;
 }
 
-export type DonationInputFoodType = typeof DonationInputFoodType[keyof typeof DonationInputFoodType];
-
+export type DonationInputFoodType =
+  (typeof DonationInputFoodType)[keyof typeof DonationInputFoodType];
 
 export const DonationInputFoodType = {
-  veg: 'veg',
-  non_veg: 'non_veg',
-  both: 'both',
+  veg: "veg",
+  non_veg: "non_veg",
+  both: "both",
 } as const;
 
 export interface DonationInput {
@@ -179,23 +180,23 @@ export interface DonationInput {
   lng?: number;
 }
 
-export type DonationUpdateFoodType = typeof DonationUpdateFoodType[keyof typeof DonationUpdateFoodType];
-
+export type DonationUpdateFoodType =
+  (typeof DonationUpdateFoodType)[keyof typeof DonationUpdateFoodType];
 
 export const DonationUpdateFoodType = {
-  veg: 'veg',
-  non_veg: 'non_veg',
-  both: 'both',
+  veg: "veg",
+  non_veg: "non_veg",
+  both: "both",
 } as const;
 
-export type DonationUpdateStatus = typeof DonationUpdateStatus[keyof typeof DonationUpdateStatus];
-
+export type DonationUpdateStatus =
+  (typeof DonationUpdateStatus)[keyof typeof DonationUpdateStatus];
 
 export const DonationUpdateStatus = {
-  available: 'available',
-  claimed: 'claimed',
-  picked_up: 'picked_up',
-  completed: 'completed',
+  available: "available",
+  claimed: "claimed",
+  picked_up: "picked_up",
+  completed: "completed",
 } as const;
 
 export interface DonationUpdate {
@@ -349,57 +350,56 @@ export interface AdminCodeInput {
 }
 
 export type ListDonationsParams = {
-status?: ListDonationsStatus;
-foodType?: ListDonationsFoodType;
-donorCategory?: ListDonationsDonorCategory;
-lat?: number;
-lng?: number;
-radiusKm?: number;
-limit?: number;
-offset?: number;
+  status?: ListDonationsStatus;
+  foodType?: ListDonationsFoodType;
+  donorCategory?: ListDonationsDonorCategory;
+  lat?: number;
+  lng?: number;
+  radiusKm?: number;
+  limit?: number;
+  offset?: number;
 };
 
-export type ListDonationsStatus = typeof ListDonationsStatus[keyof typeof ListDonationsStatus];
-
+export type ListDonationsStatus =
+  (typeof ListDonationsStatus)[keyof typeof ListDonationsStatus];
 
 export const ListDonationsStatus = {
-  available: 'available',
-  claimed: 'claimed',
-  picked_up: 'picked_up',
-  completed: 'completed',
+  available: "available",
+  claimed: "claimed",
+  picked_up: "picked_up",
+  completed: "completed",
 } as const;
 
-export type ListDonationsFoodType = typeof ListDonationsFoodType[keyof typeof ListDonationsFoodType];
-
+export type ListDonationsFoodType =
+  (typeof ListDonationsFoodType)[keyof typeof ListDonationsFoodType];
 
 export const ListDonationsFoodType = {
-  veg: 'veg',
-  non_veg: 'non_veg',
-  both: 'both',
+  veg: "veg",
+  non_veg: "non_veg",
+  both: "both",
 } as const;
 
-export type ListDonationsDonorCategory = typeof ListDonationsDonorCategory[keyof typeof ListDonationsDonorCategory];
-
+export type ListDonationsDonorCategory =
+  (typeof ListDonationsDonorCategory)[keyof typeof ListDonationsDonorCategory];
 
 export const ListDonationsDonorCategory = {
-  restaurant: 'restaurant',
-  hotel: 'hotel',
-  caterer: 'caterer',
-  event_org: 'event_org',
-  household: 'household',
+  restaurant: "restaurant",
+  hotel: "hotel",
+  caterer: "caterer",
+  event_org: "event_org",
+  household: "household",
 } as const;
 
 export type GetMyDonationsParams = {
-status?: GetMyDonationsStatus;
+  status?: GetMyDonationsStatus;
 };
 
-export type GetMyDonationsStatus = typeof GetMyDonationsStatus[keyof typeof GetMyDonationsStatus];
-
+export type GetMyDonationsStatus =
+  (typeof GetMyDonationsStatus)[keyof typeof GetMyDonationsStatus];
 
 export const GetMyDonationsStatus = {
-  available: 'available',
-  claimed: 'claimed',
-  picked_up: 'picked_up',
-  completed: 'completed',
+  available: "available",
+  claimed: "claimed",
+  picked_up: "picked_up",
+  completed: "completed",
 } as const;
-

@@ -1,7 +1,16 @@
 import { Router, type IRouter } from "express";
 import { eq } from "drizzle-orm";
-import { db, fssaiLicensesTable, darpanIdsTable, adminCodesTable } from "@workspace/db";
-import { VerifyFssaiBody, VerifyDarpanBody, VerifyAdminCodeBody } from "@workspace/api-zod";
+import {
+  db,
+  fssaiLicensesTable,
+  darpanIdsTable,
+  adminCodesTable,
+} from "@workspace/db";
+import {
+  VerifyFssaiBody,
+  VerifyDarpanBody,
+  VerifyAdminCodeBody,
+} from "@workspace/api-zod";
 
 const router: IRouter = Router();
 
@@ -15,7 +24,9 @@ router.post("/verify/fssai", async (req, res) => {
   const [record] = await db
     .select()
     .from(fssaiLicensesTable)
-    .where(eq(fssaiLicensesTable.licenseNumber, parsed.data.licenseNumber.trim()))
+    .where(
+      eq(fssaiLicensesTable.licenseNumber, parsed.data.licenseNumber.trim()),
+    )
     .limit(1);
 
   if (!record || !record.isActive) {

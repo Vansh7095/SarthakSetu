@@ -86,7 +86,9 @@ router.get("/donations/my", async (req, res) => {
 
 router.get("/donations", async (req, res) => {
   const parsed = ListDonationsQueryParams.safeParse(req.query);
-  const params = parsed.success ? parsed.data : ListDonationsQueryParams.parse({});
+  const params = parsed.success
+    ? parsed.data
+    : ListDonationsQueryParams.parse({});
 
   const conditions = [];
 

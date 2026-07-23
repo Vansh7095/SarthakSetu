@@ -8,9 +8,7 @@ const rawPort = process.env["PORT"] ?? "8080";
 const port = Number(rawPort);
 
 if (Number.isNaN(port) || port <= 0) {
-  throw new Error(
-    `Invalid PORT value: "${rawPort}". Set PORT (default 8080).`,
-  );
+  throw new Error(`Invalid PORT value: "${rawPort}". Set PORT (default 8080).`);
 }
 
 seedVerificationsIfEmpty().catch((err) => {
@@ -38,7 +36,9 @@ async function cleanupExpiredDonations() {
 }
 
 // Run immediately on startup, then every 5 minutes
-cleanupExpiredDonations().catch((err) => logger.error({ err }, "Initial cleanup failed"));
+cleanupExpiredDonations().catch((err) =>
+  logger.error({ err }, "Initial cleanup failed"),
+);
 setInterval(cleanupExpiredDonations, 5 * 60 * 1000);
 
 app.listen(port, (err) => {

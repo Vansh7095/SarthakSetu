@@ -5,7 +5,7 @@
  * SarthakSetu API - Food donation platform connecting donors with NGOs and volunteers
  * OpenAPI spec version: 0.1.0
  */
-import type { Donation } from './donation';
+import type { Donation } from "./donation";
 
 export interface DonorStats {
   totalDonations: number;

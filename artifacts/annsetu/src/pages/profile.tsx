@@ -1,9 +1,20 @@
-import { useGetMyProfile, useUpsertMyProfile, getGetMyProfileQueryKey } from "@workspace/api-client-react";
+import {
+  useGetMyProfile,
+  useUpsertMyProfile,
+  getGetMyProfileQueryKey,
+} from "@workspace/api-client-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,7 +30,7 @@ const profileSchema = z.object({
 export default function Profile() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const { data: profile, isLoading } = useGetMyProfile();
   const upsertProfile = useUpsertMyProfile();
 
@@ -31,17 +42,19 @@ export default function Profile() {
       city: "",
       address: "",
     },
-    values: profile ? {
-      name: profile.name,
-      phone: profile.phone,
-      city: profile.city || "",
-      address: profile.address || "",
-    } : undefined
+    values: profile
+      ? {
+          name: profile.name,
+          phone: profile.phone,
+          city: profile.city || "",
+          address: profile.address || "",
+        }
+      : undefined,
   });
 
   const onSubmit = (values: z.infer<typeof profileSchema>) => {
     if (!profile) return;
-    
+
     // We must pass the role along with update
     const payload = {
       ...values,
@@ -67,12 +80,16 @@ export default function Profile() {
             description: "Failed to update profile.",
           });
         },
-      }
+      },
     );
   };
 
   if (isLoading) {
-    return <div className="flex h-[50vh] items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
   }
 
   if (!profile) return null;
@@ -80,17 +97,24 @@ export default function Profile() {
   return (
     <div className="max-w-xl mx-auto py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Edit Profile</h1>
-        <p className="text-muted-foreground">Manage your personal information</p>
+        <h1 className="text-3xl font-serif font-bold text-foreground mb-2">
+          Edit Profile
+        </h1>
+        <p className="text-muted-foreground">
+          Manage your personal information
+        </p>
       </div>
 
       <div className="bg-card border border-border p-6 rounded-2xl shadow-sm">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            
             <div className="bg-muted/50 p-4 rounded-xl mb-6">
-              <p className="text-sm font-medium text-muted-foreground mb-1">Account Role</p>
-              <p className="text-lg font-bold capitalize text-foreground">{profile.role}</p>
+              <p className="text-sm font-medium text-muted-foreground mb-1">
+                Account Role
+              </p>
+              <p className="text-lg font-bold capitalize text-foreground">
+                {profile.role}
+              </p>
             </div>
 
             <FormField
@@ -134,7 +158,7 @@ export default function Profile() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="address"
@@ -149,8 +173,14 @@ export default function Profile() {
               )}
             />
 
-            <Button type="submit" className="w-full" disabled={upsertProfile.isPending}>
-              {upsertProfile.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={upsertProfile.isPending}
+            >
+              {upsertProfile.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Save Changes
             </Button>
           </form>

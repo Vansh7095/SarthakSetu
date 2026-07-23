@@ -7,9 +7,9 @@ const { Pool } = pg;
 if (!process.env.DATABASE_URL) {
   throw new Error(
     "DATABASE_URL environment variable is required.\n" +
-    "  Local:    postgres://user:password@localhost:5432/sarthaksetu\n" +
-    "  Docker:   postgres://sarthaksetu:password@postgres:5432/sarthaksetu\n" +
-    "  See .env.example for details.",
+      "  Local:    postgres://user:password@localhost:5432/sarthaksetu\n" +
+      "  Docker:   postgres://sarthaksetu:password@postgres:5432/sarthaksetu\n" +
+      "  See .env.example for details.",
   );
 }
 

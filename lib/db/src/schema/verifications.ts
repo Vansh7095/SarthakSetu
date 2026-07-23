@@ -1,10 +1,4 @@
-import {
-  pgTable,
-  serial,
-  text,
-  boolean,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { pgTable, serial, text, boolean, timestamp } from "drizzle-orm/pg-core";
 
 export const fssaiLicensesTable = pgTable("fssai_licenses", {
   id: serial("id").primaryKey(),

@@ -6,13 +6,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ListDonationsDonorCategory = typeof ListDonationsDonorCategory[keyof typeof ListDonationsDonorCategory];
-
+export type ListDonationsDonorCategory =
+  (typeof ListDonationsDonorCategory)[keyof typeof ListDonationsDonorCategory];
 
 export const ListDonationsDonorCategory = {
-  restaurant: 'restaurant',
-  hotel: 'hotel',
-  caterer: 'caterer',
-  event_org: 'event_org',
-  household: 'household',
+  restaurant: "restaurant",
+  hotel: "hotel",
+  caterer: "caterer",
+  event_org: "event_org",
+  household: "household",
 } as const;

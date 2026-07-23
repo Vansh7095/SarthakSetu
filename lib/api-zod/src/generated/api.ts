@@ -5,85 +5,101 @@
  * SarthakSetu API - Food donation platform connecting donors with NGOs and volunteers
  * OpenAPI spec version: 0.1.0
  */
-import * as zod from 'zod';
-
+import * as zod from "zod";
 
 /**
  * Returns server health status
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
-  "status": zod.string()
-})
-
+  status: zod.string(),
+});
 
 /**
  * @summary Get current user profile
  */
 export const GetMyProfileResponse = zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-})
-
+  id: zod.number(),
+  clerkId: zod.string(),
+  role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+  name: zod.string(),
+  phone: zod.string(),
+  address: zod.string().nullish(),
+  city: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  donorCategory: zod
+    .union([
+      zod.literal("restaurant"),
+      zod.literal("hotel"),
+      zod.literal("caterer"),
+      zod.literal("event_org"),
+      zod.literal("household"),
+      zod.literal(null),
+    ])
+    .nullish(),
+  licenseNumber: zod.string().nullish(),
+  orgName: zod.string().nullish(),
+  registrationNumber: zod.string().nullish(),
+  operatingRadiusKm: zod.number().nullish(),
+  vehicleType: zod.string().nullish(),
+  availabilityStatus: zod.string().nullish(),
+  darpanId: zod.string().nullish(),
+  createdAt: zod.coerce.date().optional(),
+});
 
 /**
  * @summary Create or update current user profile
  */
 export const UpsertMyProfileBody = zod.object({
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().optional(),
-  "city": zod.string().optional(),
-  "lat": zod.number().optional(),
-  "lng": zod.number().optional(),
-  "donorCategory": zod.enum(['restaurant', 'hotel', 'caterer', 'event_org', 'household']).optional(),
-  "licenseNumber": zod.string().optional(),
-  "orgName": zod.string().optional(),
-  "registrationNumber": zod.string().optional(),
-  "operatingRadiusKm": zod.number().optional(),
-  "vehicleType": zod.string().optional(),
-  "availabilityStatus": zod.string().optional(),
-  "darpanId": zod.string().optional()
-})
+  role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+  name: zod.string(),
+  phone: zod.string(),
+  address: zod.string().optional(),
+  city: zod.string().optional(),
+  lat: zod.number().optional(),
+  lng: zod.number().optional(),
+  donorCategory: zod
+    .enum(["restaurant", "hotel", "caterer", "event_org", "household"])
+    .optional(),
+  licenseNumber: zod.string().optional(),
+  orgName: zod.string().optional(),
+  registrationNumber: zod.string().optional(),
+  operatingRadiusKm: zod.number().optional(),
+  vehicleType: zod.string().optional(),
+  availabilityStatus: zod.string().optional(),
+  darpanId: zod.string().optional(),
+});
 
 export const UpsertMyProfileResponse = zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-})
-
+  id: zod.number(),
+  clerkId: zod.string(),
+  role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+  name: zod.string(),
+  phone: zod.string(),
+  address: zod.string().nullish(),
+  city: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  donorCategory: zod
+    .union([
+      zod.literal("restaurant"),
+      zod.literal("hotel"),
+      zod.literal("caterer"),
+      zod.literal("event_org"),
+      zod.literal("household"),
+      zod.literal(null),
+    ])
+    .nullish(),
+  licenseNumber: zod.string().nullish(),
+  orgName: zod.string().nullish(),
+  registrationNumber: zod.string().nullish(),
+  operatingRadiusKm: zod.number().nullish(),
+  vehicleType: zod.string().nullish(),
+  availabilityStatus: zod.string().nullish(),
+  darpanId: zod.string().nullish(),
+  createdAt: zod.coerce.date().optional(),
+});
 
 /**
  * @summary List food donations
@@ -92,1003 +108,1296 @@ export const listDonationsQueryLimitDefault = 50;
 export const listDonationsQueryOffsetDefault = 0;
 
 export const ListDonationsQueryParams = zod.object({
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']).optional(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']).optional(),
-  "donorCategory": zod.enum(['restaurant', 'hotel', 'caterer', 'event_org', 'household']).optional(),
-  "lat": zod.coerce.number().optional(),
-  "lng": zod.coerce.number().optional(),
-  "radiusKm": zod.coerce.number().optional(),
-  "limit": zod.coerce.number().default(listDonationsQueryLimitDefault),
-  "offset": zod.coerce.number().default(listDonationsQueryOffsetDefault)
-})
+  status: zod
+    .enum(["available", "claimed", "picked_up", "completed"])
+    .optional(),
+  foodType: zod.enum(["veg", "non_veg", "both"]).optional(),
+  donorCategory: zod
+    .enum(["restaurant", "hotel", "caterer", "event_org", "household"])
+    .optional(),
+  lat: zod.coerce.number().optional(),
+  lng: zod.coerce.number().optional(),
+  radiusKm: zod.coerce.number().optional(),
+  limit: zod.coerce.number().default(listDonationsQueryLimitDefault),
+  offset: zod.coerce.number().default(listDonationsQueryOffsetDefault),
+});
 
 export const ListDonationsResponseItem = zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})
-export const ListDonationsResponse = zod.array(ListDonationsResponseItem)
-
+  id: zod.number(),
+  donorId: zod.number(),
+  donor: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number(),
+  estimatedServings: zod.number().nullish(),
+  preparedAt: zod.coerce.date().nullish(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  address: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+  claimedByUserId: zod.number().nullish(),
+  claimedBy: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        clerkId: zod.string(),
+        role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+        name: zod.string(),
+        phone: zod.string(),
+        address: zod.string().nullish(),
+        city: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        donorCategory: zod
+          .union([
+            zod.literal("restaurant"),
+            zod.literal("hotel"),
+            zod.literal("caterer"),
+            zod.literal("event_org"),
+            zod.literal("household"),
+            zod.literal(null),
+          ])
+          .nullish(),
+        licenseNumber: zod.string().nullish(),
+        orgName: zod.string().nullish(),
+        registrationNumber: zod.string().nullish(),
+        operatingRadiusKm: zod.number().nullish(),
+        vehicleType: zod.string().nullish(),
+        availabilityStatus: zod.string().nullish(),
+        darpanId: zod.string().nullish(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+  otp: zod.union([zod.string(), zod.null()]).optional(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
+export const ListDonationsResponse = zod.array(ListDonationsResponseItem);
 
 /**
  * @summary Create a new food donation listing
  */
 
-
-
 export const CreateDonationBody = zod.object({
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number().min(1),
-  "estimatedServings": zod.number().optional(),
-  "preparedAt": zod.coerce.date().optional(),
-  "pickupDeadline": zod.coerce.date(),
-  "description": zod.string().optional(),
-  "imageUrl": zod.string().optional(),
-  "address": zod.string().optional(),
-  "lat": zod.number().optional(),
-  "lng": zod.number().optional()
-})
-
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number().min(1),
+  estimatedServings: zod.number().optional(),
+  preparedAt: zod.coerce.date().optional(),
+  pickupDeadline: zod.coerce.date(),
+  description: zod.string().optional(),
+  imageUrl: zod.string().optional(),
+  address: zod.string().optional(),
+  lat: zod.number().optional(),
+  lng: zod.number().optional(),
+});
 
 /**
  * @summary Get a single donation by ID
  */
 export const GetDonationParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const GetDonationResponse = zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})
-
+  id: zod.number(),
+  donorId: zod.number(),
+  donor: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number(),
+  estimatedServings: zod.number().nullish(),
+  preparedAt: zod.coerce.date().nullish(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  address: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+  claimedByUserId: zod.number().nullish(),
+  claimedBy: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        clerkId: zod.string(),
+        role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+        name: zod.string(),
+        phone: zod.string(),
+        address: zod.string().nullish(),
+        city: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        donorCategory: zod
+          .union([
+            zod.literal("restaurant"),
+            zod.literal("hotel"),
+            zod.literal("caterer"),
+            zod.literal("event_org"),
+            zod.literal("household"),
+            zod.literal(null),
+          ])
+          .nullish(),
+        licenseNumber: zod.string().nullish(),
+        orgName: zod.string().nullish(),
+        registrationNumber: zod.string().nullish(),
+        operatingRadiusKm: zod.number().nullish(),
+        vehicleType: zod.string().nullish(),
+        availabilityStatus: zod.string().nullish(),
+        darpanId: zod.string().nullish(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+  otp: zod.union([zod.string(), zod.null()]).optional(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
 
 /**
  * @summary Update a donation listing
  */
 export const UpdateDonationParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const UpdateDonationBody = zod.object({
-  "foodName": zod.string().optional(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']).optional(),
-  "quantityPlates": zod.number().optional(),
-  "estimatedServings": zod.number().optional(),
-  "preparedAt": zod.coerce.date().optional(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().optional(),
-  "imageUrl": zod.string().optional(),
-  "address": zod.string().optional(),
-  "lat": zod.number().optional(),
-  "lng": zod.number().optional(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']).optional()
-})
+  foodName: zod.string().optional(),
+  foodType: zod.enum(["veg", "non_veg", "both"]).optional(),
+  quantityPlates: zod.number().optional(),
+  estimatedServings: zod.number().optional(),
+  preparedAt: zod.coerce.date().optional(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().optional(),
+  imageUrl: zod.string().optional(),
+  address: zod.string().optional(),
+  lat: zod.number().optional(),
+  lng: zod.number().optional(),
+  status: zod
+    .enum(["available", "claimed", "picked_up", "completed"])
+    .optional(),
+});
 
 export const UpdateDonationResponse = zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})
-
+  id: zod.number(),
+  donorId: zod.number(),
+  donor: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number(),
+  estimatedServings: zod.number().nullish(),
+  preparedAt: zod.coerce.date().nullish(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  address: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+  claimedByUserId: zod.number().nullish(),
+  claimedBy: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        clerkId: zod.string(),
+        role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+        name: zod.string(),
+        phone: zod.string(),
+        address: zod.string().nullish(),
+        city: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        donorCategory: zod
+          .union([
+            zod.literal("restaurant"),
+            zod.literal("hotel"),
+            zod.literal("caterer"),
+            zod.literal("event_org"),
+            zod.literal("household"),
+            zod.literal(null),
+          ])
+          .nullish(),
+        licenseNumber: zod.string().nullish(),
+        orgName: zod.string().nullish(),
+        registrationNumber: zod.string().nullish(),
+        operatingRadiusKm: zod.number().nullish(),
+        vehicleType: zod.string().nullish(),
+        availabilityStatus: zod.string().nullish(),
+        darpanId: zod.string().nullish(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+  otp: zod.union([zod.string(), zod.null()]).optional(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
 
 /**
  * @summary Delete a donation listing
  */
 export const DeleteDonationParams = zod.object({
-  "id": zod.coerce.number()
-})
-
+  id: zod.coerce.number(),
+});
 
 /**
  * @summary NGO/volunteer claims a donation
  */
 export const ClaimDonationParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const ClaimDonationResponse = zod.object({
-  "id": zod.number(),
-  "donationId": zod.number(),
-  "claimedByUserId": zod.number(),
-  "claimedBy": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "otp": zod.string(),
-  "otpVerified": zod.boolean().optional(),
-  "createdAt": zod.coerce.date(),
-  "completedAt": zod.coerce.date().nullish(),
-  "donation": zod.union([zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-}),zod.null()]).optional()
-})
-
+  id: zod.number(),
+  donationId: zod.number(),
+  claimedByUserId: zod.number(),
+  claimedBy: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  otp: zod.string(),
+  otpVerified: zod.boolean().optional(),
+  createdAt: zod.coerce.date(),
+  completedAt: zod.coerce.date().nullish(),
+  donation: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        donorId: zod.number(),
+        donor: zod
+          .object({
+            id: zod.number(),
+            clerkId: zod.string(),
+            role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+            name: zod.string(),
+            phone: zod.string(),
+            address: zod.string().nullish(),
+            city: zod.string().nullish(),
+            lat: zod.number().nullish(),
+            lng: zod.number().nullish(),
+            donorCategory: zod
+              .union([
+                zod.literal("restaurant"),
+                zod.literal("hotel"),
+                zod.literal("caterer"),
+                zod.literal("event_org"),
+                zod.literal("household"),
+                zod.literal(null),
+              ])
+              .nullish(),
+            licenseNumber: zod.string().nullish(),
+            orgName: zod.string().nullish(),
+            registrationNumber: zod.string().nullish(),
+            operatingRadiusKm: zod.number().nullish(),
+            vehicleType: zod.string().nullish(),
+            availabilityStatus: zod.string().nullish(),
+            darpanId: zod.string().nullish(),
+            createdAt: zod.coerce.date().optional(),
+          })
+          .optional(),
+        foodName: zod.string(),
+        foodType: zod.enum(["veg", "non_veg", "both"]),
+        quantityPlates: zod.number(),
+        estimatedServings: zod.number().nullish(),
+        preparedAt: zod.coerce.date().nullish(),
+        pickupDeadline: zod.coerce.date().optional(),
+        description: zod.string().nullish(),
+        imageUrl: zod.string().nullish(),
+        address: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+        claimedByUserId: zod.number().nullish(),
+        claimedBy: zod
+          .union([
+            zod.object({
+              id: zod.number(),
+              clerkId: zod.string(),
+              role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+              name: zod.string(),
+              phone: zod.string(),
+              address: zod.string().nullish(),
+              city: zod.string().nullish(),
+              lat: zod.number().nullish(),
+              lng: zod.number().nullish(),
+              donorCategory: zod
+                .union([
+                  zod.literal("restaurant"),
+                  zod.literal("hotel"),
+                  zod.literal("caterer"),
+                  zod.literal("event_org"),
+                  zod.literal("household"),
+                  zod.literal(null),
+                ])
+                .nullish(),
+              licenseNumber: zod.string().nullish(),
+              orgName: zod.string().nullish(),
+              registrationNumber: zod.string().nullish(),
+              operatingRadiusKm: zod.number().nullish(),
+              vehicleType: zod.string().nullish(),
+              availabilityStatus: zod.string().nullish(),
+              darpanId: zod.string().nullish(),
+              createdAt: zod.coerce.date().optional(),
+            }),
+            zod.null(),
+          ])
+          .optional(),
+        otp: zod.union([zod.string(), zod.null()]).optional(),
+        createdAt: zod.coerce.date(),
+        updatedAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+});
 
 /**
  * @summary Verify pickup with OTP
  */
 export const VerifyPickupParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const VerifyPickupBody = zod.object({
-  "otp": zod.string()
-})
+  otp: zod.string(),
+});
 
 export const VerifyPickupResponse = zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})
-
+  id: zod.number(),
+  donorId: zod.number(),
+  donor: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number(),
+  estimatedServings: zod.number().nullish(),
+  preparedAt: zod.coerce.date().nullish(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  address: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+  claimedByUserId: zod.number().nullish(),
+  claimedBy: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        clerkId: zod.string(),
+        role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+        name: zod.string(),
+        phone: zod.string(),
+        address: zod.string().nullish(),
+        city: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        donorCategory: zod
+          .union([
+            zod.literal("restaurant"),
+            zod.literal("hotel"),
+            zod.literal("caterer"),
+            zod.literal("event_org"),
+            zod.literal("household"),
+            zod.literal(null),
+          ])
+          .nullish(),
+        licenseNumber: zod.string().nullish(),
+        orgName: zod.string().nullish(),
+        registrationNumber: zod.string().nullish(),
+        operatingRadiusKm: zod.number().nullish(),
+        vehicleType: zod.string().nullish(),
+        availabilityStatus: zod.string().nullish(),
+        darpanId: zod.string().nullish(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+  otp: zod.union([zod.string(), zod.null()]).optional(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
 
 /**
  * @summary Release a claim on a donation
  */
 export const UnclaimDonationParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const UnclaimDonationResponse = zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})
-
+  id: zod.number(),
+  donorId: zod.number(),
+  donor: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number(),
+  estimatedServings: zod.number().nullish(),
+  preparedAt: zod.coerce.date().nullish(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  address: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+  claimedByUserId: zod.number().nullish(),
+  claimedBy: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        clerkId: zod.string(),
+        role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+        name: zod.string(),
+        phone: zod.string(),
+        address: zod.string().nullish(),
+        city: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        donorCategory: zod
+          .union([
+            zod.literal("restaurant"),
+            zod.literal("hotel"),
+            zod.literal("caterer"),
+            zod.literal("event_org"),
+            zod.literal("household"),
+            zod.literal(null),
+          ])
+          .nullish(),
+        licenseNumber: zod.string().nullish(),
+        orgName: zod.string().nullish(),
+        registrationNumber: zod.string().nullish(),
+        operatingRadiusKm: zod.number().nullish(),
+        vehicleType: zod.string().nullish(),
+        availabilityStatus: zod.string().nullish(),
+        darpanId: zod.string().nullish(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+  otp: zod.union([zod.string(), zod.null()]).optional(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
 
 /**
  * @summary Get stats for current donor
  */
 export const GetDonorStatsResponse = zod.object({
-  "totalDonations": zod.number(),
-  "totalPlates": zod.number(),
-  "completedDonations": zod.number(),
-  "activeDonations": zod.number(),
-  "claimedDonations": zod.number(),
-  "recentDonations": zod.array(zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})).optional()
-})
-
+  totalDonations: zod.number(),
+  totalPlates: zod.number(),
+  completedDonations: zod.number(),
+  activeDonations: zod.number(),
+  claimedDonations: zod.number(),
+  recentDonations: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        donorId: zod.number(),
+        donor: zod
+          .object({
+            id: zod.number(),
+            clerkId: zod.string(),
+            role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+            name: zod.string(),
+            phone: zod.string(),
+            address: zod.string().nullish(),
+            city: zod.string().nullish(),
+            lat: zod.number().nullish(),
+            lng: zod.number().nullish(),
+            donorCategory: zod
+              .union([
+                zod.literal("restaurant"),
+                zod.literal("hotel"),
+                zod.literal("caterer"),
+                zod.literal("event_org"),
+                zod.literal("household"),
+                zod.literal(null),
+              ])
+              .nullish(),
+            licenseNumber: zod.string().nullish(),
+            orgName: zod.string().nullish(),
+            registrationNumber: zod.string().nullish(),
+            operatingRadiusKm: zod.number().nullish(),
+            vehicleType: zod.string().nullish(),
+            availabilityStatus: zod.string().nullish(),
+            darpanId: zod.string().nullish(),
+            createdAt: zod.coerce.date().optional(),
+          })
+          .optional(),
+        foodName: zod.string(),
+        foodType: zod.enum(["veg", "non_veg", "both"]),
+        quantityPlates: zod.number(),
+        estimatedServings: zod.number().nullish(),
+        preparedAt: zod.coerce.date().nullish(),
+        pickupDeadline: zod.coerce.date().optional(),
+        description: zod.string().nullish(),
+        imageUrl: zod.string().nullish(),
+        address: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+        claimedByUserId: zod.number().nullish(),
+        claimedBy: zod
+          .union([
+            zod.object({
+              id: zod.number(),
+              clerkId: zod.string(),
+              role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+              name: zod.string(),
+              phone: zod.string(),
+              address: zod.string().nullish(),
+              city: zod.string().nullish(),
+              lat: zod.number().nullish(),
+              lng: zod.number().nullish(),
+              donorCategory: zod
+                .union([
+                  zod.literal("restaurant"),
+                  zod.literal("hotel"),
+                  zod.literal("caterer"),
+                  zod.literal("event_org"),
+                  zod.literal("household"),
+                  zod.literal(null),
+                ])
+                .nullish(),
+              licenseNumber: zod.string().nullish(),
+              orgName: zod.string().nullish(),
+              registrationNumber: zod.string().nullish(),
+              operatingRadiusKm: zod.number().nullish(),
+              vehicleType: zod.string().nullish(),
+              availabilityStatus: zod.string().nullish(),
+              darpanId: zod.string().nullish(),
+              createdAt: zod.coerce.date().optional(),
+            }),
+            zod.null(),
+          ])
+          .optional(),
+        otp: zod.union([zod.string(), zod.null()]).optional(),
+        createdAt: zod.coerce.date(),
+        updatedAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+});
 
 /**
  * @summary Get stats for current NGO/volunteer
  */
 export const GetNgoStatsResponse = zod.object({
-  "totalClaims": zod.number(),
-  "completedPickups": zod.number(),
-  "totalPlatesCollected": zod.number(),
-  "activeClaims": zod.number(),
-  "recentClaims": zod.array(zod.object({
-  "id": zod.number(),
-  "donationId": zod.number(),
-  "claimedByUserId": zod.number(),
-  "claimedBy": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "otp": zod.string(),
-  "otpVerified": zod.boolean().optional(),
-  "createdAt": zod.coerce.date(),
-  "completedAt": zod.coerce.date().nullish(),
-  "donation": zod.union([zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-}),zod.null()]).optional()
-})).optional()
-})
-
+  totalClaims: zod.number(),
+  completedPickups: zod.number(),
+  totalPlatesCollected: zod.number(),
+  activeClaims: zod.number(),
+  recentClaims: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        donationId: zod.number(),
+        claimedByUserId: zod.number(),
+        claimedBy: zod
+          .object({
+            id: zod.number(),
+            clerkId: zod.string(),
+            role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+            name: zod.string(),
+            phone: zod.string(),
+            address: zod.string().nullish(),
+            city: zod.string().nullish(),
+            lat: zod.number().nullish(),
+            lng: zod.number().nullish(),
+            donorCategory: zod
+              .union([
+                zod.literal("restaurant"),
+                zod.literal("hotel"),
+                zod.literal("caterer"),
+                zod.literal("event_org"),
+                zod.literal("household"),
+                zod.literal(null),
+              ])
+              .nullish(),
+            licenseNumber: zod.string().nullish(),
+            orgName: zod.string().nullish(),
+            registrationNumber: zod.string().nullish(),
+            operatingRadiusKm: zod.number().nullish(),
+            vehicleType: zod.string().nullish(),
+            availabilityStatus: zod.string().nullish(),
+            darpanId: zod.string().nullish(),
+            createdAt: zod.coerce.date().optional(),
+          })
+          .optional(),
+        otp: zod.string(),
+        otpVerified: zod.boolean().optional(),
+        createdAt: zod.coerce.date(),
+        completedAt: zod.coerce.date().nullish(),
+        donation: zod
+          .union([
+            zod.object({
+              id: zod.number(),
+              donorId: zod.number(),
+              donor: zod
+                .object({
+                  id: zod.number(),
+                  clerkId: zod.string(),
+                  role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+                  name: zod.string(),
+                  phone: zod.string(),
+                  address: zod.string().nullish(),
+                  city: zod.string().nullish(),
+                  lat: zod.number().nullish(),
+                  lng: zod.number().nullish(),
+                  donorCategory: zod
+                    .union([
+                      zod.literal("restaurant"),
+                      zod.literal("hotel"),
+                      zod.literal("caterer"),
+                      zod.literal("event_org"),
+                      zod.literal("household"),
+                      zod.literal(null),
+                    ])
+                    .nullish(),
+                  licenseNumber: zod.string().nullish(),
+                  orgName: zod.string().nullish(),
+                  registrationNumber: zod.string().nullish(),
+                  operatingRadiusKm: zod.number().nullish(),
+                  vehicleType: zod.string().nullish(),
+                  availabilityStatus: zod.string().nullish(),
+                  darpanId: zod.string().nullish(),
+                  createdAt: zod.coerce.date().optional(),
+                })
+                .optional(),
+              foodName: zod.string(),
+              foodType: zod.enum(["veg", "non_veg", "both"]),
+              quantityPlates: zod.number(),
+              estimatedServings: zod.number().nullish(),
+              preparedAt: zod.coerce.date().nullish(),
+              pickupDeadline: zod.coerce.date().optional(),
+              description: zod.string().nullish(),
+              imageUrl: zod.string().nullish(),
+              address: zod.string().nullish(),
+              lat: zod.number().nullish(),
+              lng: zod.number().nullish(),
+              status: zod.enum([
+                "available",
+                "claimed",
+                "picked_up",
+                "completed",
+              ]),
+              claimedByUserId: zod.number().nullish(),
+              claimedBy: zod
+                .union([
+                  zod.object({
+                    id: zod.number(),
+                    clerkId: zod.string(),
+                    role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+                    name: zod.string(),
+                    phone: zod.string(),
+                    address: zod.string().nullish(),
+                    city: zod.string().nullish(),
+                    lat: zod.number().nullish(),
+                    lng: zod.number().nullish(),
+                    donorCategory: zod
+                      .union([
+                        zod.literal("restaurant"),
+                        zod.literal("hotel"),
+                        zod.literal("caterer"),
+                        zod.literal("event_org"),
+                        zod.literal("household"),
+                        zod.literal(null),
+                      ])
+                      .nullish(),
+                    licenseNumber: zod.string().nullish(),
+                    orgName: zod.string().nullish(),
+                    registrationNumber: zod.string().nullish(),
+                    operatingRadiusKm: zod.number().nullish(),
+                    vehicleType: zod.string().nullish(),
+                    availabilityStatus: zod.string().nullish(),
+                    darpanId: zod.string().nullish(),
+                    createdAt: zod.coerce.date().optional(),
+                  }),
+                  zod.null(),
+                ])
+                .optional(),
+              otp: zod.union([zod.string(), zod.null()]).optional(),
+              createdAt: zod.coerce.date(),
+              updatedAt: zod.coerce.date().optional(),
+            }),
+            zod.null(),
+          ])
+          .optional(),
+      }),
+    )
+    .optional(),
+});
 
 /**
  * @summary Get platform-wide aggregate stats (public)
  */
 export const GetPlatformStatsResponse = zod.object({
-  "totalDonors": zod.number(),
-  "totalNgos": zod.number(),
-  "totalDonations": zod.number(),
-  "totalPlatesSaved": zod.number(),
-  "activeDonations": zod.number()
-})
-
+  totalDonors: zod.number(),
+  totalNgos: zod.number(),
+  totalDonations: zod.number(),
+  totalPlatesSaved: zod.number(),
+  activeDonations: zod.number(),
+});
 
 /**
  * @summary Get donations created by the current user
  */
 export const GetMyDonationsQueryParams = zod.object({
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']).optional()
-})
+  status: zod
+    .enum(["available", "claimed", "picked_up", "completed"])
+    .optional(),
+});
 
 export const GetMyDonationsResponseItem = zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-})
-export const GetMyDonationsResponse = zod.array(GetMyDonationsResponseItem)
-
+  id: zod.number(),
+  donorId: zod.number(),
+  donor: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  foodName: zod.string(),
+  foodType: zod.enum(["veg", "non_veg", "both"]),
+  quantityPlates: zod.number(),
+  estimatedServings: zod.number().nullish(),
+  preparedAt: zod.coerce.date().nullish(),
+  pickupDeadline: zod.coerce.date().optional(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  address: zod.string().nullish(),
+  lat: zod.number().nullish(),
+  lng: zod.number().nullish(),
+  status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+  claimedByUserId: zod.number().nullish(),
+  claimedBy: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        clerkId: zod.string(),
+        role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+        name: zod.string(),
+        phone: zod.string(),
+        address: zod.string().nullish(),
+        city: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        donorCategory: zod
+          .union([
+            zod.literal("restaurant"),
+            zod.literal("hotel"),
+            zod.literal("caterer"),
+            zod.literal("event_org"),
+            zod.literal("household"),
+            zod.literal(null),
+          ])
+          .nullish(),
+        licenseNumber: zod.string().nullish(),
+        orgName: zod.string().nullish(),
+        registrationNumber: zod.string().nullish(),
+        operatingRadiusKm: zod.number().nullish(),
+        vehicleType: zod.string().nullish(),
+        availabilityStatus: zod.string().nullish(),
+        darpanId: zod.string().nullish(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+  otp: zod.union([zod.string(), zod.null()]).optional(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
+export const GetMyDonationsResponse = zod.array(GetMyDonationsResponseItem);
 
 /**
  * @summary Get claims made by the current NGO/volunteer
  */
 export const GetMyClaimsResponseItem = zod.object({
-  "id": zod.number(),
-  "donationId": zod.number(),
-  "claimedByUserId": zod.number(),
-  "claimedBy": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "otp": zod.string(),
-  "otpVerified": zod.boolean().optional(),
-  "createdAt": zod.coerce.date(),
-  "completedAt": zod.coerce.date().nullish(),
-  "donation": zod.union([zod.object({
-  "id": zod.number(),
-  "donorId": zod.number(),
-  "donor": zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}).optional(),
-  "foodName": zod.string(),
-  "foodType": zod.enum(['veg', 'non_veg', 'both']),
-  "quantityPlates": zod.number(),
-  "estimatedServings": zod.number().nullish(),
-  "preparedAt": zod.coerce.date().nullish(),
-  "pickupDeadline": zod.coerce.date().optional(),
-  "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish(),
-  "address": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
-  "claimedByUserId": zod.number().nullish(),
-  "claimedBy": zod.union([zod.object({
-  "id": zod.number(),
-  "clerkId": zod.string(),
-  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
-  "name": zod.string(),
-  "phone": zod.string(),
-  "address": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "lat": zod.number().nullish(),
-  "lng": zod.number().nullish(),
-  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
-  "licenseNumber": zod.string().nullish(),
-  "orgName": zod.string().nullish(),
-  "registrationNumber": zod.string().nullish(),
-  "operatingRadiusKm": zod.number().nullish(),
-  "vehicleType": zod.string().nullish(),
-  "availabilityStatus": zod.string().nullish(),
-  "darpanId": zod.string().nullish(),
-  "createdAt": zod.coerce.date().optional()
-}),zod.null()]).optional(),
-  "otp": zod.union([zod.string(),zod.null()]).optional(),
-  "createdAt": zod.coerce.date(),
-  "updatedAt": zod.coerce.date().optional()
-}),zod.null()]).optional()
-})
-export const GetMyClaimsResponse = zod.array(GetMyClaimsResponseItem)
-
+  id: zod.number(),
+  donationId: zod.number(),
+  claimedByUserId: zod.number(),
+  claimedBy: zod
+    .object({
+      id: zod.number(),
+      clerkId: zod.string(),
+      role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+      name: zod.string(),
+      phone: zod.string(),
+      address: zod.string().nullish(),
+      city: zod.string().nullish(),
+      lat: zod.number().nullish(),
+      lng: zod.number().nullish(),
+      donorCategory: zod
+        .union([
+          zod.literal("restaurant"),
+          zod.literal("hotel"),
+          zod.literal("caterer"),
+          zod.literal("event_org"),
+          zod.literal("household"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      licenseNumber: zod.string().nullish(),
+      orgName: zod.string().nullish(),
+      registrationNumber: zod.string().nullish(),
+      operatingRadiusKm: zod.number().nullish(),
+      vehicleType: zod.string().nullish(),
+      availabilityStatus: zod.string().nullish(),
+      darpanId: zod.string().nullish(),
+      createdAt: zod.coerce.date().optional(),
+    })
+    .optional(),
+  otp: zod.string(),
+  otpVerified: zod.boolean().optional(),
+  createdAt: zod.coerce.date(),
+  completedAt: zod.coerce.date().nullish(),
+  donation: zod
+    .union([
+      zod.object({
+        id: zod.number(),
+        donorId: zod.number(),
+        donor: zod
+          .object({
+            id: zod.number(),
+            clerkId: zod.string(),
+            role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+            name: zod.string(),
+            phone: zod.string(),
+            address: zod.string().nullish(),
+            city: zod.string().nullish(),
+            lat: zod.number().nullish(),
+            lng: zod.number().nullish(),
+            donorCategory: zod
+              .union([
+                zod.literal("restaurant"),
+                zod.literal("hotel"),
+                zod.literal("caterer"),
+                zod.literal("event_org"),
+                zod.literal("household"),
+                zod.literal(null),
+              ])
+              .nullish(),
+            licenseNumber: zod.string().nullish(),
+            orgName: zod.string().nullish(),
+            registrationNumber: zod.string().nullish(),
+            operatingRadiusKm: zod.number().nullish(),
+            vehicleType: zod.string().nullish(),
+            availabilityStatus: zod.string().nullish(),
+            darpanId: zod.string().nullish(),
+            createdAt: zod.coerce.date().optional(),
+          })
+          .optional(),
+        foodName: zod.string(),
+        foodType: zod.enum(["veg", "non_veg", "both"]),
+        quantityPlates: zod.number(),
+        estimatedServings: zod.number().nullish(),
+        preparedAt: zod.coerce.date().nullish(),
+        pickupDeadline: zod.coerce.date().optional(),
+        description: zod.string().nullish(),
+        imageUrl: zod.string().nullish(),
+        address: zod.string().nullish(),
+        lat: zod.number().nullish(),
+        lng: zod.number().nullish(),
+        status: zod.enum(["available", "claimed", "picked_up", "completed"]),
+        claimedByUserId: zod.number().nullish(),
+        claimedBy: zod
+          .union([
+            zod.object({
+              id: zod.number(),
+              clerkId: zod.string(),
+              role: zod.enum(["donor", "ngo", "volunteer", "admin"]),
+              name: zod.string(),
+              phone: zod.string(),
+              address: zod.string().nullish(),
+              city: zod.string().nullish(),
+              lat: zod.number().nullish(),
+              lng: zod.number().nullish(),
+              donorCategory: zod
+                .union([
+                  zod.literal("restaurant"),
+                  zod.literal("hotel"),
+                  zod.literal("caterer"),
+                  zod.literal("event_org"),
+                  zod.literal("household"),
+                  zod.literal(null),
+                ])
+                .nullish(),
+              licenseNumber: zod.string().nullish(),
+              orgName: zod.string().nullish(),
+              registrationNumber: zod.string().nullish(),
+              operatingRadiusKm: zod.number().nullish(),
+              vehicleType: zod.string().nullish(),
+              availabilityStatus: zod.string().nullish(),
+              darpanId: zod.string().nullish(),
+              createdAt: zod.coerce.date().optional(),
+            }),
+            zod.null(),
+          ])
+          .optional(),
+        otp: zod.union([zod.string(), zod.null()]).optional(),
+        createdAt: zod.coerce.date(),
+        updatedAt: zod.coerce.date().optional(),
+      }),
+      zod.null(),
+    ])
+    .optional(),
+});
+export const GetMyClaimsResponse = zod.array(GetMyClaimsResponseItem);
 
 /**
  * @summary Verify an FSSAI license number
  */
 export const VerifyFssaiBody = zod.object({
-  "licenseNumber": zod.string()
-})
+  licenseNumber: zod.string(),
+});
 
 export const VerifyFssaiResponse = zod.object({
-  "valid": zod.boolean(),
-  "businessName": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "state": zod.string().nullish(),
-  "category": zod.string().nullish()
-})
-
+  valid: zod.boolean(),
+  businessName: zod.string().nullish(),
+  city: zod.string().nullish(),
+  state: zod.string().nullish(),
+  category: zod.string().nullish(),
+});
 
 /**
  * @summary Verify a NITI Aayog Darpan ID
  */
 export const VerifyDarpanBody = zod.object({
-  "darpanId": zod.string()
-})
+  darpanId: zod.string(),
+});
 
 export const VerifyDarpanResponse = zod.object({
-  "valid": zod.boolean(),
-  "orgName": zod.string().nullish(),
-  "city": zod.string().nullish(),
-  "state": zod.string().nullish()
-})
-
+  valid: zod.boolean(),
+  orgName: zod.string().nullish(),
+  city: zod.string().nullish(),
+  state: zod.string().nullish(),
+});
 
 /**
  * @summary Verify a platform admin access code
  */
 export const VerifyAdminCodeBody = zod.object({
-  "code": zod.string()
-})
+  code: zod.string(),
+});
 
 export const VerifyAdminCodeResponse = zod.object({
-  "valid": zod.boolean()
-})
-
+  valid: zod.boolean(),
+});
 
 /**
  * @summary List all FSSAI licenses in the registry
  */
 export const ListFssaiLicensesResponseItem = zod.object({
-  "id": zod.number(),
-  "licenseNumber": zod.string(),
-  "businessName": zod.string(),
-  "city": zod.string(),
-  "state": zod.string(),
-  "category": zod.string(),
-  "isActive": zod.boolean(),
-  "addedAt": zod.coerce.date()
-})
-export const ListFssaiLicensesResponse = zod.array(ListFssaiLicensesResponseItem)
-
+  id: zod.number(),
+  licenseNumber: zod.string(),
+  businessName: zod.string(),
+  city: zod.string(),
+  state: zod.string(),
+  category: zod.string(),
+  isActive: zod.boolean(),
+  addedAt: zod.coerce.date(),
+});
+export const ListFssaiLicensesResponse = zod.array(
+  ListFssaiLicensesResponseItem,
+);
 
 /**
  * @summary Add a new FSSAI license to the registry
  */
 export const AddFssaiLicenseBody = zod.object({
-  "licenseNumber": zod.string(),
-  "businessName": zod.string(),
-  "city": zod.string(),
-  "state": zod.string(),
-  "category": zod.string()
-})
-
+  licenseNumber: zod.string(),
+  businessName: zod.string(),
+  city: zod.string(),
+  state: zod.string(),
+  category: zod.string(),
+});
 
 /**
  * @summary Remove an FSSAI license from the registry
  */
 export const DeleteFssaiLicenseParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const DeleteFssaiLicenseResponse = zod.object({
-  "message": zod.string()
-})
-
+  message: zod.string(),
+});
 
 /**
  * @summary List all Darpan IDs in the registry
  */
 export const ListDarpanIdsResponseItem = zod.object({
-  "id": zod.number(),
-  "darpanId": zod.string(),
-  "orgName": zod.string(),
-  "city": zod.string(),
-  "state": zod.string(),
-  "isActive": zod.boolean(),
-  "addedAt": zod.coerce.date()
-})
-export const ListDarpanIdsResponse = zod.array(ListDarpanIdsResponseItem)
-
+  id: zod.number(),
+  darpanId: zod.string(),
+  orgName: zod.string(),
+  city: zod.string(),
+  state: zod.string(),
+  isActive: zod.boolean(),
+  addedAt: zod.coerce.date(),
+});
+export const ListDarpanIdsResponse = zod.array(ListDarpanIdsResponseItem);
 
 /**
  * @summary Add a new Darpan ID to the registry
  */
 export const AddDarpanIdBody = zod.object({
-  "darpanId": zod.string(),
-  "orgName": zod.string(),
-  "city": zod.string(),
-  "state": zod.string()
-})
-
+  darpanId: zod.string(),
+  orgName: zod.string(),
+  city: zod.string(),
+  state: zod.string(),
+});
 
 /**
  * @summary Remove a Darpan ID from the registry
  */
 export const DeleteDarpanIdParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const DeleteDarpanIdResponse = zod.object({
-  "message": zod.string()
-})
-
+  message: zod.string(),
+});
 
 /**
  * @summary List all admin access codes
  */
 export const ListAdminCodesResponseItem = zod.object({
-  "id": zod.number(),
-  "code": zod.string(),
-  "label": zod.string(),
-  "isActive": zod.boolean(),
-  "usedByClerkId": zod.string().nullish(),
-  "createdAt": zod.coerce.date()
-})
-export const ListAdminCodesResponse = zod.array(ListAdminCodesResponseItem)
-
+  id: zod.number(),
+  code: zod.string(),
+  label: zod.string(),
+  isActive: zod.boolean(),
+  usedByClerkId: zod.string().nullish(),
+  createdAt: zod.coerce.date(),
+});
+export const ListAdminCodesResponse = zod.array(ListAdminCodesResponseItem);
 
 /**
  * @summary Add a new admin access code
  */
 export const AddAdminCodeBody = zod.object({
-  "code": zod.string(),
-  "label": zod.string()
-})
-
+  code: zod.string(),
+  label: zod.string(),
+});
 
 /**
  * @summary Remove an admin access code
  */
 export const DeleteAdminCodeParams = zod.object({
-  "id": zod.coerce.number()
-})
+  id: zod.coerce.number(),
+});
 
 export const DeleteAdminCodeResponse = zod.object({
-  "message": zod.string()
-})
-
-
+  message: zod.string(),
+});

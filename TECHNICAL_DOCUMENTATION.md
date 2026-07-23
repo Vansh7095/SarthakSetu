@@ -36,20 +36,20 @@ SarthakSetu is a full-stack web application designed to bridge the gap between f
 
 ### 1.2 Main Features
 
-| Feature | Description |
-|---------|-------------|
-| **Donor Registration** | Role-based onboarding with FSSAI license verification for businesses |
-| **NGO/Volunteer Registration** | Darpan ID verification for NGOs, simple registration for volunteers |
-| **Food Donation Listings** | Create listings with food name, type (vegetarian only), quantity, prep time, pickup deadline, GPS location, and photo |
-| **Interactive Map** | Color-coded Leaflet markers (green=household, yellow=restaurant, orange=caterer, red=urgent) showing all available donations |
-| **Inline Routing** | Dashed route line drawn on the map from user location to donation destination |
-| **Claim System** | NGOs click "Claim" → 6-digit OTP generated → at pickup, donor enters OTP → status becomes "completed" |
-| **OTP Visibility** | Donors viewing claimed donations see the OTP directly on the detail page |
-| **Dashboards** | Donors see plates shared & recent donations; NGOs see claims & plates collected; public platform stats |
-| **Admin Panel** | Protected admin dashboard for managing FSSAI licenses, Darpan IDs, and admin access codes |
-| **Admin Delete** | Platform admins can delete any donation regardless of ownership |
-| **Auto-Cleanup** | Expired donations (past pickup deadline, not completed) are auto-deleted every 5 minutes |
-| **Veg-Only Lock** | The platform only accepts vegetarian food; non-veg options are removed from UI |
+| Feature                        | Description                                                                                                                  |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Donor Registration**         | Role-based onboarding with FSSAI license verification for businesses                                                         |
+| **NGO/Volunteer Registration** | Darpan ID verification for NGOs, simple registration for volunteers                                                          |
+| **Food Donation Listings**     | Create listings with food name, type (vegetarian only), quantity, prep time, pickup deadline, GPS location, and photo        |
+| **Interactive Map**            | Color-coded Leaflet markers (green=household, yellow=restaurant, orange=caterer, red=urgent) showing all available donations |
+| **Inline Routing**             | Dashed route line drawn on the map from user location to donation destination                                                |
+| **Claim System**               | NGOs click "Claim" → 6-digit OTP generated → at pickup, donor enters OTP → status becomes "completed"                        |
+| **OTP Visibility**             | Donors viewing claimed donations see the OTP directly on the detail page                                                     |
+| **Dashboards**                 | Donors see plates shared & recent donations; NGOs see claims & plates collected; public platform stats                       |
+| **Admin Panel**                | Protected admin dashboard for managing FSSAI licenses, Darpan IDs, and admin access codes                                    |
+| **Admin Delete**               | Platform admins can delete any donation regardless of ownership                                                              |
+| **Auto-Cleanup**               | Expired donations (past pickup deadline, not completed) are auto-deleted every 5 minutes                                     |
+| **Veg-Only Lock**              | The platform only accepts vegetarian food; non-veg options are removed from UI                                               |
 
 ### 1.3 Overall Architecture
 
@@ -62,23 +62,23 @@ The project follows a **contract-first API design** pattern:
 
 ### 1.4 Technology Stack
 
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **Frontend** | React + Vite | 19.1.0 / 7.3.2 | SPA with HMR, Tailwind v4 integration |
-| **Routing** | wouter | 3.3.5 | Lightweight router, ~1.5KB |
-| **UI Components** | Radix UI + Shadcn | — | Accessible, unstyled primitives + styled wrappers |
-| **Styling** | Tailwind CSS v4 | 4.1.14 | Utility-first CSS with CSS-based config |
-| **State (Server)** | TanStack Query | 5.90.21 | Caching, deduping, background refetching |
-| **Forms** | react-hook-form + zod | — | Performant forms with schema validation |
-| **Maps** | react-leaflet + OpenStreetMap | — | Free, no-API-key interactive maps |
-| **Backend** | Express 5 | 5.x | HTTP server framework |
-| **Auth** | Clerk (Replit-managed) | — | OAuth, SSO, session management |
-| **Database** | PostgreSQL + Drizzle ORM | 0.45.2 | Type-safe SQL with migrations |
-| **Validation** | Zod (v3 + v4) | — | Runtime schema validation |
-| **Codegen** | Orval | — | OpenAPI → React Query + Zod |
-| **Build (Server)** | esbuild | 0.27.3 | Fast bundling with ESM output |
-| **Logging** | pino + pino-pretty | — | Structured JSON logging |
-| **Package Manager** | pnpm | — | Workspaces, catalog dependencies |
+| Layer               | Technology                    | Version        | Purpose                                           |
+| ------------------- | ----------------------------- | -------------- | ------------------------------------------------- |
+| **Frontend**        | React + Vite                  | 19.1.0 / 7.3.2 | SPA with HMR, Tailwind v4 integration             |
+| **Routing**         | wouter                        | 3.3.5          | Lightweight router, ~1.5KB                        |
+| **UI Components**   | Radix UI + Shadcn             | —              | Accessible, unstyled primitives + styled wrappers |
+| **Styling**         | Tailwind CSS v4               | 4.1.14         | Utility-first CSS with CSS-based config           |
+| **State (Server)**  | TanStack Query                | 5.90.21        | Caching, deduping, background refetching          |
+| **Forms**           | react-hook-form + zod         | —              | Performant forms with schema validation           |
+| **Maps**            | react-leaflet + OpenStreetMap | —              | Free, no-API-key interactive maps                 |
+| **Backend**         | Express 5                     | 5.x            | HTTP server framework                             |
+| **Auth**            | Clerk (Replit-managed)        | —              | OAuth, SSO, session management                    |
+| **Database**        | PostgreSQL + Drizzle ORM      | 0.45.2         | Type-safe SQL with migrations                     |
+| **Validation**      | Zod (v3 + v4)                 | —              | Runtime schema validation                         |
+| **Codegen**         | Orval                         | —              | OpenAPI → React Query + Zod                       |
+| **Build (Server)**  | esbuild                       | 0.27.3         | Fast bundling with ESM output                     |
+| **Logging**         | pino + pino-pretty            | —              | Structured JSON logging                           |
+| **Package Manager** | pnpm                          | —              | Workspaces, catalog dependencies                  |
 
 ### 1.5 Design Patterns Used
 
@@ -194,16 +194,16 @@ workspace/
 
 ### 2.1 Key File Responsibilities
 
-| File | Responsibility |
-|------|---------------|
-| `openapi.yaml` | The **single source of truth** for all API contracts. Any API change starts here. |
-| `lib/db/src/schema/*.ts` | Database schema definitions. Drizzle reads these to generate migrations and provide type inference. |
-| `lib/db/src/index.ts` | Creates the `pg.Pool` and `drizzle()` client. Exported as `db` and `pool` for all DB operations. |
-| `artifacts/api-server/src/app.ts` | Express middleware stack: pino logging → Clerk proxy → CORS → JSON parser → Clerk auth → `/api` routes. |
-| `artifacts/api-server/src/index.ts` | Server bootstrap: validates PORT, seeds verification tables, starts cleanup interval, binds to port. |
-| `artifacts/annsetu/src/App.tsx` | Root component: ClerkProvider with proxy URL, wouter routing, conditional onboarding redirect, theme appearance. |
-| `artifacts/annsetu/src/components/layout.tsx` | Persistent header with mobile Sheet menu (auto-closing), role-based navigation links, sign-out. |
-| `lib/api-spec/orval.config.ts` | Configures Orval to generate hooks (frontend) and Zod schemas (backend) from openapi.yaml. |
+| File                                          | Responsibility                                                                                                   |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `openapi.yaml`                                | The **single source of truth** for all API contracts. Any API change starts here.                                |
+| `lib/db/src/schema/*.ts`                      | Database schema definitions. Drizzle reads these to generate migrations and provide type inference.              |
+| `lib/db/src/index.ts`                         | Creates the `pg.Pool` and `drizzle()` client. Exported as `db` and `pool` for all DB operations.                 |
+| `artifacts/api-server/src/app.ts`             | Express middleware stack: pino logging → Clerk proxy → CORS → JSON parser → Clerk auth → `/api` routes.          |
+| `artifacts/api-server/src/index.ts`           | Server bootstrap: validates PORT, seeds verification tables, starts cleanup interval, binds to port.             |
+| `artifacts/annsetu/src/App.tsx`               | Root component: ClerkProvider with proxy URL, wouter routing, conditional onboarding redirect, theme appearance. |
+| `artifacts/annsetu/src/components/layout.tsx` | Persistent header with mobile Sheet menu (auto-closing), role-based navigation links, sign-out.                  |
+| `lib/api-spec/orval.config.ts`                | Configures Orval to generate hooks (frontend) and Zod schemas (backend) from openapi.yaml.                       |
 
 ---
 
@@ -246,6 +246,7 @@ The frontend is a **Single Page Application (SPA)** built with React and Vite. I
 **Router**: `wouter` — a ~1.5KB minimal router. Uses `<Link>` and `useLocation()` for navigation. No nested routes. Base path handled via `import.meta.env.BASE_URL`.
 
 **Auth Guard**: `App.tsx` checks if the user is signed in but has no profile. If so, it redirects to `/onboarding`:
+
 ```tsx
 if (isSignedIn && !profile && !isAuthRoute) {
   setLocation("/onboarding");
@@ -285,14 +286,17 @@ App.tsx (root)
 ### 3.4 State Management
 
 **Server State**: TanStack Query (React Query)
+
 - All server data is fetched through auto-generated hooks from `lib/api-client-react`
 - Example: `const { data: donation } = useGetDonation(id)`
 - Query keys are automatically managed. Cache invalidation happens manually after mutations:
+
 ```tsx
 queryClient.invalidateQueries({ queryKey: getListDonationsQueryKey() });
 ```
 
 **Client State**: React `useState` and `useRef`
+
 - No global state manager (Zustand, Redux, Context) is used
 - Form state managed by `react-hook-form`
 - Sheet open/close state managed by `useState` in `layout.tsx`
@@ -303,6 +307,7 @@ queryClient.invalidateQueries({ queryKey: getListDonationsQueryKey() });
 **Form Framework**: `react-hook-form` + `@hookform/resolvers` + `zod`
 
 Example from `donate.tsx`:
+
 ```tsx
 const form = useForm({
   resolver: zodResolver(donationSchema),
@@ -313,6 +318,7 @@ const form = useForm({
 **Validation**: Frontend uses `zod` schemas defined inline. Backend uses generated Zod schemas from `lib/api-zod`.
 
 **User Interactions**:
+
 - Map pin drag → reverse geocoding via Nominatim API
 - Claim button → mutation → OTP generated on server
 - Verify button → mutation → donation marked "completed"
@@ -323,6 +329,7 @@ const form = useForm({
 Tailwind CSS v4 with CSS-based configuration (no `tailwind.config.js`). Tokens defined in `src/index.css` under `@theme inline`.
 
 Key features:
+
 - Dark mode support via `.dark` class
 - Custom CSS variables for colors, fonts, radius
 - `cn()` utility from `tailwind-merge` + `clsx` for conditional class merging
@@ -393,32 +400,42 @@ Express App
 
 ### 4.3 Middleware
 
-| Middleware | File | Purpose |
-|-----------|------|---------|
-| `pinoHttp` | `app.ts` | Structured request/response logging |
+| Middleware             | File                      | Purpose                                           |
+| ---------------------- | ------------------------- | ------------------------------------------------- |
+| `pinoHttp`             | `app.ts`                  | Structured request/response logging               |
 | `clerkProxyMiddleware` | `clerkProxyMiddleware.ts` | Forwards Clerk SDK requests through Express proxy |
-| `cors` | `app.ts` | Allows cross-origin requests |
-| `express.json()` | `app.ts` | Parses JSON request bodies |
-| `express.urlencoded()` | `app.ts` | Parses form data |
-| `clerkMiddleware` | `app.ts` | Validates Clerk session tokens |
+| `cors`                 | `app.ts`                  | Allows cross-origin requests                      |
+| `express.json()`       | `app.ts`                  | Parses JSON request bodies                        |
+| `express.urlencoded()` | `app.ts`                  | Parses form data                                  |
+| `clerkMiddleware`      | `app.ts`                  | Validates Clerk session tokens                    |
 
 ### 4.4 Controllers / Route Handlers
 
 There are no separate controller files. Each route file in `src/routes/` defines and exports an Express `Router` with handlers inline.
 
 Example pattern from `donations.ts`:
+
 ```ts
 router.get("/donations/:id", async (req, res) => {
   // 1. Validate params with Zod
   const parsed = GetDonationParams.safeParse({ id: Number(req.params.id) });
-  if (!parsed.success) { res.status(400).json({ error: "Invalid id" }); return; }
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid id" });
+    return;
+  }
 
   // 2. Query database
-  const [donation] = await db.select().from(donationsTable)
-    .where(eq(donationsTable.id, parsed.data.id)).limit(1);
+  const [donation] = await db
+    .select()
+    .from(donationsTable)
+    .where(eq(donationsTable.id, parsed.data.id))
+    .limit(1);
 
   // 3. Handle not found
-  if (!donation) { res.status(404).json({ error: "Not found" }); return; }
+  if (!donation) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
 
   // 4. Enrich with related data (donor, claimedBy, OTP)
   const enriched = await enrichDonation(donation);
@@ -438,15 +455,16 @@ No explicit model classes. Drizzle ORM provides type-safe query builders directl
 
 ### 4.7 Utilities
 
-| Utility | File | Purpose |
-|---------|------|---------|
-| `logger` | `lib/logger.ts` | Pino singleton for structured logging |
-| `seed.ts` | `lib/seed.ts` | Seeds verification tables with initial data if empty |
-| `reverseGeocode()` | `donate.tsx` | Fetches address from lat/lng via Nominatim |
+| Utility            | File            | Purpose                                              |
+| ------------------ | --------------- | ---------------------------------------------------- |
+| `logger`           | `lib/logger.ts` | Pino singleton for structured logging                |
+| `seed.ts`          | `lib/seed.ts`   | Seeds verification tables with initial data if empty |
+| `reverseGeocode()` | `donate.tsx`    | Fetches address from lat/lng via Nominatim           |
 
 ### 4.8 Business Logic
 
 **Donation Lifecycle**:
+
 ```
 available → claimed → completed
 ```
@@ -461,6 +479,7 @@ The `enrichDonation()` function in `donations.ts` fetches the donor's profile, t
 ### 4.9 Error Handling
 
 Error handling is **ad-hoc per route**:
+
 - Invalid params → 400 with `"Invalid id"` or Zod error
 - Unauthorized → 401 with `"Unauthorized"`
 - Forbidden → 403 with `"Admin access required"` or `"Profile not found"`
@@ -499,68 +518,68 @@ erDiagram
 
 #### `users` Table
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | serial | PK | Auto-increment internal ID |
-| `clerkId` | text | NOT NULL, UNIQUE | Clerk authentication ID |
-| `role` | role enum | NOT NULL | donor / ngo / volunteer / admin |
-| `name` | text | NOT NULL | Full name |
-| `phone` | text | NOT NULL | Phone number |
-| `address` | text | | Street address |
-| `city` | text | | City name |
-| `lat` | double | | GPS latitude |
-| `lng` | double | | GPS longitude |
-| `donorCategory` | donor_category enum | | restaurant / hotel / caterer / event_org / household |
-| `licenseNumber` | text | | FSSAI license (for businesses) |
-| `orgName` | text | | Organization name (NGOs) |
-| `registrationNumber` | text | | NGO registration number |
-| `operatingRadiusKm` | double | | How far the NGO operates |
-| `vehicleType` | text | | Volunteer vehicle type |
-| `availabilityStatus` | text | | Volunteer availability |
-| `darpanId` | text | | Darpan NGO ID |
-| `createdAt` | timestamp | NOT NULL, DEFAULT NOW | Registration time |
+| Column               | Type                | Constraints           | Description                                          |
+| -------------------- | ------------------- | --------------------- | ---------------------------------------------------- |
+| `id`                 | serial              | PK                    | Auto-increment internal ID                           |
+| `clerkId`            | text                | NOT NULL, UNIQUE      | Clerk authentication ID                              |
+| `role`               | role enum           | NOT NULL              | donor / ngo / volunteer / admin                      |
+| `name`               | text                | NOT NULL              | Full name                                            |
+| `phone`              | text                | NOT NULL              | Phone number                                         |
+| `address`            | text                |                       | Street address                                       |
+| `city`               | text                |                       | City name                                            |
+| `lat`                | double              |                       | GPS latitude                                         |
+| `lng`                | double              |                       | GPS longitude                                        |
+| `donorCategory`      | donor_category enum |                       | restaurant / hotel / caterer / event_org / household |
+| `licenseNumber`      | text                |                       | FSSAI license (for businesses)                       |
+| `orgName`            | text                |                       | Organization name (NGOs)                             |
+| `registrationNumber` | text                |                       | NGO registration number                              |
+| `operatingRadiusKm`  | double              |                       | How far the NGO operates                             |
+| `vehicleType`        | text                |                       | Volunteer vehicle type                               |
+| `availabilityStatus` | text                |                       | Volunteer availability                               |
+| `darpanId`           | text                |                       | Darpan NGO ID                                        |
+| `createdAt`          | timestamp           | NOT NULL, DEFAULT NOW | Registration time                                    |
 
 #### `donations` Table
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | serial | PK | Auto-increment |
-| `donorId` | integer | FK → users.id, ON DELETE CASCADE | Who created the donation |
-| `foodName` | text | NOT NULL | Name of the food |
-| `foodType` | food_type enum | NOT NULL | veg / non_veg / both |
-| `quantityPlates` | integer | NOT NULL | Number of plates |
-| `estimatedServings` | integer | | Estimated people served |
-| `preparedAt` | timestamp | | When the food was prepared |
-| `pickupDeadline` | timestamp | NOT NULL | Must be picked up by this time |
-| `description` | text | | Additional details |
-| `imageUrl` | text | | Photo URL |
-| `address` | text | | Pickup address |
-| `lat` | double | | GPS latitude |
-| `lng` | double | | GPS longitude |
-| `status` | donation_status enum | NOT NULL, DEFAULT 'available' | available / claimed / picked_up / completed |
-| `claimedByUserId` | integer | FK → users.id | Who claimed it |
-| `createdAt` | timestamp | NOT NULL, DEFAULT NOW | Created time |
-| `updatedAt` | timestamp | NOT NULL, DEFAULT NOW | Last updated |
+| Column              | Type                 | Constraints                      | Description                                 |
+| ------------------- | -------------------- | -------------------------------- | ------------------------------------------- |
+| `id`                | serial               | PK                               | Auto-increment                              |
+| `donorId`           | integer              | FK → users.id, ON DELETE CASCADE | Who created the donation                    |
+| `foodName`          | text                 | NOT NULL                         | Name of the food                            |
+| `foodType`          | food_type enum       | NOT NULL                         | veg / non_veg / both                        |
+| `quantityPlates`    | integer              | NOT NULL                         | Number of plates                            |
+| `estimatedServings` | integer              |                                  | Estimated people served                     |
+| `preparedAt`        | timestamp            |                                  | When the food was prepared                  |
+| `pickupDeadline`    | timestamp            | NOT NULL                         | Must be picked up by this time              |
+| `description`       | text                 |                                  | Additional details                          |
+| `imageUrl`          | text                 |                                  | Photo URL                                   |
+| `address`           | text                 |                                  | Pickup address                              |
+| `lat`               | double               |                                  | GPS latitude                                |
+| `lng`               | double               |                                  | GPS longitude                               |
+| `status`            | donation_status enum | NOT NULL, DEFAULT 'available'    | available / claimed / picked_up / completed |
+| `claimedByUserId`   | integer              | FK → users.id                    | Who claimed it                              |
+| `createdAt`         | timestamp            | NOT NULL, DEFAULT NOW            | Created time                                |
+| `updatedAt`         | timestamp            | NOT NULL, DEFAULT NOW            | Last updated                                |
 
 #### `claims` Table
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | serial | PK | Auto-increment |
-| `donationId` | integer | FK → donations.id, ON DELETE CASCADE | Which donation |
-| `claimedByUserId` | integer | FK → users.id, ON DELETE CASCADE | Who claimed |
-| `otp` | text | NOT NULL | 6-digit pickup code |
-| `otpVerified` | boolean | NOT NULL, DEFAULT false | Has donor verified? |
-| `createdAt` | timestamp | NOT NULL, DEFAULT NOW | Claim time |
-| `completedAt` | timestamp | | When OTP was verified |
+| Column            | Type      | Constraints                          | Description           |
+| ----------------- | --------- | ------------------------------------ | --------------------- |
+| `id`              | serial    | PK                                   | Auto-increment        |
+| `donationId`      | integer   | FK → donations.id, ON DELETE CASCADE | Which donation        |
+| `claimedByUserId` | integer   | FK → users.id, ON DELETE CASCADE     | Who claimed           |
+| `otp`             | text      | NOT NULL                             | 6-digit pickup code   |
+| `otpVerified`     | boolean   | NOT NULL, DEFAULT false              | Has donor verified?   |
+| `createdAt`       | timestamp | NOT NULL, DEFAULT NOW                | Claim time            |
+| `completedAt`     | timestamp |                                      | When OTP was verified |
 
 #### Verification Tables
 
-| Table | Purpose |
-|-------|---------|
+| Table            | Purpose                                                 |
+| ---------------- | ------------------------------------------------------- |
 | `fssai_licenses` | Pre-populated registry of valid FSSAI business licenses |
-| `darpan_ids` | Pre-populated registry of valid Darpan NGO IDs |
-| `admin_codes` | Single-use access codes for admin account creation |
+| `darpan_ids`     | Pre-populated registry of valid Darpan NGO IDs          |
+| `admin_codes`    | Single-use access codes for admin account creation      |
 
 ### 5.4 Relationships
 
@@ -580,11 +599,13 @@ erDiagram
 ### 5.6 Indexes
 
 **No explicit indexes are defined** in the Drizzle schema. The database relies on:
+
 - Primary key indexes (automatic)
 - UNIQUE constraint indexes (automatic)
 - Foreign key indexes (automatic in PostgreSQL)
 
 **Missing indexes** that would improve performance:
+
 - `donations(donorId)` — heavily queried
 - `donations(status)` — filtered in nearly every list query
 - `donations(claimedByUserId)` — used for enrichment
@@ -595,14 +616,18 @@ erDiagram
 ### 5.7 ORM / Query System
 
 **Drizzle ORM** with `drizzle-orm/node-postgres`:
+
 ```ts
 import { drizzle } from "drizzle-orm/node-postgres";
 export const db = drizzle(pool, { schema });
 ```
 
 Queries are type-safe and SQL-like:
+
 ```ts
-await db.select().from(donationsTable)
+await db
+  .select()
+  .from(donationsTable)
   .where(and(eq(donationsTable.status, "available")))
   .orderBy(desc(donationsTable.createdAt))
   .limit(50);
@@ -611,6 +636,7 @@ await db.select().from(donationsTable)
 ### 5.8 Migration System
 
 Migrations are managed by **Drizzle Kit**:
+
 ```bash
 pnpm --filter @workspace/db run push    # Push schema changes to dev DB
 ```
@@ -703,14 +729,15 @@ No JWT handling is done manually — Clerk abstracts all of it.
 
 ### 6.4 Roles and Permissions
 
-| Role | Permissions |
-|------|-------------|
-| `donor` | Create donations, view own listings, view own stats, delete own donations |
-| `ngo` | Browse/claim donations, view own claims, view NGO stats |
-| `volunteer` | Same as NGO (distinct for future differentiation) |
-| `admin` | All donor/NGO permissions + delete any donation + manage verification registries |
+| Role        | Permissions                                                                      |
+| ----------- | -------------------------------------------------------------------------------- |
+| `donor`     | Create donations, view own listings, view own stats, delete own donations        |
+| `ngo`       | Browse/claim donations, view own claims, view NGO stats                          |
+| `volunteer` | Same as NGO (distinct for future differentiation)                                |
+| `admin`     | All donor/NGO permissions + delete any donation + manage verification registries |
 
 Role checking happens in two places:
+
 1. **UI**: `layout.tsx` conditionally shows nav links; pages conditionally show actions
 2. **API**: Route handlers check `user.role` and return 403 if unauthorized
 
@@ -734,66 +761,66 @@ Passwords are **not stored in this application**. Clerk handles all credential s
 
 #### Health
 
-| Method | URL | Auth | Description | File |
-|--------|-----|------|-------------|------|
-| GET | `/api/healthz` | None | Server health check | `health.ts` |
+| Method | URL            | Auth | Description         | File        |
+| ------ | -------------- | ---- | ------------------- | ----------- |
+| GET    | `/api/healthz` | None | Server health check | `health.ts` |
 
 #### Users
 
-| Method | URL | Auth | Request Body | Response | Description | File |
-|--------|-----|------|-------------|----------|-------------|------|
-| GET | `/api/users/me` | Clerk | — | UserProfile | Get current user's profile | `users.ts` |
-| PUT | `/api/users/me` | Clerk | UserProfileInput | UserProfile | Create or update profile | `users.ts` |
+| Method | URL             | Auth  | Request Body     | Response    | Description                | File       |
+| ------ | --------------- | ----- | ---------------- | ----------- | -------------------------- | ---------- |
+| GET    | `/api/users/me` | Clerk | —                | UserProfile | Get current user's profile | `users.ts` |
+| PUT    | `/api/users/me` | Clerk | UserProfileInput | UserProfile | Create or update profile   | `users.ts` |
 
 #### Donations
 
-| Method | URL | Auth | Request Body | Response | Description | File |
-|--------|-----|------|-------------|----------|-------------|------|
-| GET | `/api/donations` | None | Query: status, foodType, limit, offset | Donation[] | List donations with filters | `donations.ts` |
-| GET | `/api/donations/my` | Clerk | Query: status | Donation[] | List current donor's donations | `donations.ts` |
-| GET | `/api/donations/:id` | None | — | Donation | Get single donation (enriched) | `donations.ts` |
-| POST | `/api/donations` | Clerk | DonationInput | Donation | Create new donation | `donations.ts` |
-| PATCH | `/api/donations/:id` | Clerk | DonationUpdate | Donation | Update donation (owner only) | `donations.ts` |
-| DELETE | `/api/donations/:id` | Clerk | — | { message } | Delete donation (owner or admin) | `donations.ts` |
+| Method | URL                  | Auth  | Request Body                           | Response    | Description                      | File           |
+| ------ | -------------------- | ----- | -------------------------------------- | ----------- | -------------------------------- | -------------- |
+| GET    | `/api/donations`     | None  | Query: status, foodType, limit, offset | Donation[]  | List donations with filters      | `donations.ts` |
+| GET    | `/api/donations/my`  | Clerk | Query: status                          | Donation[]  | List current donor's donations   | `donations.ts` |
+| GET    | `/api/donations/:id` | None  | —                                      | Donation    | Get single donation (enriched)   | `donations.ts` |
+| POST   | `/api/donations`     | Clerk | DonationInput                          | Donation    | Create new donation              | `donations.ts` |
+| PATCH  | `/api/donations/:id` | Clerk | DonationUpdate                         | Donation    | Update donation (owner only)     | `donations.ts` |
+| DELETE | `/api/donations/:id` | Clerk | —                                      | { message } | Delete donation (owner or admin) | `donations.ts` |
 
 #### Claims
 
-| Method | URL | Auth | Request Body | Response | Description | File |
-|--------|-----|------|-------------|----------|-------------|------|
-| POST | `/api/donations/:id/claim` | Clerk | — | Claim | Claim a donation (NGO only) | `claims.ts` |
-| POST | `/api/donations/:id/unclaim` | Clerk | — | { message } | Unclaim a donation | `claims.ts` |
-| POST | `/api/donations/:id/verify` | Clerk | OtpVerifyInput | { success } | Verify OTP and complete | `claims.ts` |
-| GET | `/api/claims/my` | Clerk | — | Claim[] | List current user's claims | `claims.ts` |
+| Method | URL                          | Auth  | Request Body   | Response    | Description                 | File        |
+| ------ | ---------------------------- | ----- | -------------- | ----------- | --------------------------- | ----------- |
+| POST   | `/api/donations/:id/claim`   | Clerk | —              | Claim       | Claim a donation (NGO only) | `claims.ts` |
+| POST   | `/api/donations/:id/unclaim` | Clerk | —              | { message } | Unclaim a donation          | `claims.ts` |
+| POST   | `/api/donations/:id/verify`  | Clerk | OtpVerifyInput | { success } | Verify OTP and complete     | `claims.ts` |
+| GET    | `/api/claims/my`             | Clerk | —              | Claim[]     | List current user's claims  | `claims.ts` |
 
 #### Stats
 
-| Method | URL | Auth | Response | Description | File |
-|--------|-----|------|----------|-------------|------|
-| GET | `/api/stats/donor` | Clerk | DonorStats | Donor's personal statistics | `stats.ts` |
-| GET | `/api/stats/ngo` | Clerk | NgoStats | NGO's personal statistics | `stats.ts` |
-| GET | `/api/stats/platform` | None | PlatformStats | Public platform-wide statistics | `stats.ts` |
+| Method | URL                   | Auth  | Response      | Description                     | File       |
+| ------ | --------------------- | ----- | ------------- | ------------------------------- | ---------- |
+| GET    | `/api/stats/donor`    | Clerk | DonorStats    | Donor's personal statistics     | `stats.ts` |
+| GET    | `/api/stats/ngo`      | Clerk | NgoStats      | NGO's personal statistics       | `stats.ts` |
+| GET    | `/api/stats/platform` | None  | PlatformStats | Public platform-wide statistics | `stats.ts` |
 
 #### Verification
 
-| Method | URL | Auth | Request Body | Response | Description | File |
-|--------|-----|------|-------------|----------|-------------|------|
-| POST | `/api/verify/fssai` | None | { licenseNumber } | { valid, businessName, city, state, category } | Verify FSSAI license | `verify.ts` |
-| POST | `/api/verify/darpan` | None | { darpanId } | { valid, orgName, city, state } | Verify Darpan ID | `verify.ts` |
-| POST | `/api/verify/admin-code` | None | { code } | { valid } | Verify admin access code | `verify.ts` |
+| Method | URL                      | Auth | Request Body      | Response                                       | Description              | File        |
+| ------ | ------------------------ | ---- | ----------------- | ---------------------------------------------- | ------------------------ | ----------- |
+| POST   | `/api/verify/fssai`      | None | { licenseNumber } | { valid, businessName, city, state, category } | Verify FSSAI license     | `verify.ts` |
+| POST   | `/api/verify/darpan`     | None | { darpanId }      | { valid, orgName, city, state }                | Verify Darpan ID         | `verify.ts` |
+| POST   | `/api/verify/admin-code` | None | { code }          | { valid }                                      | Verify admin access code | `verify.ts` |
 
 #### Admin Registry
 
-| Method | URL | Auth | Request Body | Response | Description | File |
-|--------|-----|------|-------------|----------|-------------|------|
-| GET | `/api/admin/registry/fssai` | Admin | — | FssaiLicense[] | List all FSSAI licenses | `admin-registry.ts` |
-| POST | `/api/admin/registry/fssai` | Admin | FssaiLicenseInput | FssaiLicense | Add FSSAI license | `admin-registry.ts` |
-| DELETE | `/api/admin/registry/fssai/:id` | Admin | — | { message } | Delete FSSAI license | `admin-registry.ts` |
-| GET | `/api/admin/registry/darpan` | Admin | — | DarpanId[] | List all Darpan IDs | `admin-registry.ts` |
-| POST | `/api/admin/registry/darpan` | Admin | DarpanIdInput | DarpanId | Add Darpan ID | `admin-registry.ts` |
-| DELETE | `/api/admin/registry/darpan/:id` | Admin | — | { message } | Delete Darpan ID | `admin-registry.ts` |
-| GET | `/api/admin/registry/codes` | Admin | — | AdminCode[] | List admin codes | `admin-registry.ts` |
-| POST | `/api/admin/registry/codes` | Admin | AdminCodeInput | AdminCode | Add admin code | `admin-registry.ts` |
-| DELETE | `/api/admin/registry/codes/:id` | Admin | — | { message } | Delete admin code | `admin-registry.ts` |
+| Method | URL                              | Auth  | Request Body      | Response       | Description             | File                |
+| ------ | -------------------------------- | ----- | ----------------- | -------------- | ----------------------- | ------------------- |
+| GET    | `/api/admin/registry/fssai`      | Admin | —                 | FssaiLicense[] | List all FSSAI licenses | `admin-registry.ts` |
+| POST   | `/api/admin/registry/fssai`      | Admin | FssaiLicenseInput | FssaiLicense   | Add FSSAI license       | `admin-registry.ts` |
+| DELETE | `/api/admin/registry/fssai/:id`  | Admin | —                 | { message }    | Delete FSSAI license    | `admin-registry.ts` |
+| GET    | `/api/admin/registry/darpan`     | Admin | —                 | DarpanId[]     | List all Darpan IDs     | `admin-registry.ts` |
+| POST   | `/api/admin/registry/darpan`     | Admin | DarpanIdInput     | DarpanId       | Add Darpan ID           | `admin-registry.ts` |
+| DELETE | `/api/admin/registry/darpan/:id` | Admin | —                 | { message }    | Delete Darpan ID        | `admin-registry.ts` |
+| GET    | `/api/admin/registry/codes`      | Admin | —                 | AdminCode[]    | List admin codes        | `admin-registry.ts` |
+| POST   | `/api/admin/registry/codes`      | Admin | AdminCodeInput    | AdminCode      | Add admin code          | `admin-registry.ts` |
+| DELETE | `/api/admin/registry/codes/:id`  | Admin | —                 | { message }    | Delete admin code       | `admin-registry.ts` |
 
 ### 7.2 Request Lifecycle Example: Creating a Donation
 
@@ -887,45 +914,45 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 
 ### 9.1 Important Dependencies
 
-| Package | Purpose | Why It's Needed |
-|---------|---------|-----------------|
-| `react` / `react-dom` | UI framework | Core frontend library |
-| `vite` | Build tool | Fast dev server, HMR, production bundling |
-| `@tailwindcss/vite` | Tailwind integration | Processes Tailwind v4 in Vite |
-| `wouter` | Router | Minimal footprint (~1.5KB), hooks-based API |
-| `@tanstack/react-query` | Server state | Caching, deduping, background refetching |
-| `react-hook-form` | Forms | Performant form handling with minimal re-renders |
-| `zod` | Validation | Runtime type checking and schema validation |
-| `@hookform/resolvers` | Form + Zod bridge | Connects react-hook-form to zod schemas |
-| `@clerk/react` / `@clerk/express` | Authentication | OAuth, session management, user management |
-| `drizzle-orm` / `drizzle-zod` | Database | Type-safe SQL queries, schema-to-Zod conversion |
-| `pg` | PostgreSQL driver | Node.js PostgreSQL client |
-| `express` | HTTP server | Web framework for API |
-| `pino` / `pino-http` | Logging | Structured JSON logging with low overhead |
-| `esbuild` | Bundling | Fast server-side bundling to ESM |
-| `orval` | Codegen | Generates React Query + Zod from OpenAPI |
-| `leaflet` / `react-leaflet` | Maps | Free, open-source interactive maps |
-| `lucide-react` | Icons | Consistent, lightweight icon set |
-| `framer-motion` | Animations | Page transitions and micro-interactions |
-| `class-variance-authority` | Component variants | Type-safe Tailwind component variants |
-| `tailwind-merge` / `clsx` | Class merging | Handles conditional and conflicting Tailwind classes |
-| `cors` | CORS headers | Cross-origin resource sharing for API |
+| Package                           | Purpose              | Why It's Needed                                      |
+| --------------------------------- | -------------------- | ---------------------------------------------------- |
+| `react` / `react-dom`             | UI framework         | Core frontend library                                |
+| `vite`                            | Build tool           | Fast dev server, HMR, production bundling            |
+| `@tailwindcss/vite`               | Tailwind integration | Processes Tailwind v4 in Vite                        |
+| `wouter`                          | Router               | Minimal footprint (~1.5KB), hooks-based API          |
+| `@tanstack/react-query`           | Server state         | Caching, deduping, background refetching             |
+| `react-hook-form`                 | Forms                | Performant form handling with minimal re-renders     |
+| `zod`                             | Validation           | Runtime type checking and schema validation          |
+| `@hookform/resolvers`             | Form + Zod bridge    | Connects react-hook-form to zod schemas              |
+| `@clerk/react` / `@clerk/express` | Authentication       | OAuth, session management, user management           |
+| `drizzle-orm` / `drizzle-zod`     | Database             | Type-safe SQL queries, schema-to-Zod conversion      |
+| `pg`                              | PostgreSQL driver    | Node.js PostgreSQL client                            |
+| `express`                         | HTTP server          | Web framework for API                                |
+| `pino` / `pino-http`              | Logging              | Structured JSON logging with low overhead            |
+| `esbuild`                         | Bundling             | Fast server-side bundling to ESM                     |
+| `orval`                           | Codegen              | Generates React Query + Zod from OpenAPI             |
+| `leaflet` / `react-leaflet`       | Maps                 | Free, open-source interactive maps                   |
+| `lucide-react`                    | Icons                | Consistent, lightweight icon set                     |
+| `framer-motion`                   | Animations           | Page transitions and micro-interactions              |
+| `class-variance-authority`        | Component variants   | Type-safe Tailwind component variants                |
+| `tailwind-merge` / `clsx`         | Class merging        | Handles conditional and conflicting Tailwind classes |
+| `cors`                            | CORS headers         | Cross-origin resource sharing for API                |
 
 ### 9.2 Potentially Unused Dependencies
 
-| Package | Status | Notes |
-|---------|--------|-------|
-| `framer-motion` | Possibly underused | Only a few animations; could be replaced with CSS transitions |
-| `@replit/vite-plugin-cartographer` | Dev-only | Only active in dev mode; safe to keep |
-| `@replit/vite-plugin-dev-banner` | Dev-only | Only active in dev mode; safe to keep |
+| Package                            | Status             | Notes                                                         |
+| ---------------------------------- | ------------------ | ------------------------------------------------------------- |
+| `framer-motion`                    | Possibly underused | Only a few animations; could be replaced with CSS transitions |
+| `@replit/vite-plugin-cartographer` | Dev-only           | Only active in dev mode; safe to keep                         |
+| `@replit/vite-plugin-dev-banner`   | Dev-only           | Only active in dev mode; safe to keep                         |
 
 ### 9.3 Suggested Alternatives
 
-| Current | Alternative | Reason |
-|---------|-------------|--------|
-| wouter | React Router v7 | Better ecosystem, data routers, error boundaries |
-| pino-http | morgan (dev) | Simpler for small projects; keep pino for production |
-| esbuild | tsc + tsx | Native TypeScript execution without bundling complexity |
+| Current   | Alternative     | Reason                                                  |
+| --------- | --------------- | ------------------------------------------------------- |
+| wouter    | React Router v7 | Better ecosystem, data routers, error boundaries        |
+| pino-http | morgan (dev)    | Simpler for small projects; keep pino for production    |
+| esbuild   | tsc + tsx       | Native TypeScript execution without bundling complexity |
 
 ---
 
@@ -933,38 +960,40 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 
 ### 10.1 Environment Variables
 
-| Variable | Required | Used By | Description |
-|----------|----------|---------|-------------|
-| `DATABASE_URL` | Yes | API Server, DB lib | PostgreSQL connection string |
-| `PORT` | Yes | API Server, Frontend | HTTP server port |
-| `BASE_PATH` | Yes | Frontend | URL path prefix (e.g., `/`) |
-| `CLERK_PUBLISHABLE_KEY` | Yes | API Server | Clerk public key |
-| `CLERK_SECRET_KEY` | Yes | API Server | Clerk secret key |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Yes | Frontend | Vite-exposed Clerk public key |
-| `VITE_CLERK_PROXY_URL` | No | Frontend | Clerk proxy URL override |
-| `SESSION_SECRET` | Yes | Replit | Session encryption (managed) |
-| `NODE_ENV` | Yes | Build scripts | `development` or `production` |
+| Variable                     | Required | Used By              | Description                   |
+| ---------------------------- | -------- | -------------------- | ----------------------------- |
+| `DATABASE_URL`               | Yes      | API Server, DB lib   | PostgreSQL connection string  |
+| `PORT`                       | Yes      | API Server, Frontend | HTTP server port              |
+| `BASE_PATH`                  | Yes      | Frontend             | URL path prefix (e.g., `/`)   |
+| `CLERK_PUBLISHABLE_KEY`      | Yes      | API Server           | Clerk public key              |
+| `CLERK_SECRET_KEY`           | Yes      | API Server           | Clerk secret key              |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Yes      | Frontend             | Vite-exposed Clerk public key |
+| `VITE_CLERK_PROXY_URL`       | No       | Frontend             | Clerk proxy URL override      |
+| `SESSION_SECRET`             | Yes      | Replit               | Session encryption (managed)  |
+| `NODE_ENV`                   | Yes      | Build scripts        | `development` or `production` |
 
 ### 10.2 Config Files
 
-| File | Purpose |
-|------|---------|
+| File                  | Purpose                                                                      |
+| --------------------- | ---------------------------------------------------------------------------- |
 | `pnpm-workspace.yaml` | Defines workspace packages, catalog versions, supply-chain security settings |
-| `tsconfig.base.json` | Shared strict TypeScript settings |
-| `tsconfig.json` | Solution file for composite lib packages |
-| `vite.config.ts` | Frontend build config: plugins, aliases, base path, dev server |
-| `build.mjs` | Server bundling: esbuild with ESM output, pino plugin, sourcemaps |
-| `orval.config.ts` | Codegen: output paths, client type (react-query), Zod generation |
+| `tsconfig.base.json`  | Shared strict TypeScript settings                                            |
+| `tsconfig.json`       | Solution file for composite lib packages                                     |
+| `vite.config.ts`      | Frontend build config: plugins, aliases, base path, dev server               |
+| `build.mjs`           | Server bundling: esbuild with ESM output, pino plugin, sourcemaps            |
+| `orval.config.ts`     | Codegen: output paths, client type (react-query), Zod generation             |
 
 ### 10.3 Build Configuration
 
 **Frontend**:
+
 - Vite dev server on `PORT` with `strictPort: true`
 - Build outputs to `dist/public/`
 - Aliases: `@` → `src/`, `@assets` → `attached_assets/`
 - Tailwind CSS processed by `@tailwindcss/vite` plugin
 
 **Backend**:
+
 - esbuild bundles to `dist/index.mjs` (ESM format)
 - Externalizes native modules, database drivers, etc.
 - Pino worker files bundled separately via `esbuild-plugin-pino`
@@ -973,6 +1002,7 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 ### 10.4 Deployment Configuration
 
 **Replit Deployment**:
+
 - Workflows defined in `.replit` (not editable directly)
 - Frontend served as static files from `dist/public/`
 - API server runs as background process
@@ -1378,10 +1408,12 @@ graph TB
 ### 12.1 Bottlenecks
 
 1. **Stats endpoints load all rows into memory**:
+
    ```ts
    const allUsers = await db.select().from(usersTable);
    const allDonations = await db.select().from(donationsTable);
    ```
+
    `stats/platform` fetches every user and every donation. At scale, this will OOM the server.
 
 2. **Enrichment N+1 queries**:
@@ -1401,12 +1433,12 @@ graph TB
 
 ### 12.2 Expensive Operations
 
-| Operation | Cost | Impact |
-|-----------|------|--------|
-| `GET /api/stats/platform` | O(users + donations) | High — loads entire tables |
-| `GET /api/donations` with enrichment | O(N * 2 queries) | Medium — N+1 per item |
-| `GET /api/stats/donor` | O(donor's donations) | Low-Moderate |
-| Reverse geocoding | External API call | Medium — Nominatim rate limits |
+| Operation                            | Cost                 | Impact                         |
+| ------------------------------------ | -------------------- | ------------------------------ |
+| `GET /api/stats/platform`            | O(users + donations) | High — loads entire tables     |
+| `GET /api/donations` with enrichment | O(N \* 2 queries)    | Medium — N+1 per item          |
+| `GET /api/stats/donor`               | O(donor's donations) | Low-Moderate                   |
+| Reverse geocoding                    | External API call    | Medium — Nominatim rate limits |
 
 ### 12.3 Memory Usage
 
@@ -1418,6 +1450,7 @@ graph TB
 ### 12.4 Database Optimization
 
 **Add these indexes**:
+
 ```sql
 CREATE INDEX idx_users_clerk_id ON users(clerk_id);
 CREATE INDEX idx_donations_donor_id ON donations(donor_id);
@@ -1450,18 +1483,18 @@ CREATE INDEX idx_donations_pickup_deadline ON donations(pickup_deadline);
 
 ### 13.1 Security Risks
 
-| Risk | Severity | Description |
-|------|----------|-------------|
-| OTP stored in plaintext | **High** | The `otp` column in `claims` is plain text. Should be hashed with bcrypt if sensitive, or at minimum treated as a short-lived token. |
-| No rate limiting | **High** | No rate limiting on any endpoint. Brute force on OTP (6 digits = 1M combinations) or login attempts possible. |
-| No input sanitization beyond Zod | **Medium** | SQL injection is prevented by Drizzle parameterization, but XSS is possible if user content is rendered without escaping. |
-| Admin routes lack middleware | **Medium** | Admin check is inline in each handler (`requireAdmin`). Easy to forget. Should be centralized middleware. |
-| No HTTPS enforcement | **Medium** | No ` Strict-Transport-Security` header or HTTPS redirect. Mitigated by Replit's proxy. |
-| Missing CORS origin restriction | **Medium** | `cors({ credentials: true, origin: true })` allows any origin. Should restrict to known domains. |
-| Session tokens in logs | **Low** | pinoHttp logs request URLs but not headers. Safe by default. |
-| No Content Security Policy | **Medium** | No CSP header set. Could allow XSS injection of scripts. |
-| Image URL validation | **Low** | `imageUrl` accepts any string. No URL validation or file type checking. |
-| Admin delete without confirmation | **Low** | No soft delete or confirmation step for admin deletion. |
+| Risk                              | Severity   | Description                                                                                                                          |
+| --------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| OTP stored in plaintext           | **High**   | The `otp` column in `claims` is plain text. Should be hashed with bcrypt if sensitive, or at minimum treated as a short-lived token. |
+| No rate limiting                  | **High**   | No rate limiting on any endpoint. Brute force on OTP (6 digits = 1M combinations) or login attempts possible.                        |
+| No input sanitization beyond Zod  | **Medium** | SQL injection is prevented by Drizzle parameterization, but XSS is possible if user content is rendered without escaping.            |
+| Admin routes lack middleware      | **Medium** | Admin check is inline in each handler (`requireAdmin`). Easy to forget. Should be centralized middleware.                            |
+| No HTTPS enforcement              | **Medium** | No ` Strict-Transport-Security` header or HTTPS redirect. Mitigated by Replit's proxy.                                               |
+| Missing CORS origin restriction   | **Medium** | `cors({ credentials: true, origin: true })` allows any origin. Should restrict to known domains.                                     |
+| Session tokens in logs            | **Low**    | pinoHttp logs request URLs but not headers. Safe by default.                                                                         |
+| No Content Security Policy        | **Medium** | No CSP header set. Could allow XSS injection of scripts.                                                                             |
+| Image URL validation              | **Low**    | `imageUrl` accepts any string. No URL validation or file type checking.                                                              |
+| Admin delete without confirmation | **Low**    | No soft delete or confirmation step for admin deletion.                                                                              |
 
 ### 13.2 Input Validation
 
@@ -1485,18 +1518,18 @@ CREATE INDEX idx_donations_pickup_deadline ON donations(pickup_deadline);
 
 ### 13.5 OWASP Recommendations
 
-| OWASP Category | Status | Action |
-|----------------|--------|--------|
-| A01: Broken Access Control | ⚠️ Partial | Centralize admin middleware |
-| A02: Cryptographic Failures | ⚠️ Partial | Hash OTPs if they persist |
-| A03: Injection | ✅ Safe | Drizzle parameterizes all queries |
-| A04: Insecure Design | ⚠️ Partial | Add rate limiting |
-| A05: Security Misconfiguration | ⚠️ Partial | Restrict CORS, add CSP |
-| A06: Vulnerable Components | ✅ Safe | pnpm minimumReleaseAge protects against supply-chain |
-| A07: Auth Failures | ✅ Safe | Clerk handles auth securely |
-| A08: Data Integrity | ✅ Safe | Zod validates all inputs |
-| A09: Logging Failures | ✅ Safe | pino structured logging |
-| A10: SSRF | ✅ Safe | No server-side request forging vectors |
+| OWASP Category                 | Status     | Action                                               |
+| ------------------------------ | ---------- | ---------------------------------------------------- |
+| A01: Broken Access Control     | ⚠️ Partial | Centralize admin middleware                          |
+| A02: Cryptographic Failures    | ⚠️ Partial | Hash OTPs if they persist                            |
+| A03: Injection                 | ✅ Safe    | Drizzle parameterizes all queries                    |
+| A04: Insecure Design           | ⚠️ Partial | Add rate limiting                                    |
+| A05: Security Misconfiguration | ⚠️ Partial | Restrict CORS, add CSP                               |
+| A06: Vulnerable Components     | ✅ Safe    | pnpm minimumReleaseAge protects against supply-chain |
+| A07: Auth Failures             | ✅ Safe    | Clerk handles auth securely                          |
+| A08: Data Integrity            | ✅ Safe    | Zod validates all inputs                             |
+| A09: Logging Failures          | ✅ Safe    | pino structured logging                              |
+| A10: SSRF                      | ✅ Safe    | No server-side request forging vectors               |
 
 ### 13.6 Suggested Fixes
 
@@ -1525,8 +1558,11 @@ CREATE INDEX idx_donations_pickup_deadline ON donations(pickup_deadline);
 ```ts
 // Appears in claims.ts, donations.ts, stats.ts
 async function getUser(clerkId: string) {
-  const [user] = await db.select().from(usersTable)
-    .where(eq(usersTable.clerkId, clerkId)).limit(1);
+  const [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.clerkId, clerkId))
+    .limit(1);
   return user ?? null;
 }
 ```
@@ -1543,33 +1579,33 @@ async function getUser(clerkId: string) {
 
 ### 14.4 Naming Improvements
 
-| Current | Better | Reason |
-|---------|--------|--------|
-| `getUser` | `findUserByClerkId` | More descriptive |
-| `enrichDonation` | `loadDonationRelations` | Clearer intent |
-| `handleClaim` | `claimDonationHandler` | Follows handler naming convention |
-| `cleanupExpiredDonations` | `deleteExpiredDonations` | More direct |
+| Current                   | Better                   | Reason                            |
+| ------------------------- | ------------------------ | --------------------------------- |
+| `getUser`                 | `findUserByClerkId`      | More descriptive                  |
+| `enrichDonation`          | `loadDonationRelations`  | Clearer intent                    |
+| `handleClaim`             | `claimDonationHandler`   | Follows handler naming convention |
+| `cleanupExpiredDonations` | `deleteExpiredDonations` | More direct                       |
 
 ### 14.5 SOLID Principles
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| **Single Responsibility** | ❌ Violated | Route handlers do too much (auth, validation, DB, response) |
-| **Open/Closed** | ⚠️ Partial | Adding new donation status requires changes in multiple files |
-| **Liskov Substitution** | ✅ N/A | No inheritance hierarchy |
-| **Interface Segregation** | ✅ OK | Zod schemas are granular |
-| **Dependency Inversion** | ⚠️ Partial | Route handlers depend directly on Drizzle instead of an abstraction |
+| Principle                 | Status      | Notes                                                               |
+| ------------------------- | ----------- | ------------------------------------------------------------------- |
+| **Single Responsibility** | ❌ Violated | Route handlers do too much (auth, validation, DB, response)         |
+| **Open/Closed**           | ⚠️ Partial  | Adding new donation status requires changes in multiple files       |
+| **Liskov Substitution**   | ✅ N/A      | No inheritance hierarchy                                            |
+| **Interface Segregation** | ✅ OK       | Zod schemas are granular                                            |
+| **Dependency Inversion**  | ⚠️ Partial  | Route handlers depend directly on Drizzle instead of an abstraction |
 
 ### 14.6 Maintainability Score
 
-| Aspect | Score | Notes |
-|--------|-------|-------|
-| Type Safety | 8/10 | Mostly typed, some `any` casts |
-| Test Coverage | 0/10 | No tests exist |
-| Documentation | 6/10 | replit.md covers basics, inline docs minimal |
-| Consistency | 7/10 | Some patterns repeated, some inconsistent |
-| Modularity | 5/10 | No service/repository layers |
-| **Overall** | **5.5/10** | Functional but needs architectural improvements for scale |
+| Aspect        | Score      | Notes                                                     |
+| ------------- | ---------- | --------------------------------------------------------- |
+| Type Safety   | 8/10       | Mostly typed, some `any` casts                            |
+| Test Coverage | 0/10       | No tests exist                                            |
+| Documentation | 6/10       | replit.md covers basics, inline docs minimal              |
+| Consistency   | 7/10       | Some patterns repeated, some inconsistent                 |
+| Modularity    | 5/10       | No service/repository layers                              |
+| **Overall**   | **5.5/10** | Functional but needs architectural improvements for scale |
 
 ---
 
@@ -1578,12 +1614,14 @@ async function getUser(clerkId: string) {
 ### 15.1 Running Locally
 
 **Prerequisites**:
+
 - Node.js 24+
 - pnpm 9+
 - PostgreSQL database (or use Replit's built-in DB)
 - Clerk account with publishable + secret keys
 
 **Setup**:
+
 ```bash
 # Install dependencies
 pnpm install
@@ -1662,6 +1700,7 @@ pnpm --filter @workspace/api-server run start
 ```
 
 **Nginx configuration**:
+
 ```nginx
 server {
     listen 80;
@@ -1711,6 +1750,7 @@ npx serve -p 3000
 ### 15.5 Docker Deployment
 
 **Dockerfile**:
+
 ```dockerfile
 # Multi-stage build
 FROM node:24-slim AS builder
@@ -1766,18 +1806,18 @@ docker run -p 8080:8080 \
 
 ### 16.1 Missing Features
 
-| Feature | Priority | Description |
-|---------|----------|-------------|
-| **Push Notifications** | High | Notify NGOs when new donations are nearby |
-| **Real-time Updates** | High | WebSocket or SSE for donation status changes |
-| **Donor Rating System** | Medium | NGOs rate donors, donors rate NGOs |
-| **Photo Upload** | Medium | Direct image upload to S3/R2 instead of URLs |
-| **Multi-language Support** | Medium | Hindi, regional languages |
-| **SMS Notifications** | Medium | Send OTP and status updates via SMS |
-| **Volunteer Matching** | Medium | Match volunteers to nearby donations automatically |
-| **Donation Scheduling** | Low | Schedule recurring donations (daily/weekly) |
-| **Analytics Dashboard** | Low | Charts and graphs for admins |
-| **Mobile App** | Low | React Native or PWA version |
+| Feature                    | Priority | Description                                        |
+| -------------------------- | -------- | -------------------------------------------------- |
+| **Push Notifications**     | High     | Notify NGOs when new donations are nearby          |
+| **Real-time Updates**      | High     | WebSocket or SSE for donation status changes       |
+| **Donor Rating System**    | Medium   | NGOs rate donors, donors rate NGOs                 |
+| **Photo Upload**           | Medium   | Direct image upload to S3/R2 instead of URLs       |
+| **Multi-language Support** | Medium   | Hindi, regional languages                          |
+| **SMS Notifications**      | Medium   | Send OTP and status updates via SMS                |
+| **Volunteer Matching**     | Medium   | Match volunteers to nearby donations automatically |
+| **Donation Scheduling**    | Low      | Schedule recurring donations (daily/weekly)        |
+| **Analytics Dashboard**    | Low      | Charts and graphs for admins                       |
+| **Mobile App**             | Low      | React Native or PWA version                        |
 
 ### 16.2 Scalability Roadmap
 
@@ -1873,6 +1913,7 @@ pnpm --filter @workspace/annsetu run dev        # Run frontend
 ### Architecture
 
 **Contract-First Design**: The OpenAPI spec (`lib/api-spec/openapi.yaml`) is the single source of truth. Orval generates:
+
 - React Query hooks for the frontend (`lib/api-client-react`)
 - Zod schemas for the backend (`lib/api-zod`)
 
@@ -1880,14 +1921,14 @@ This ensures the frontend and backend never drift out of sync.
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `CLERK_PUBLISHABLE_KEY` | Yes | Clerk public key |
-| `CLERK_SECRET_KEY` | Yes | Clerk secret key |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Yes | Frontend Clerk key |
-| `PORT` | Yes | Server port |
-| `BASE_PATH` | Yes | URL base path |
+| Variable                     | Required | Description                  |
+| ---------------------------- | -------- | ---------------------------- |
+| `DATABASE_URL`               | Yes      | PostgreSQL connection string |
+| `CLERK_PUBLISHABLE_KEY`      | Yes      | Clerk public key             |
+| `CLERK_SECRET_KEY`           | Yes      | Clerk secret key             |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Yes      | Frontend Clerk key           |
+| `PORT`                       | Yes      | Server port                  |
+| `BASE_PATH`                  | Yes      | URL base path                |
 
 ### Key Features
 
@@ -1905,6 +1946,7 @@ Clerk handles all authentication via OAuth and SSO. The app uses a **proxy patte
 ### Database
 
 PostgreSQL with Drizzle ORM. Schema managed in `lib/db/src/schema/`. Run migrations with:
+
 ```bash
 pnpm --filter @workspace/db run push
 ```
@@ -1912,6 +1954,7 @@ pnpm --filter @workspace/db run push
 ### Deployment
 
 **Replit** (recommended):
+
 1. Set environment variables in Replit Secrets
 2. Click "Deploy" in the Replit UI
 
@@ -1920,12 +1963,12 @@ See [Deployment Guide](#15-deployment-guide) for nginx, Docker, and VPS instruct
 
 ### Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| `PORT not provided` | Set `PORT` env var before running |
-| `Database connection failed` | Check `DATABASE_URL` is correct and DB is running |
-| `Clerk auth not working` | Verify `CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` |
-| `Generated imports broken` | Run `pnpm --filter @workspace/api-spec run codegen` |
+| Issue                         | Solution                                                |
+| ----------------------------- | ------------------------------------------------------- |
+| `PORT not provided`           | Set `PORT` env var before running                       |
+| `Database connection failed`  | Check `DATABASE_URL` is correct and DB is running       |
+| `Clerk auth not working`      | Verify `CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`   |
+| `Generated imports broken`    | Run `pnpm --filter @workspace/api-spec run codegen`     |
 | `Type errors across packages` | Run `pnpm run typecheck:libs` then `pnpm run typecheck` |
 
 ### Contributing

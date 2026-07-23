@@ -6,12 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type UserProfileRole = typeof UserProfileRole[keyof typeof UserProfileRole];
-
+export type UserProfileRole =
+  (typeof UserProfileRole)[keyof typeof UserProfileRole];
 
 export const UserProfileRole = {
-  donor: 'donor',
-  ngo: 'ngo',
-  volunteer: 'volunteer',
-  admin: 'admin',
+  donor: "donor",
+  ngo: "ngo",
+  volunteer: "volunteer",
+  admin: "admin",
 } as const;

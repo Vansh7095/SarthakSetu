@@ -6,11 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type DonationUpdateFoodType = typeof DonationUpdateFoodType[keyof typeof DonationUpdateFoodType];
-
+export type DonationUpdateFoodType =
+  (typeof DonationUpdateFoodType)[keyof typeof DonationUpdateFoodType];
 
 export const DonationUpdateFoodType = {
-  veg: 'veg',
-  non_veg: 'non_veg',
-  both: 'both',
+  veg: "veg",
+  non_veg: "non_veg",
+  both: "both",
 } as const;

@@ -2,7 +2,15 @@ import { Link, useLocation } from "wouter";
 import { useAuth, useClerk } from "@clerk/react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, LogOut, Map as MapIcon, Home, Heart, List, User } from "lucide-react";
+import {
+  Menu,
+  LogOut,
+  Map as MapIcon,
+  Home,
+  Heart,
+  List,
+  User,
+} from "lucide-react";
 import { useGetMyProfile } from "@workspace/api-client-react";
 import { useState } from "react";
 
@@ -10,26 +18,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { isSignedIn } = useAuth();
   const { signOut } = useClerk();
   const [, setLocation] = useLocation();
-  const { data: profile } = useGetMyProfile(!!isSignedIn ? undefined : { query: { enabled: false } as any });
+  const { data: profile } = useGetMyProfile(
+    !!isSignedIn ? undefined : { query: { enabled: false } as any },
+  );
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const navigation = isSignedIn ? [
-    { name: "Dashboard", href: "/dashboard", icon: Home },
-    ...(profile?.role === "donor"
-      ? [
-          { name: "Donate Food", href: "/donate", icon: Heart },
-          { name: "My Listings", href: "/my-donations", icon: List },
-        ]
-      : [
-          { name: "Available Food", href: "/donations", icon: List },
-          { name: "My Claims", href: "/my-claims", icon: Heart },
-        ]
-    ),
-    { name: "Map View", href: "/map", icon: MapIcon },
-    { name: "Profile", href: "/profile", icon: User },
-  ] : [
-    { name: "Home", href: "/", icon: Home },
-  ];
+  const navigation = isSignedIn
+    ? [
+        { name: "Dashboard", href: "/dashboard", icon: Home },
+        ...(profile?.role === "donor"
+          ? [
+              { name: "Donate Food", href: "/donate", icon: Heart },
+              { name: "My Listings", href: "/my-donations", icon: List },
+            ]
+          : [
+              { name: "Available Food", href: "/donations", icon: List },
+              { name: "My Claims", href: "/my-claims", icon: Heart },
+            ]),
+        { name: "Map View", href: "/map", icon: MapIcon },
+        { name: "Profile", href: "/profile", icon: User },
+      ]
+    : [{ name: "Home", href: "/", icon: Home }];
 
   const handleNavClick = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -94,13 +103,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
             {isSignedIn ? (
-              <Button variant="outline" size="sm" onClick={() => signOut({ redirectUrl: "/" })}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => signOut({ redirectUrl: "/" })}
+              >
                 Sign Out
               </Button>
             ) : (
               <div className="flex items-center gap-4">
                 <Link href="/sign-in">
-                  <Button variant="ghost" size="sm">Sign In</Button>
+                  <Button variant="ghost" size="sm">
+                    Sign In
+                  </Button>
                 </Link>
                 <Link href="/sign-up">
                   <Button size="sm">Sign Up</Button>

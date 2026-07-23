@@ -6,13 +6,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type UserProfileInputDonorCategory = typeof UserProfileInputDonorCategory[keyof typeof UserProfileInputDonorCategory];
-
+export type UserProfileInputDonorCategory =
+  (typeof UserProfileInputDonorCategory)[keyof typeof UserProfileInputDonorCategory];
 
 export const UserProfileInputDonorCategory = {
-  restaurant: 'restaurant',
-  hotel: 'hotel',
-  caterer: 'caterer',
-  event_org: 'event_org',
-  household: 'household',
+  restaurant: "restaurant",
+  hotel: "hotel",
+  caterer: "caterer",
+  event_org: "event_org",
+  household: "household",
 } as const;

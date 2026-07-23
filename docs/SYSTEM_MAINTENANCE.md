@@ -60,12 +60,12 @@
 
 ### Services
 
-| Service | Type | Port | Path | Purpose |
-|---------|------|------|------|---------|
-| API Server | Node.js/Express | `PORT` env | `/api/*` | REST API |
-| Frontend | Vite (dev) / Static (prod) | `PORT` env | `/*` (non-API) | SPA |
-| PostgreSQL | Database | 5432 | Internal | Data persistence |
-| Clerk Proxy | Express middleware | Same as API | `/api/__clerk/*` | Auth proxy |
+| Service     | Type                       | Port        | Path             | Purpose          |
+| ----------- | -------------------------- | ----------- | ---------------- | ---------------- |
+| API Server  | Node.js/Express            | `PORT` env  | `/api/*`         | REST API         |
+| Frontend    | Vite (dev) / Static (prod) | `PORT` env  | `/*` (non-API)   | SPA              |
+| PostgreSQL  | Database                   | 5432        | Internal         | Data persistence |
+| Clerk Proxy | Express middleware         | Same as API | `/api/__clerk/*` | Auth proxy       |
 
 ### Runtime
 
@@ -89,35 +89,35 @@
 
 ### Minimum (Development / Demo)
 
-| Resource | Spec |
-|----------|------|
-| CPU | 1 core |
-| RAM | 512 MB |
-| Storage | 2 GB SSD |
-| Network | 10 Mbps |
-| OS | Linux (Ubuntu 22.04 LTS recommended) |
+| Resource | Spec                                 |
+| -------- | ------------------------------------ |
+| CPU      | 1 core                               |
+| RAM      | 512 MB                               |
+| Storage  | 2 GB SSD                             |
+| Network  | 10 Mbps                              |
+| OS       | Linux (Ubuntu 22.04 LTS recommended) |
 
 ### Recommended (Production, < 1,000 active users)
 
-| Resource | Spec |
-|----------|------|
-| CPU | 2 cores |
-| RAM | 2 GB |
-| Storage | 10 GB SSD |
-| Network | 100 Mbps |
-| OS | Linux (Ubuntu 24.04 LTS) |
+| Resource | Spec                     |
+| -------- | ------------------------ |
+| CPU      | 2 cores                  |
+| RAM      | 2 GB                     |
+| Storage  | 10 GB SSD                |
+| Network  | 100 Mbps                 |
+| OS       | Linux (Ubuntu 24.04 LTS) |
 
 ### High Traffic (> 10,000 active users, > 1,000 donations/day)
 
-| Resource | Spec |
-|----------|------|
-| CPU | 4+ cores |
-| RAM | 8 GB |
-| Storage | 50 GB SSD |
-| Network | 1 Gbps |
+| Resource | Spec                                                             |
+| -------- | ---------------------------------------------------------------- |
+| CPU      | 4+ cores                                                         |
+| RAM      | 8 GB                                                             |
+| Storage  | 50 GB SSD                                                        |
+| Network  | 1 Gbps                                                           |
 | Database | Separate PostgreSQL instance with connection pooling (PgBouncer) |
-| Cache | Redis instance (1 GB) for stats and session data |
-| CDN | Cloudflare or AWS CloudFront for static assets |
+| Cache    | Redis instance (1 GB) for stats and session data                 |
+| CDN      | Cloudflare or AWS CloudFront for static assets                   |
 
 ---
 
@@ -381,6 +381,7 @@ curl https://sarthaksetu.org/api/healthz
 ```
 
 **Database rollback**: If schema changes caused issues:
+
 ```bash
 # Restore from pre-migration backup first
 # Then re-apply old schema
@@ -468,6 +469,7 @@ pnpm --filter @workspace/api-server add @sentry/node
 ```
 
 Configure in `app.ts`:
+
 ```ts
 import * as Sentry from "@sentry/node";
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -487,14 +489,14 @@ Use UptimeRobot or similar for external health checks:
 
 ### Log Locations
 
-| Log Type | Location | Format |
-|----------|----------|--------|
-| API access | `/var/log/sarthaksetu/api.log` | JSON (pino) |
-| API errors | `/var/log/sarthaksetu/api-error.log` | JSON (pino) |
-| PM2 logs | `~/.pm2/logs/` | Text |
-| Nginx access | `/var/log/nginx/sarthaksetu-access.log` | Combined |
-| Nginx errors | `/var/log/nginx/sarthaksetu-error.log` | Text |
-| PostgreSQL | `/var/log/postgresql/postgresql-*.log` | Text |
+| Log Type     | Location                                | Format      |
+| ------------ | --------------------------------------- | ----------- |
+| API access   | `/var/log/sarthaksetu/api.log`          | JSON (pino) |
+| API errors   | `/var/log/sarthaksetu/api-error.log`    | JSON (pino) |
+| PM2 logs     | `~/.pm2/logs/`                          | Text        |
+| Nginx access | `/var/log/nginx/sarthaksetu-access.log` | Combined    |
+| Nginx errors | `/var/log/nginx/sarthaksetu-error.log`  | Text        |
+| PostgreSQL   | `/var/log/postgresql/postgresql-*.log`  | Text        |
 
 ### Log Rotation
 
@@ -522,11 +524,20 @@ EOF
 ### Pino Log Format
 
 The application uses structured JSON logging. Example:
+
 ```json
-{"level":30,"time":1750000000000,"pid":1234,"hostname":"server","msg":"Server listening","port":8080}
+{
+  "level": 30,
+  "time": 1750000000000,
+  "pid": 1234,
+  "hostname": "server",
+  "msg": "Server listening",
+  "port": 8080
+}
 ```
 
 **To view pretty-printed logs**:
+
 ```bash
 pm2 logs sarthaksetu-api | npx pino-pretty
 ```
@@ -534,11 +545,13 @@ pm2 logs sarthaksetu-api | npx pino-pretty
 ### Sensitive Data Redaction
 
 Pino is already configured to redact:
+
 - `req.headers.authorization`
 - `req.headers.cookie`
 - `res.headers['set-cookie']`
 
 **Verify this is working**:
+
 ```bash
 curl -H "Authorization: Bearer test" https://sarthaksetu.org/api/users/me
 grep "Bearer" /var/log/sarthaksetu/api.log
@@ -645,12 +658,12 @@ sudo systemctl start nginx
 
 ### Backup Schedule
 
-| Backup Type | Frequency | Retention | Storage |
-|-------------|-----------|-----------|---------|
-| Database full | Daily at 02:00 | 30 days | Local + remote |
-| Application files | Weekly (after deploy) | 10 versions | Local + remote |
-| Environment variables | After any change | All versions | Encrypted remote |
-| Database schema | After any schema change | All versions | Git + remote |
+| Backup Type           | Frequency               | Retention    | Storage          |
+| --------------------- | ----------------------- | ------------ | ---------------- |
+| Database full         | Daily at 02:00          | 30 days      | Local + remote   |
+| Application files     | Weekly (after deploy)   | 10 versions  | Local + remote   |
+| Environment variables | After any change        | All versions | Encrypted remote |
+| Database schema       | After any schema change | All versions | Git + remote     |
 
 ---
 
@@ -658,13 +671,14 @@ sudo systemctl start nginx
 
 ### Server Failure
 
-| Scenario | Recovery Steps | RTO |
-|----------|--------------|-----|
-| API process crashes | PM2 auto-restarts within 3 seconds | < 10 seconds |
-| Full server crash | Restore from latest backup to new VM | < 1 hour |
-| Disk failure | Mount new disk, restore files + DB | < 2 hours |
+| Scenario            | Recovery Steps                       | RTO          |
+| ------------------- | ------------------------------------ | ------------ |
+| API process crashes | PM2 auto-restarts within 3 seconds   | < 10 seconds |
+| Full server crash   | Restore from latest backup to new VM | < 1 hour     |
+| Disk failure        | Mount new disk, restore files + DB   | < 2 hours    |
 
 **Runbook for total server replacement**:
+
 1. Provision new server with same specs
 2. Install Node.js, pnpm, PostgreSQL, nginx, PM2
 3. Restore application files from backup
@@ -686,6 +700,7 @@ psql -d sarthaksetu < /var/backups/sarthaksetu/sarthaksetu_backup.sql
 ```
 
 **Point-in-time recovery** (if WAL archiving is enabled):
+
 ```bash
 # Requires WAL archiving setup (not currently configured)
 # This is a recommendation for future enhancement
@@ -693,12 +708,12 @@ psql -d sarthaksetu < /var/backups/sarthaksetu/sarthaksetu_backup.sql
 
 ### Lost Secrets
 
-| Secret | Recovery |
-|--------|----------|
-| `DATABASE_URL` | Regenerate from PostgreSQL credentials |
-| `CLERK_SECRET_KEY` | Generate new key from Clerk Dashboard |
-| `CLERK_PUBLISHABLE_KEY` | Copy from Clerk Dashboard (not sensitive) |
-| Server SSH keys | Generate new key pair, update all authorized_keys |
+| Secret                  | Recovery                                          |
+| ----------------------- | ------------------------------------------------- |
+| `DATABASE_URL`          | Regenerate from PostgreSQL credentials            |
+| `CLERK_SECRET_KEY`      | Generate new key from Clerk Dashboard             |
+| `CLERK_PUBLISHABLE_KEY` | Copy from Clerk Dashboard (not sensitive)         |
+| Server SSH keys         | Generate new key pair, update all authorized_keys |
 
 **Store secrets in a password manager (1Password, Bitwarden, etc.) with shared team access.**
 
@@ -713,12 +728,12 @@ psql -d sarthaksetu < /var/backups/sarthaksetu/sarthaksetu_backup.sql
 
 ### Recovery Time Objectives (RTO)
 
-| Component | RTO | RPO |
-|-----------|-----|-----|
-| API server | 5 minutes | N/A (stateless) |
-| Frontend | 5 minutes | N/A (static files) |
-| Database | 1 hour | 24 hours (daily backups) |
-| Full system | 2 hours | 24 hours |
+| Component   | RTO       | RPO                      |
+| ----------- | --------- | ------------------------ |
+| API server  | 5 minutes | N/A (stateless)          |
+| Frontend    | 5 minutes | N/A (static files)       |
+| Database    | 1 hour    | 24 hours (daily backups) |
+| Full system | 2 hours   | 24 hours                 |
 
 **To improve RPO to 1 hour**: Implement hourly incremental backups or streaming replication.
 
@@ -760,6 +775,7 @@ PM2 cluster mode handles load balancing across instances automatically.
 ### Load Balancing
 
 **Nginx upstream configuration**:
+
 ```nginx
 upstream sarthaksetu_api {
     server localhost:8080;
@@ -790,6 +806,7 @@ For static assets (frontend build output):
 #### Read Replicas
 
 For read-heavy workloads (donation browsing, stats):
+
 ```
 Primary DB (writes) → Read Replica 1 (donation lists)
                   → Read Replica 2 (stats)
@@ -800,6 +817,7 @@ Drizzle ORM does not natively support read/write splitting. Implement at applica
 #### Connection Pooling
 
 Install PgBouncer between app and database:
+
 ```bash
 sudo apt-get install -y pgbouncer
 ```
@@ -813,10 +831,12 @@ Configure `max_client_conn = 1000` and `default_pool_size = 20`.
 ### Cache Cleaning
 
 The application has minimal caching:
+
 - TanStack Query caches API responses in the browser (client-side, auto-expires)
 - No server-side cache exists currently
 
 **If Redis is added later**:
+
 ```bash
 # Clear all cache
 redis-cli FLUSHDB
@@ -845,6 +865,7 @@ sudo -u postgres psql -d sarthaksetu -c "VACUUM FULL;"
 #### Add Missing Indexes
 
 Run after significant data growth:
+
 ```sql
 CREATE INDEX CONCURRENTLY idx_donations_status ON donations(status);
 CREATE INDEX CONCURRENTLY idx_donations_donor_id ON donations(donor_id);
@@ -858,6 +879,7 @@ Use `CONCURRENTLY` to avoid table locks during creation.
 ### Index Maintenance
 
 Monitor index bloat:
+
 ```sql
 SELECT schemaname, relname, n_dead_tup, n_live_tup,
        round(n_dead_tup::numeric/nullif(n_live_tup,0)*100, 2) as dead_pct
@@ -1069,6 +1091,7 @@ docker push registry.example.com/sarthaksetu:latest
 ### Persistent Volumes
 
 For database in Docker:
+
 ```bash
 docker volume create sarthaksetu-postgres
 
@@ -1099,6 +1122,7 @@ docker network connect sarthaksetu-network sarthaksetu-api
 ### Why Termux?
 
 Running on an Android phone with Termux is useful for:
+
 - Low-cost personal demos
 - Offline-capable community deployments
 - Emergency backup hosting
@@ -1224,6 +1248,7 @@ sudo systemctl restart sshd
 ```
 
 **Generate SSH key** (if not already):
+
 ```bash
 ssh-keygen -t ed25519 -C "sarthaksetu-admin"
 ```

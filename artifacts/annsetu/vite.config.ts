@@ -4,11 +4,14 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 // Optional runtime-error overlay — gracefully degrade if not installed
-let runtimeErrorOverlay = () => ({
-  name: "no-op-runtime-error",
-} as any);
+let runtimeErrorOverlay = () =>
+  ({
+    name: "no-op-runtime-error",
+  }) as any;
 try {
-  runtimeErrorOverlay = (await import("@replit/vite-plugin-runtime-error-modal")).default;
+  runtimeErrorOverlay = (
+    await import("@replit/vite-plugin-runtime-error-modal")
+  ).default;
 } catch {
   // Not installed (non-Replit environment) — no overlay needed
 }
@@ -48,7 +51,12 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
-      "@assets": path.resolve(import.meta.dirname, "..", "..", "attached_assets"),
+      "@assets": path.resolve(
+        import.meta.dirname,
+        "..",
+        "..",
+        "attached_assets",
+      ),
     },
     dedupe: ["react", "react-dom"],
   },

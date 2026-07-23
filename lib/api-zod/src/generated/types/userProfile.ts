@@ -5,8 +5,8 @@
  * SarthakSetu API - Food donation platform connecting donors with NGOs and volunteers
  * OpenAPI spec version: 0.1.0
  */
-import type { UserProfileDonorCategory } from './userProfileDonorCategory';
-import type { UserProfileRole } from './userProfileRole';
+import type { UserProfileDonorCategory } from "./userProfileDonorCategory";
+import type { UserProfileRole } from "./userProfileRole";
 
 export interface UserProfile {
   id: number;

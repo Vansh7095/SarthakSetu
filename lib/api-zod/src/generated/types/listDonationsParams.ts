@@ -5,17 +5,17 @@
  * SarthakSetu API - Food donation platform connecting donors with NGOs and volunteers
  * OpenAPI spec version: 0.1.0
  */
-import type { ListDonationsDonorCategory } from './listDonationsDonorCategory';
-import type { ListDonationsFoodType } from './listDonationsFoodType';
-import type { ListDonationsStatus } from './listDonationsStatus';
+import type { ListDonationsDonorCategory } from "./listDonationsDonorCategory";
+import type { ListDonationsFoodType } from "./listDonationsFoodType";
+import type { ListDonationsStatus } from "./listDonationsStatus";
 
 export type ListDonationsParams = {
-status?: ListDonationsStatus;
-foodType?: ListDonationsFoodType;
-donorCategory?: ListDonationsDonorCategory;
-lat?: number;
-lng?: number;
-radiusKm?: number;
-limit?: number;
-offset?: number;
+  status?: ListDonationsStatus;
+  foodType?: ListDonationsFoodType;
+  donorCategory?: ListDonationsDonorCategory;
+  lat?: number;
+  lng?: number;
+  radiusKm?: number;
+  limit?: number;
+  offset?: number;
 };

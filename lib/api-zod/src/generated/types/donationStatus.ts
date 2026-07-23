@@ -6,12 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type DonationStatus = typeof DonationStatus[keyof typeof DonationStatus];
-
+export type DonationStatus =
+  (typeof DonationStatus)[keyof typeof DonationStatus];
 
 export const DonationStatus = {
-  available: 'available',
-  claimed: 'claimed',
-  picked_up: 'picked_up',
-  completed: 'completed',
+  available: "available",
+  claimed: "claimed",
+  picked_up: "picked_up",
+  completed: "completed",
 } as const;

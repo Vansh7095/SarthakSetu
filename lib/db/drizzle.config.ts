@@ -13,6 +13,8 @@ export default defineConfig({
   schema: path.join(__dirname, "./src/schema/index.ts"),
   dialect: "postgresql",
   dbCredentials: {
-    url: databaseUrl ?? "postgres://placeholder:placeholder@localhost:5432/placeholder",
+    url:
+      databaseUrl ??
+      "postgres://placeholder:placeholder@localhost:5432/placeholder",
   },
 });
