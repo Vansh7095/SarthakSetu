@@ -1,0 +1,341 @@
+Skip to content
+Library
+Tasks
+Agent
+Active task
+Set up the imported project
+Set up the imported project
+The user just imported this project from a GitHub repository. It could be anything — an app to run on Replit, a library, a fork to study, code to reuse — so the first thing to do is ask what they want; everything after depends on the answer.
+
+This is AnnSetu (सार्थकसेतु) — a food donation platform connecting donors with NGOs/volunteers, built with React + Vite frontend, Express API, PostgreSQL + Drizzle ORM, and Clerk auth. The replit.md is already well-documented from a previous session.
+
+To get it running, it needs two things that aren't yet set up:
+
+A PostgreSQL database (DATABASE_URL)
+Clerk auth keys (CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY, VITE_CLERK_PUBLISHABLE_KEY)
+What would you like to do with this project?
+Pick one
+Make specific changes to the code
+Clarifying desired changes
+What changes would you like to make?
+Declined.
+IMPORTANT:
+
+Before making any changes, thoroughly inspect the entire codebase to understand its architecture, dependencies, and runtime.
+
+Do NOT make assumptions.
+
+If multiple deployment approaches are possible, choose the one that minimizes code changes while maximizing portability.
+
+Preserve all existing functionality exactly.
+
+Only modify infrastructure, deployment, configuration, and developer tooling.
+
+Do not replace frameworks, libraries, or rewrite major portions of the application unless absolutely necessary for portability.
+
+15 days ago
+You've reached your daily free quota limit. It will reset at 12:00 AM UTC.
+
+Time worked
+1 hour 15 minutes
+Work done
+248 actions
+Items read
+3,742 lines
+You've reached your monthly free quota limit. It will reset on July 25, 2026.
+
+You're out of credits.
+
+Make, test, iterate…
+Agent
+Agent can make changes, review its work, and debug itself automatically.
+Loading... - Replit
+Pasted-You-are-a-senior-DevOps-engineer-and-full-stack-archite_1783525339889.txt
+You are a senior DevOps engineer and full-stack architect.
+
+Your task is to refactor this project so that it can be deployed on **any standard machine (Windows, Linux, macOS, VPS, Docker, or Home Server)** instead of relying on Replit's managed environment.
+
+## CRITICAL REQUIREMENTS
+
+### DO NOT CHANGE ANY APPLICATION BEHAVIOR
+
+You must **NOT** change:
+
+* UI/UX
+* Styling
+* Components
+* Routes
+* API behavior
+* Business logic
+* Authentication flow
+* Database schema (unless absolutely required for portability)
+* Existing functionality
+* File structure unless necessary
+* User experience
+* Features
+* Performance characteristics
+
+The application must look, behave, and function **exactly the same** after your changes.
+
+The only goal is to make deployment and local development significantly easier.
+
+---
+
+# OBJECTIVES
+
+Convert this project into a platform-independent application that can run anywhere.
+
+The project should no longer depend on Replit-specific infrastructure.
+
+---
+
+# REMOVE REPLIT DEPENDENCIES
+
+Remove every dependency on Replit, including but not limited to:
+
+* Replit secrets
+* Replit database assumptions
+* Replit ports
+* Replit deployment configuration
+* Replit environment detection
+* Replit-specific packages
+* Replit runtime assumptions
+
+The application should work identically outside Replit.
+
+---
+
+# ENVIRONMENT VARIABLES
+
+Create a complete `.env.example`.
+
+Every required environment variable must be documented.
+
+Provide sensible defaults where possible.
+
+Do not hardcode secrets.
+
+Ensure the application fails with clear error messages if required variables are missing.
+
+---
+
+# DATABASE
+
+Replace any Replit-managed PostgreSQL assumptions with standard PostgreSQL.
+
+The application must use a configurable:
+
+DATABASE_URL
+
+Support PostgreSQL 16+.
+
+Ensure database migrations and schema generation continue to work.
+
+---
+
+# DOCKER SUPPORT
+
+Create production-ready Docker support.
+
+Include:
+
+* Dockerfile(s)
+* docker-compose.yml
+
+docker-compose.yml should be able to start:
+
+* PostgreSQL
+* Backend
+* Frontend (or a production web server serving the frontend)
+
+Running
+
+docker compose up -d
+
+should be enough to start the application after environment variables are configured.
+
+---
+
+# DEVELOPMENT
+
+Running the project locally should be as simple as possible.
+
+The ideal workflow is:
+
+pnpm install
+
+pnpm dev
+
+If additional setup is required, automate it.
+
+---
+
+# PACKAGE SCRIPTS
+
+Create simple scripts.
+
+Example:
+
+pnpm dev
+Starts the complete development environment.
+
+pnpm build
+Builds everything.
+
+pnpm start
+Starts production.
+
+pnpm db:push
+
+pnpm db:migrate
+
+pnpm db:seed
+
+pnpm lint
+
+pnpm test
+
+pnpm doctor
+Checks:
+
+* Node version
+* pnpm version
+* PostgreSQL availability
+* Missing environment variables
+* Missing dependencies
+
+---
+
+# WINDOWS + LINUX
+
+Ensure the project works on:
+
+* Windows
+* Linux
+* macOS
+
+Avoid shell scripts that only work on Unix unless Windows alternatives are also provided.
+
+Use cross-platform tooling whenever possible.
+
+---
+
+# PORT CONFIGURATION
+
+Ports must be configurable.
+
+Provide defaults such as:
+
+Frontend:
+5173
+
+Backend:
+8080
+
+Database:
+5432
+
+Do not assume Replit's internal ports.
+
+---
+
+# DEPLOYMENT
+
+Create a production deployment guide covering:
+
+Windows
+
+Linux
+
+Docker
+
+Home server
+
+VPS
+
+Cloud VM
+
+---
+
+# README
+
+Rewrite the README so a new developer can get the project running from scratch.
+
+Include:
+
+Prerequisites
+
+Installation
+
+Environment variables
+
+Database setup
+
+Development
+
+Production
+
+Docker
+
+Troubleshooting
+
+---
+
+# CODE QUALITY
+
+While making deployment improvements:
+
+* remove dead code
+* remove unused packages
+* remove duplicate scripts
+* simplify configuration where possible
+
+BUT
+
+Do NOT modify business logic.
+
+---
+
+# VERIFY
+
+Before finishing, verify:
+
+✓ Application builds
+
+✓ Application starts
+
+✓ Frontend loads
+
+✓ Backend works
+
+✓ Database connects
+
+✓ Authentication still works
+
+✓ API routes still function
+
+✓ Build succeeds
+
+✓ Docker works
+
+✓ Local development works
+
+✓ No Replit dependency remains
+
+---
+
+# IMPORTANT
+
+Do not redesign or rewrite the project.
+
+Treat this as an infrastructure and deployment refactor only.
+
+Every visible aspect of the application—including appearance, functionality, routing, APIs, authentication, and user experience—must remain unchanged.
+
+At the end, provide a summary of:
+
+1. Every file created.
+2. Every file modified.
+3. Every dependency added or removed.
+4. Every deployment improvement made.
+5. Any manual steps still required.
