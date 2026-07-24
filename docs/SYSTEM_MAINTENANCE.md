@@ -2,7 +2,7 @@
 
 > **Project**: Food donation platform connecting surplus food donors with NGOs and volunteers
 > **Architecture**: React + Vite frontend, Express 5 + Drizzle ORM backend, PostgreSQL database
-> **Auth**: Clerk (Replit-managed), OTP-based claim handover
+> **Auth**: Clerk (self-managed), OTP-based claim handover
 > **Runtime**: Node.js 24, pnpm monorepo
 
 ---

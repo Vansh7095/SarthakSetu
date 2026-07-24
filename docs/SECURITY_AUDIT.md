@@ -27,7 +27,7 @@ The application is functional but has several security gaps that should be addre
 
 ### Authentication Flow
 
-The application uses **Clerk** (Replit-managed tenant) for all authentication. The flow is:
+The application uses **Clerk** (self-managed) for all authentication. The flow is:
 
 1. User clicks "Sign In" or "Sign Up"
 2. Clerk UI components (`<SignIn>` / `<SignUp>`) render with a custom shadcn theme
@@ -61,7 +61,7 @@ app.use(
 );
 ```
 
-The backend uses `publishableKeyFromHost` from `@clerk/shared/keys` to dynamically select the correct Clerk key based on the request hostname. This supports custom domains and Replit's `.replit.app` domains.
+The backend uses `publishableKeyFromHost` from `@clerk/shared/keys` to dynamically select the correct Clerk key based on the request hostname. This supports custom domains.
 
 ### Token Validation
 
@@ -724,8 +724,8 @@ const pool = new Pool({
 | `VITE_CLERK_PROXY_URL`       | No       | Frontend (`App.tsx`)                                    | No                    | Yes — in frontend bundle |
 | `NODE_ENV`                   | Yes      | Backend (`logger.ts`, `clerkProxyMiddleware.ts`), Build | No                    | No                       |
 | `LOG_LEVEL`                  | No       | Backend (`logger.ts`)                                   | No                    | No                       |
-| `SESSION_SECRET`             | Yes      | Replit platform                                         | **Yes**               | No — managed by platform |
-| `REPL_ID`                    | Yes      | Frontend (`vite.config.ts`)                             | No                    | No — build-time only     |
+| `SESSION_SECRET`             | No       | —                                                     | —                     | —                      |
+| `REPL_ID`                    | No       | —                                                     | No                    | —                      |
 
 ### Secret Exposure Assessment
 
@@ -1070,13 +1070,12 @@ No known CVEs for the versions in use. Supply-chain protection is enabled via `m
 ### HTTPS
 
 - **Not enforced in application code**
-- Relies on Replit's platform-level HTTPS for `.replit.app` domains
-- For custom domains, must configure HTTPS at the reverse proxy level
+- For production, configure HTTPS at the reverse proxy level (nginx / Caddy with Let's Encrypt)
 
 ### Reverse Proxy
 
-- Replit provides a reverse proxy that routes `/api/*` to the API server
-- No custom reverse proxy configuration in the codebase
+- nginx configuration is provided in `nginx.conf` for reverse proxying
+- Docker Compose orchestrates the full stack with built-in proxy routing
 - For VPS deployment, nginx or Caddy should be used with proper security headers
 
 ### Docker
@@ -1108,7 +1107,7 @@ No known CVEs for the versions in use. Supply-chain protection is enabled via `m
 
 - PostgreSQL port (5432) should **never** be exposed to the public internet
 - Use a private network or VPN for database access
-- In Replit, the database is internal to the platform (safe)
+- PostgreSQL should run on a private network; never expose port 5432 publicly
 
 ---
 

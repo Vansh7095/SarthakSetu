@@ -3,19 +3,6 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-// Optional runtime-error overlay — gracefully degrade if not installed
-let runtimeErrorOverlay = () =>
-  ({
-    name: "no-op-runtime-error",
-  }) as any;
-try {
-  runtimeErrorOverlay = (
-    await import("@replit/vite-plugin-runtime-error-modal")
-  ).default;
-} catch {
-  // Not installed (non-Replit environment) — no overlay needed
-}
-
 const rawPort = process.env.FRONTEND_PORT ?? process.env.PORT;
 const port = rawPort ? Number(rawPort) : 5173;
 
@@ -32,21 +19,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
-    // Replit-specific plugins only load when REPL_ID is present
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer({
-              root: path.resolve(import.meta.dirname, ".."),
-            }),
-          ),
-          await import("@replit/vite-plugin-dev-banner").then((m) =>
-            m.devBanner(),
-          ),
-        ]
-      : []),
   ],
   resolve: {
     alias: {

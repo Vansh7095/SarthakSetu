@@ -19,7 +19,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 - Frontend: React + Vite (artifact: `artifacts/annsetu/`)
 - API: Express 5 (artifact: `artifacts/api-server/`)
 - DB: PostgreSQL + Drizzle ORM
-- Auth: Clerk (Replit-managed)
+- Auth: Clerk (self-managed)
 - Map: react-leaflet + OpenStreetMap
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)

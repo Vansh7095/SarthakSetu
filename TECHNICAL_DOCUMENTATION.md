@@ -72,7 +72,7 @@ The project follows a **contract-first API design** pattern:
 | **Forms**           | react-hook-form + zod         | —              | Performant forms with schema validation           |
 | **Maps**            | react-leaflet + OpenStreetMap | —              | Free, no-API-key interactive maps                 |
 | **Backend**         | Express 5                     | 5.x            | HTTP server framework                             |
-| **Auth**            | Clerk (Replit-managed)        | —              | OAuth, SSO, session management                    |
+| **Auth**            | Clerk (self-managed)          | —              | OAuth, SSO, session management                    |
 | **Database**        | PostgreSQL + Drizzle ORM      | 0.45.2         | Type-safe SQL with migrations                     |
 | **Validation**      | Zod (v3 + v4)                 | —              | Runtime schema validation                         |
 | **Codegen**         | Orval                         | —              | OpenAPI → React Query + Zod                       |
@@ -494,7 +494,7 @@ There is **no centralized error handling middleware** and **no error response st
 - **Input Validation**: Zod schemas for all request bodies and params
 - **Ownership Checks**: Donors can only modify their own donations (except admins)
 - **Role Guards**: Admin routes check `user.role === "admin"`
-- **Proxy**: Clerk proxy prevents DNS/CNAME issues on `.replit.app`
+- **Proxy**: Clerk proxy enables custom domains without DNS/CNAME configuration
 
 ---
 
@@ -747,7 +747,7 @@ Passwords are **not stored in this application**. Clerk handles all credential s
 
 ### 6.6 Security Mechanisms
 
-- **Clerk Proxy**: `/api/__clerk` routes all Clerk SDK calls through the Express server, avoiding DNS/CNAME configuration issues on Replit domains
+- **Clerk Proxy**: `/api/__clerk` routes all Clerk SDK calls through the Express server, enabling custom domains without DNS/CNAME configuration
 - **Session Tokens**: Short-lived JWTs signed by Clerk's public key
 - **CSRF Protection**: Clerk handles CSRF token validation automatically
 - **Rate Limiting**: Not implemented
@@ -943,8 +943,7 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 | Package                            | Status             | Notes                                                         |
 | ---------------------------------- | ------------------ | ------------------------------------------------------------- |
 | `framer-motion`                    | Possibly underused | Only a few animations; could be replaced with CSS transitions |
-| `@replit/vite-plugin-cartographer` | Dev-only           | Only active in dev mode; safe to keep                         |
-| `@replit/vite-plugin-dev-banner`   | Dev-only           | Only active in dev mode; safe to keep                         |
+| *(none)*                           | —                  | —                                                             |
 
 ### 9.3 Suggested Alternatives
 
@@ -969,7 +968,7 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 | `CLERK_SECRET_KEY`           | Yes      | API Server           | Clerk secret key              |
 | `VITE_CLERK_PUBLISHABLE_KEY` | Yes      | Frontend             | Vite-exposed Clerk public key |
 | `VITE_CLERK_PROXY_URL`       | No       | Frontend             | Clerk proxy URL override      |
-| `SESSION_SECRET`             | Yes      | Replit               | Session encryption (managed)  |
+| `SESSION_SECRET`             | No       | —                    | Session encryption (optional) |
 | `NODE_ENV`                   | Yes      | Build scripts        | `development` or `production` |
 
 ### 10.2 Config Files
@@ -1001,12 +1000,12 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 
 ### 10.4 Deployment Configuration
 
-**Replit Deployment**:
+**Docker Deployment**:
 
-- Workflows defined in `.replit` (not editable directly)
+- `docker-compose.yml` orchestrates PostgreSQL + API + nginx
 - Frontend served as static files from `dist/public/`
 - API server runs as background process
-- Both routed through Replit's reverse proxy
+- nginx reverse proxy routes `/api/*` to the API server
 
 ---
 
@@ -1020,7 +1019,7 @@ graph TB
         Browser["Browser / Mobile"]
     end
 
-    subgraph "Replit Platform"
+    subgraph "Server"
         Proxy["Reverse Proxy"]
 
         subgraph "Frontend (annsetu)"
@@ -1489,7 +1488,7 @@ CREATE INDEX idx_donations_pickup_deadline ON donations(pickup_deadline);
 | No rate limiting                  | **High**   | No rate limiting on any endpoint. Brute force on OTP (6 digits = 1M combinations) or login attempts possible.                        |
 | No input sanitization beyond Zod  | **Medium** | SQL injection is prevented by Drizzle parameterization, but XSS is possible if user content is rendered without escaping.            |
 | Admin routes lack middleware      | **Medium** | Admin check is inline in each handler (`requireAdmin`). Easy to forget. Should be centralized middleware.                            |
-| No HTTPS enforcement              | **Medium** | No ` Strict-Transport-Security` header or HTTPS redirect. Mitigated by Replit's proxy.                                               |
+| No HTTPS enforcement              | **Medium** | No `Strict-Transport-Security` header or HTTPS redirect. Use nginx or Caddy with SSL in production.                                  |
 | Missing CORS origin restriction   | **Medium** | `cors({ credentials: true, origin: true })` allows any origin. Should restrict to known domains.                                     |
 | Session tokens in logs            | **Low**    | pinoHttp logs request URLs but not headers. Safe by default.                                                                         |
 | No Content Security Policy        | **Medium** | No CSP header set. Could allow XSS injection of scripts.                                                                             |
@@ -1602,7 +1601,7 @@ async function getUser(clerkId: string) {
 | ------------- | ---------- | --------------------------------------------------------- |
 | Type Safety   | 8/10       | Mostly typed, some `any` casts                            |
 | Test Coverage | 0/10       | No tests exist                                            |
-| Documentation | 6/10       | replit.md covers basics, inline docs minimal              |
+| Documentation | 6/10       | README.md covers basics, inline docs minimal              |
 | Consistency   | 7/10       | Some patterns repeated, some inconsistent                 |
 | Modularity    | 5/10       | No service/repository layers                              |
 | **Overall**   | **5.5/10** | Functional but needs architectural improvements for scale |
@@ -1617,7 +1616,7 @@ async function getUser(clerkId: string) {
 
 - Node.js 24+
 - pnpm 9+
-- PostgreSQL database (or use Replit's built-in DB)
+- PostgreSQL database
 - Clerk account with publishable + secret keys
 
 **Setup**:
@@ -1651,20 +1650,15 @@ export BASE_PATH="/"
 pnpm --filter @workspace/annsetu run dev
 ```
 
-### 15.2 Deploying to Replit
+### 15.2 Deploying with Docker
 
-The project is already configured for Replit deployment:
+The project includes a complete Docker Compose stack:
 
-1. Workflows are defined in `.replit`:
-   - `artifacts/annsetu: web` — runs `pnpm --filter @workspace/annsetu run dev`
-   - `artifacts/api-server: API Server` — runs `pnpm --filter @workspace/api-server run dev`
-
-2. Environment variables are managed via Replit Secrets:
+1. `docker-compose.yml` orchestrates PostgreSQL + API + nginx
+2. Environment variables are set in `.env`:
    - `DATABASE_URL`, `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY`
-
-3. The Replit proxy routes `/api/*` to the API server and everything else to the frontend.
-
-4. Click "Deploy" in the Replit UI to publish.
+3. nginx routes `/api/*` to the API server and everything else to the frontend
+4. Run `docker compose up --build` to start the stack
 
 ### 15.3 Hosting on a VPS (e.g., DigitalOcean, AWS EC2)
 
@@ -1790,7 +1784,7 @@ docker run -p 8080:8080 \
 ### 15.6 Production Best Practices
 
 1. **Use live Clerk keys** — development keys have strict limits
-2. **Enable HTTPS** — Replit handles this automatically; for VPS use Let's Encrypt
+2. **Enable HTTPS** — Use Let's Encrypt with nginx or Caddy for SSL termination
 3. **Set up a reverse proxy** — nginx or Caddy for load balancing and SSL
 4. **Use a process manager** — PM2 or systemd to keep the server running
 5. **Monitor logs** — pino logs are JSON; use a log aggregator
@@ -1941,7 +1935,7 @@ This ensures the frontend and backend never drift out of sync.
 
 ### Authentication
 
-Clerk handles all authentication via OAuth and SSO. The app uses a **proxy pattern** where Clerk SDK calls route through `/api/__clerk` to avoid DNS issues on Replit domains.
+Clerk handles all authentication via OAuth and SSO. The app uses a **proxy pattern** where Clerk SDK calls route through `/api/__clerk` to enable custom domains without DNS/CNAME configuration.
 
 ### Database
 
@@ -1953,10 +1947,10 @@ pnpm --filter @workspace/db run push
 
 ### Deployment
 
-**Replit** (recommended):
+**Docker** (recommended):
 
-1. Set environment variables in Replit Secrets
-2. Click "Deploy" in the Replit UI
+1. Copy `.env.production.example` to `.env` and fill in values
+2. Run `docker compose up --build`
 
 **VPS/Docker**:
 See [Deployment Guide](#15-deployment-guide) for nginx, Docker, and VPS instructions.
