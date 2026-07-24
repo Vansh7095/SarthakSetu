@@ -1,8 +1,8 @@
 kind = "web"
 previewPath = "/"
-title = "AnnSetu"
+title = "SarthakSetu"
 version = "1.0.0"
-id = "artifacts/annsetu"
+id = "artifacts/sarthaksetu"
 router = "path"
 
 [[integratedSkills]]
@@ -15,11 +15,11 @@ paths = [ "/" ]
 localPort = 21683
 
 [services.development]
-run = "pnpm --filter @workspace/annsetu run dev"
+run = "pnpm --filter @workspace/sarthaksetu run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/annsetu", "run", "build" ]
-publicDir = "artifacts/annsetu/dist/public"
+build = [ "pnpm", "--filter", "@workspace/sarthaksetu", "run", "build" ]
+publicDir = "artifacts/sarthaksetu/dist/public"
 serve = "static"
 
 [[services.production.rewrites]]

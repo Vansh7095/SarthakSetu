@@ -137,11 +137,11 @@ if (existsSync(nodeModules)) {
 }
 
 const keyPackages = [
-  { name: "react", from: "artifacts/annsetu" },
+  { name: "react", from: "artifacts/sarthaksetu" },
   { name: "express", from: "artifacts/api-server" },
   { name: "drizzle-orm", from: "lib/db" },
   { name: "pg", from: "lib/db" },
-  { name: "@clerk/react", from: "artifacts/annsetu" },
+  { name: "@clerk/react", from: "artifacts/sarthaksetu" },
   { name: "@clerk/express", from: "artifacts/api-server" },
 ];
 
@@ -176,7 +176,7 @@ section("Build Status");
 const apiDist = resolve(process.cwd(), "artifacts/api-server/dist/index.mjs");
 const feDist = resolve(
   process.cwd(),
-  "artifacts/annsetu/dist/public/index.html",
+  "artifacts/sarthaksetu/dist/public/index.html",
 );
 
 if (existsSync(apiDist)) {
@@ -190,7 +190,7 @@ if (existsSync(apiDist)) {
 if (existsSync(feDist)) {
   ok("Frontend built (dist/public/index.html)");
 } else {
-  warn("Frontend not built — run: pnpm --filter @workspace/annsetu run build");
+  warn("Frontend not built — run: pnpm --filter @workspace/sarthaksetu run build");
 }
 
 // ---------------------------------------------------------------------------

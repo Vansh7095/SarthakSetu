@@ -1,6 +1,6 @@
 ---
-name: AnnSetu setup patterns
-description: Non-obvious integration details for the AnnSetu food donation platform (Clerk proxy, leaflet, queryClient file, zod imports, Orval naming)
+name: SarthakSetu setup patterns
+description: Non-obvious integration details for the SarthakSetu food donation platform (Clerk proxy, leaflet, queryClient file, zod imports, Orval naming)
 ---
 
 ## Clerk Proxy Path
@@ -13,7 +13,7 @@ Clerk is proxied through the Express API server at `/api/__clerk`. The `clerkPro
 
 If `src/lib/queryClient.ts` doesn't exist when Vite first loads, it caches the error and won't recover even after the file is created. **Always restart the Vite workflow** after creating a new file in `src/lib/` to clear the stale cache.
 
-**How to apply:** If Vite keeps throwing "failed to resolve import ./lib/queryClient" after creating the file, restart the annsetu web workflow.
+**How to apply:** If Vite keeps throwing "failed to resolve import ./lib/queryClient" after creating the file, restart the sarthaksetu web workflow.
 
 ## react-leaflet setup (no API key)
 
@@ -25,7 +25,7 @@ delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({ iconUrl: ..., shadowUrl: ... });
 ```
 
-Packages: `leaflet`, `react-leaflet`, `@types/leaflet` in devDependencies of `@workspace/annsetu`.
+Packages: `leaflet`, `react-leaflet`, `@types/leaflet` in devDependencies of `@workspace/sarthaksetu`.
 
 ## OTP pickup verification
 
@@ -55,4 +55,4 @@ Direct `node -e "require('pg')..."` fails — pg is not globally available. Use 
 
 After running `pnpm --filter @workspace/api-spec run codegen`, Vite's pre-transform cache holds stale references to the old `generated/api.ts` paths. Pages will fail to HMR until the frontend workflow is restarted.
 
-**How to apply:** Always restart the `artifacts/annsetu: web` workflow after running codegen.
+**How to apply:** Always restart the `artifacts/sarthaksetu: web` workflow after running codegen.

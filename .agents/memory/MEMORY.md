@@ -1,1 +1,1 @@
-- [Clerk proxy + react-leaflet integration](annsetu-setup.md) — AnnSetu patterns: Clerk via proxy, leaflet without API key, Vite restart needed after creating new files in src/lib/
+- [Clerk proxy + react-leaflet integration](sarthaksetu-setup.md) — SarthakSetu patterns: Clerk via proxy, leaflet without API key, Vite restart needed after creating new files in src/lib/

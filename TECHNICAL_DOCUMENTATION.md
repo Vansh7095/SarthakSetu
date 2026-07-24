@@ -97,7 +97,7 @@ The project follows a **contract-first API design** pattern:
 ```
 workspace/
 ├── artifacts/                          # Deployable applications
-│   ├── annsetu/                        # React frontend (Vite)
+│   ├── sarthaksetu/                        # React frontend (Vite)
 │   │   ├── public/                     # Static assets (hero.png, favicon.svg)
 │   │   ├── src/
 │   │   │   ├── App.tsx                 # Root component: ClerkProvider, routing, auth guards
@@ -201,8 +201,8 @@ workspace/
 | `lib/db/src/index.ts`                         | Creates the `pg.Pool` and `drizzle()` client. Exported as `db` and `pool` for all DB operations.                 |
 | `artifacts/api-server/src/app.ts`             | Express middleware stack: pino logging → Clerk proxy → CORS → JSON parser → Clerk auth → `/api` routes.          |
 | `artifacts/api-server/src/index.ts`           | Server bootstrap: validates PORT, seeds verification tables, starts cleanup interval, binds to port.             |
-| `artifacts/annsetu/src/App.tsx`               | Root component: ClerkProvider with proxy URL, wouter routing, conditional onboarding redirect, theme appearance. |
-| `artifacts/annsetu/src/components/layout.tsx` | Persistent header with mobile Sheet menu (auto-closing), role-based navigation links, sign-out.                  |
+| `artifacts/sarthaksetu/src/App.tsx`               | Root component: ClerkProvider with proxy URL, wouter routing, conditional onboarding redirect, theme appearance. |
+| `artifacts/sarthaksetu/src/components/layout.tsx` | Persistent header with mobile Sheet menu (auto-closing), role-based navigation links, sign-out.                  |
 | `lib/api-spec/orval.config.ts`                | Configures Orval to generate hooks (frontend) and Zod schemas (backend) from openapi.yaml.                       |
 
 ---
@@ -1022,7 +1022,7 @@ graph TB
     subgraph "Server"
         Proxy["Reverse Proxy"]
 
-        subgraph "Frontend (annsetu)"
+        subgraph "Frontend (sarthaksetu)"
             Vite["Vite Dev Server / Static Files"]
             React["React SPA"]
             Leaflet["Leaflet Map"]
@@ -1647,7 +1647,7 @@ pnpm --filter @workspace/api-server run dev
 # Start frontend (in another terminal)
 export PORT=21683
 export BASE_PATH="/"
-pnpm --filter @workspace/annsetu run dev
+pnpm --filter @workspace/sarthaksetu run dev
 ```
 
 ### 15.2 Deploying with Docker
@@ -1676,7 +1676,7 @@ pnpm install --frozen-lockfile
 pnpm --filter @workspace/api-server run build
 
 # 5. Build frontend
-pnpm --filter @workspace/annsetu run build
+pnpm --filter @workspace/sarthaksetu run build
 
 # 6. Set production environment
 export NODE_ENV=production
@@ -1729,7 +1729,7 @@ pnpm install
 
 # 5. Build both
 pnpm --filter @workspace/api-server run build
-pnpm --filter @workspace/annsetu run build
+pnpm --filter @workspace/sarthaksetu run build
 
 # 6. Start server
 export PORT=8080
@@ -1737,7 +1737,7 @@ export DATABASE_URL="postgres://localhost:5432/sarthaksetu"
 node artifacts/api-server/dist/index.mjs
 
 # 7. Serve frontend (in another session)
-cd artifacts/annsetu/dist/public
+cd artifacts/sarthaksetu/dist/public
 npx serve -p 3000
 ```
 
@@ -1756,13 +1756,13 @@ COPY artifacts/ ./artifacts/
 RUN pnpm install --frozen-lockfile
 RUN pnpm run typecheck
 RUN pnpm --filter @workspace/api-server run build
-RUN pnpm --filter @workspace/annsetu run build
+RUN pnpm --filter @workspace/sarthaksetu run build
 
 FROM node:24-slim AS runner
 WORKDIR /app
 RUN npm install -g pnpm
 COPY --from=builder /app/artifacts/api-server/dist ./api-server/dist
-COPY --from=builder /app/artifacts/annsetu/dist/public ./frontend
+COPY --from=builder /app/artifacts/sarthaksetu/dist/public ./frontend
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
@@ -1870,14 +1870,14 @@ pnpm --filter @workspace/api-spec run codegen
 
 # Run development servers
 pnpm --filter @workspace/api-server run dev    # API on port 8080
-pnpm --filter @workspace/annsetu run dev       # Frontend on port 21683
+pnpm --filter @workspace/sarthaksetu run dev       # Frontend on port 21683
 ```
 
 ### Project Structure
 
 This is a **pnpm monorepo** with shared libraries and deployable artifacts:
 
-- `artifacts/annsetu/` — React + Vite frontend
+- `artifacts/sarthaksetu/` — React + Vite frontend
 - `artifacts/api-server/` — Express 5 backend
 - `lib/api-spec/` — OpenAPI spec (single source of truth)
 - `lib/api-client-react/` — Generated React Query hooks
@@ -1901,7 +1901,7 @@ pnpm run build              # Typecheck + build all packages
 pnpm --filter @workspace/api-spec run codegen   # Regenerate API clients
 pnpm --filter @workspace/db run push            # Push DB schema changes
 pnpm --filter @workspace/api-server run dev     # Run API server
-pnpm --filter @workspace/annsetu run dev        # Run frontend
+pnpm --filter @workspace/sarthaksetu run dev        # Run frontend
 ```
 
 ### Architecture

@@ -1,0 +1,136 @@
+This project has already undergone a complete infrastructure and deployment refactor.
+
+IMPORTANT:
+Before making ANY changes, inspect the entire repository thoroughly to understand its current architecture, dependencies, configuration, and runtime.
+
+Do NOT make assumptions.
+
+The project has already been converted from a Replit-dependent application into a platform-independent application.
+
+The following work has already been completed and MUST NOT be repeated unless you find a genuine issue:
+
+- Docker support
+- docker-compose
+- Multi-stage Dockerfile
+- PostgreSQL support
+- .env.example
+- .env.production.example
+- README
+- GETTING_STARTED.md
+- Cross-platform support (Windows, Linux, macOS)
+- Root scripts
+- Doctor script
+- Deployment documentation
+- Removal of Replit runtime dependencies
+- Local development improvements
+- Production deployment improvements
+
+Do NOT redo or recreate any of the above.
+
+First inspect the repository and provide a concise summary of its current state, architecture, and any remaining issues.
+
+After that, perform ONLY the following task.
+
+------------------------------------------------------------
+TASK
+------------------------------------------------------------
+
+I want the project to use ONLY the name:
+
+SarthakSetu
+
+Currently there are mixed names throughout the project, such as:
+
+- Asset Manager
+- AssetManager
+- asset-manager
+- AnnSetu
+- annsetu
+- ann-setu
+- Any other previous project names
+
+I want these replaced with "SarthakSetu" wherever it is safe and appropriate.
+
+Search the ENTIRE repository, including but not limited to:
+
+- package.json files
+- pnpm workspace configuration
+- README.md
+- GETTING_STARTED.md
+- Dockerfile
+- docker-compose.yml
+- nginx.conf
+- .env.example
+- .env.production.example
+- HTML files
+- CSS files
+- React components
+- TypeScript files
+- JavaScript files
+- Vite configs
+- Drizzle config
+- OpenAPI files
+- generated files (only if safe)
+- scripts
+- GitHub configuration
+- browser tab title
+- window title
+- manifest
+- favicon metadata
+- startup messages
+- console logs
+- Docker image names
+- Docker container names
+- Docker volume names
+- Docker network names
+- service names
+- comments that reference the old project
+- package names (ONLY if safe)
+- workspace names (ONLY if safe)
+
+Requirements:
+
+1. Replace every old project name with:
+   SarthakSetu
+
+2. Preserve ALL functionality exactly.
+   Do NOT change:
+   - UI
+   - Styling
+   - Components
+   - Routes
+   - APIs
+   - Authentication
+   - Business logic
+   - Database schema
+   - Runtime behaviour
+   - User experience
+
+3. If any package name, workspace name, import path, generated code, or configuration SHOULD NOT be renamed because it would break the project, explain why before changing it.
+
+4. If a rename requires regenerating generated files safely, do so.
+
+5. Verify that the application still:
+   - Builds successfully
+   - Starts successfully
+   - Passes type checking
+   - Runs Docker successfully
+   - Preserves all existing functionality
+
+6. After finishing, provide a complete report including:
+   - Every file modified
+   - Every old project name found
+   - Every replacement made
+   - Every name intentionally left unchanged and the reason
+   - Any manual steps still required
+
+7. Perform a final verification by searching the entire repository again to confirm there are no remaining references to:
+   - Asset Manager
+   - AssetManager
+   - asset-manager
+   - AnnSetu
+   - annsetu
+   - ann-setu
+   - Any other previous project name
+
+Only finish after verifying that "SarthakSetu" is the only project name used throughout the repository wherever it is safe to do so, without breaking the application.

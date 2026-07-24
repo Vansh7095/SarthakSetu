@@ -502,7 +502,7 @@ function AdminCodesPanel() {
               Access Code
             </label>
             <Input
-              placeholder="e.g. ANNSETU_ADMIN_2025"
+              placeholder="e.g. SARTHAKSETU_ADMIN_2025"
               value={form.code}
               onChange={(e) => setForm((f) => ({ ...f, code: e.target.value }))}
             />

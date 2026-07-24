@@ -85,7 +85,7 @@ SarthakSetu is a full-stack web application that bridges the gap between surplus
 
 | Package            | Path                    | Type      | Purpose                                                 |
 | ------------------ | ----------------------- | --------- | ------------------------------------------------------- |
-| `annsetu`          | `artifacts/annsetu/`    | Frontend  | React SPA — pages, components, hooks                    |
+| `sarthaksetu`          | `artifacts/sarthaksetu/`    | Frontend  | React SPA — pages, components, hooks                    |
 | `api-server`       | `artifacts/api-server/` | Backend   | Express REST API — routes, middleware, business logic   |
 | `db`               | `lib/db/`               | Library   | Drizzle schema definitions + PostgreSQL connection pool |
 | `api-spec`         | `lib/api-spec/`         | Library   | OpenAPI 3.0 spec + Orval codegen configuration          |
@@ -100,7 +100,7 @@ SarthakSetu is a full-stack web application that bridges the gap between surplus
 ```
 sarthaksetu/
 ├── artifacts/
-│   ├── annsetu/              # React frontend application
+│   ├── sarthaksetu/              # React frontend application
 │   │   ├── src/
 │   │   │   ├── pages/        # Route pages (Home, Map, Dashboard, etc.)
 │   │   │   ├── components/   # Reusable UI components
@@ -574,7 +574,7 @@ If you want to run services in separate terminals:
 pnpm --filter @workspace/api-server run dev
 
 # Terminal 2 — Frontend (port 5173)
-pnpm --filter @workspace/annsetu run dev
+pnpm --filter @workspace/sarthaksetu run dev
 ```
 
 ### Available Root Scripts
@@ -620,7 +620,7 @@ This runs in sequence:
 
 1. TypeScript type check across all packages
 2. Build the backend (`artifacts/api-server/dist/index.mjs` — single esbuild bundle)
-3. Build the frontend (`artifacts/annsetu/dist/public/` — static HTML/CSS/JS)
+3. Build the frontend (`artifacts/sarthaksetu/dist/public/` — static HTML/CSS/JS)
 
 ### Start Production Server
 
@@ -637,7 +637,7 @@ export VITE_CLERK_PUBLISHABLE_KEY=pk_live_your_key
 pnpm start
 ```
 
-The backend serves API routes under `/api/*`. For the frontend, serve the static files from `artifacts/annsetu/dist/public/` using nginx, Apache, or any static file server.
+The backend serves API routes under `/api/*`. For the frontend, serve the static files from `artifacts/sarthaksetu/dist/public/` using nginx, Apache, or any static file server.
 
 ### Production Checklist
 
@@ -648,7 +648,7 @@ Before going live, verify:
 - [ ] `DATABASE_URL` points to a production PostgreSQL instance
 - [ ] `pnpm build` completed without errors
 - [ ] `pnpm start` starts successfully and responds to `/api/healthz`
-- [ ] Frontend static files are built in `artifacts/annsetu/dist/public/`
+- [ ] Frontend static files are built in `artifacts/sarthaksetu/dist/public/`
 - [ ] Reverse proxy (nginx) is configured to serve frontend + proxy API
 - [ ] HTTPS is enabled with a valid SSL certificate
 - [ ] Database is backed up
@@ -1020,7 +1020,7 @@ server {
 
     # Frontend static files
     location / {
-        root /var/www/sarthaksetu/artifacts/annsetu/dist/public;
+        root /var/www/sarthaksetu/artifacts/sarthaksetu/dist/public;
         try_files $uri $uri/ /index.html;
     }
 }
@@ -1035,7 +1035,7 @@ sudo ln -sf /etc/nginx/sites-available/sarthaksetu /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 
 # Update the frontend path in nginx.conf if needed:
-# root /var/www/sarthaksetu/artifacts/annsetu/dist/public;
+# root /var/www/sarthaksetu/artifacts/sarthaksetu/dist/public;
 
 # Test configuration
 sudo nginx -t
@@ -1281,7 +1281,7 @@ pnpm build
 
 ```bash
 # Check if build output exists
-ls artifacts/annsetu/dist/public/index.html
+ls artifacts/sarthaksetu/dist/public/index.html
 
 # If missing, build it
 pnpm build
@@ -1443,6 +1443,6 @@ A: Not currently. The frontend is a responsive web application that works on mob
 
 ---
 
-> **AnnSetu** — _अन्नसेतु_ — "Bridge of Food"
+> **SarthakSetu** — _अन्नसेतु_ — "Bridge of Food"
 >
 > Built to connect surplus food with those who need it most.

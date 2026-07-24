@@ -434,7 +434,7 @@ erDiagram
 | 5   | `usedByClerkId` | `text`      | Yes      | —              | Clerk ID of user who used this code (optional tracking) | —                                       | `admin-registry.tsx`                       |
 | 6   | `createdAt`     | `timestamp` | No       | `NOW()`        | When the code was created                               | `admin-registry.ts` (sort)              | `admin-registry.tsx`                       |
 
-**Seed Data**: 3 hardcoded demo codes (`ANNSETU_ADMIN_2024`, `PLATFORM_ADMIN_KEY`, `ANNSETU_SUPERADMIN`) inserted on first run. **Security note**: These should be removed in production.
+**Seed Data**: 3 hardcoded demo codes (`SARTHAKSETU_ADMIN_2024`, `PLATFORM_ADMIN_KEY`, `SARTHAKSETU_SUPERADMIN`) inserted on first run. **Security note**: These should be removed in production.
 
 ---
 

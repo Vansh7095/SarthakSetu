@@ -1068,7 +1068,7 @@ pnpm dev
 
 ```
 > workspace@0.0.0 dev
-> concurrently --names "API,FE" --prefix-colors cyan,magenta "pnpm --filter @workspace/api-server run dev" "pnpm --filter @workspace/annsetu run dev"
+> concurrently --names "API,FE" --prefix-colors cyan,magenta "pnpm --filter @workspace/api-server run dev" "pnpm --filter @workspace/sarthaksetu run dev"
 
 [API] > @workspace/api-server@0.0.0 dev
 [API] > export NODE_ENV=development && pnpm run build && pnpm run start
@@ -1076,7 +1076,7 @@ pnpm dev
 [API] [17:30:18.515] INFO: Server listening
 [API]     port: 8080
 
-[FE] > @workspace/annsetu@0.0.0 dev
+[FE] > @workspace/sarthaksetu@0.0.0 dev
 [FE] > vite --config vite.config.ts --host 0.0.0.0
 [FE]   VITE v7.3.3  ready in 647 ms
 [FE]   ➤  Local:   http://localhost:5173/
@@ -1453,7 +1453,7 @@ root /usr/share/nginx/html;
 
 To:
 ```
-root /var/www/sarthaksetu/artifacts/annsetu/dist/public;
+root /var/www/sarthaksetu/artifacts/sarthaksetu/dist/public;
 ```
 
 Save and exit. Test the config:

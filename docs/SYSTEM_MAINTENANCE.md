@@ -34,7 +34,7 @@
 ### Components
 
 ```
-├── Frontend (annsetu)
+├── Frontend (sarthaksetu)
 │   ├── React 19 + Vite 7
 │   ├── Tailwind CSS v4
 │   ├── wouter (routing)
@@ -192,7 +192,7 @@ pnpm --filter @workspace/api-spec run codegen
 pnpm --filter @workspace/api-server run build
 
 # Build frontend
-pnpm --filter @workspace/annsetu run build
+pnpm --filter @workspace/sarthaksetu run build
 ```
 
 #### 5. Start with PM2
@@ -253,7 +253,7 @@ server {
     }
 
     location / {
-        root /var/www/sarthaksetu/artifacts/annsetu/dist/public;
+        root /var/www/sarthaksetu/artifacts/sarthaksetu/dist/public;
         try_files $uri $uri/ /index.html;
     }
 }
@@ -296,7 +296,7 @@ git pull origin main
 # Rebuild frontend
 pnpm install --frozen-lockfile
 pnpm --filter @workspace/api-spec run codegen
-pnpm --filter @workspace/annsetu run build
+pnpm --filter @workspace/sarthaksetu run build
 
 # Restart PM2 (if serving static files from PM2)
 pm2 restart sarthaksetu-api
@@ -350,7 +350,7 @@ pnpm update --interactive
 # Rebuild and test
 pnpm run typecheck
 pnpm --filter @workspace/api-server run build
-pnpm --filter @workspace/annsetu run build
+pnpm --filter @workspace/sarthaksetu run build
 
 # Restart services
 pm2 reload sarthaksetu-api
@@ -371,7 +371,7 @@ pnpm install --frozen-lockfile
 pnpm --filter @workspace/api-spec run codegen
 pnpm run typecheck
 pnpm --filter @workspace/api-server run build
-pnpm --filter @workspace/annsetu run build
+pnpm --filter @workspace/sarthaksetu run build
 
 # 4. Restart
 pm2 start sarthaksetu-api
@@ -606,7 +606,7 @@ mkdir -p "$BACKUP_DIR"
 
 tar -czf "$BACKUP_DIR/sarthaksetu_${DATE}.tar.gz" \
   /var/www/sarthaksetu/artifacts/api-server/dist/ \
-  /var/www/sarthaksetu/artifacts/annsetu/dist/public/ \
+  /var/www/sarthaksetu/artifacts/sarthaksetu/dist/public/ \
   /var/www/sarthaksetu/.env
 
 # Sync to remote (example with rclone to S3)
@@ -794,7 +794,7 @@ Run multiple PM2 instances on different ports, or use Docker with a load balance
 
 For static assets (frontend build output):
 
-1. Upload `artifacts/annsetu/dist/public/` to Cloudflare Pages, AWS S3 + CloudFront, or Vercel
+1. Upload `artifacts/sarthaksetu/dist/public/` to Cloudflare Pages, AWS S3 + CloudFront, or Vercel
 2. Point DNS to CDN
 3. Keep API on the origin server
 4. Configure CORS on API to allow CDN domain
@@ -1035,13 +1035,13 @@ COPY artifacts/ ./artifacts/
 RUN pnpm install --frozen-lockfile
 RUN pnpm run typecheck
 RUN pnpm --filter @workspace/api-server run build
-RUN pnpm --filter @workspace/annsetu run build
+RUN pnpm --filter @workspace/sarthaksetu run build
 
 FROM node:24-slim AS runner
 WORKDIR /app
 RUN npm install -g pnpm
 COPY --from=builder /app/artifacts/api-server/dist ./api-server/dist
-COPY --from=builder /app/artifacts/annsetu/dist/public ./frontend
+COPY --from=builder /app/artifacts/sarthaksetu/dist/public ./frontend
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 ENV NODE_ENV=production
@@ -1328,7 +1328,7 @@ services:
     image: nginx:alpine
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./artifacts/annsetu/dist/public:/usr/share/nginx/html
+      - ./artifacts/sarthaksetu/dist/public:/usr/share/nginx/html
     ports:
       - "80:80"
       - "443:443"
@@ -1426,7 +1426,7 @@ sudo systemctl restart postgresql
 
 ```bash
 # Check build output
-ls -la artifacts/annsetu/dist/public/index.html
+ls -la artifacts/sarthaksetu/dist/public/index.html
 
 # Check nginx config
 sudo nginx -t

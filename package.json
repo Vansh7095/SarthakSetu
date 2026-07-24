@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "dev": "concurrently --names \"API,FE\" --prefix-colors cyan,magenta \"pnpm --filter @workspace/api-server run dev\" \"pnpm --filter @workspace/annsetu run dev\"",
+    "dev": "concurrently --names \"API,FE\" --prefix-colors cyan,magenta \"pnpm --filter @workspace/api-server run dev\" \"pnpm --filter @workspace/sarthaksetu run dev\"",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "start": "pnpm --filter @workspace/api-server run start",
     "typecheck:libs": "tsc --build",

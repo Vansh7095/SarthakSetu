@@ -15,7 +15,7 @@ COPY pnpm-workspace.yaml package.json ./
 COPY pnpm-lock.yaml ./
 
 # Copy all package.json files for workspace discovery
-COPY artifacts/annsetu/package.json ./artifacts/annsetu/
+COPY artifacts/sarthaksetu/package.json ./artifacts/sarthaksetu/
 COPY artifacts/api-server/package.json ./artifacts/api-server/
 COPY lib/db/package.json ./lib/db/
 COPY lib/api-spec/package.json ./lib/api-spec/
@@ -61,7 +61,7 @@ RUN pnpm --filter @workspace/api-spec run codegen
 RUN pnpm --filter @workspace/api-server run build
 
 # Build the frontend (Vite → static files)
-RUN pnpm --filter @workspace/annsetu run build
+RUN pnpm --filter @workspace/sarthaksetu run build
 
 # ---------------------------------------------------------------------------
 # Stage 3: Production Runtime
@@ -76,7 +76,7 @@ RUN groupadd -r sarthaksetu && useradd -r -g sarthaksetu sarthaksetu
 COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/artifacts/api-server/dist ./api-server/dist
 
 # Copy frontend static files
-COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/artifacts/annsetu/dist/public ./frontend
+COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/artifacts/sarthaksetu/dist/public ./frontend
 
 # Copy only production node_modules for the backend
 # (esbuild bundles most deps, but some need runtime like pg)

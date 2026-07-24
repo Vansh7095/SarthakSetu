@@ -161,9 +161,9 @@ export async function seedVerificationsIfEmpty() {
   await db
     .insert(adminCodesTable)
     .values([
-      { code: "ANNSETU_ADMIN_2024", label: "Default Admin Code 2024" },
+      { code: "SARTHAKSETU_ADMIN_2024", label: "Default Admin Code 2024" },
       { code: "PLATFORM_ADMIN_KEY", label: "Operations Team Code" },
-      { code: "ANNSETU_SUPERADMIN", label: "Super Admin Code" },
+      { code: "SARTHAKSETU_SUPERADMIN", label: "Super Admin Code" },
     ])
     .onConflictDoNothing();
 

@@ -37,7 +37,7 @@ The application uses **Clerk** (self-managed) for all authentication. The flow i
 6. If authenticated but no local profile exists, user is redirected to `/onboarding`
 7. Backend `clerkMiddleware` validates the JWT on every API request
 
-**File**: `artifacts/annsetu/src/App.tsx` (lines 22–39, 232–265)
+**File**: `artifacts/sarthaksetu/src/App.tsx` (lines 22–39, 232–265)
 **File**: `artifacts/api-server/src/app.ts` (lines 42–48)
 
 ### Session Management
@@ -742,9 +742,9 @@ const pool = new Pool({
 Contains hardcoded FSSAI license numbers, Darpan IDs, and admin codes:
 
 ```ts
-{ code: "ANNSETU_ADMIN_2024", label: "Default Admin Code 2024" },
+{ code: "SARTHAKSETU_ADMIN_2024", label: "Default Admin Code 2024" },
 { code: "PLATFORM_ADMIN_KEY", label: "Operations Team Code" },
-{ code: "ANNSETU_SUPERADMIN", label: "Super Admin Code" },
+{ code: "SARTHAKSETU_SUPERADMIN", label: "Super Admin Code" },
 ```
 
 **Risk**: These are default codes that will exist in every deployment. An attacker who reads the source code can use these codes to create admin accounts.
@@ -778,7 +778,7 @@ Since images are referenced by URL, the following risks exist:
 
 ### Local Storage Usage
 
-**No `localStorage` usage found** in application code. The grep for `localStorage` returned no matches in `artifacts/annsetu/src/`.
+**No `localStorage` usage found** in application code. The grep for `localStorage` returned no matches in `artifacts/sarthaksetu/src/`.
 
 ### Session Storage
 
@@ -916,7 +916,7 @@ if (!parsed.success) {
 
 ## Dependencies
 
-### Frontend Dependencies (artifacts/annsetu)
+### Frontend Dependencies (artifacts/sarthaksetu)
 
 | Package                 | Version | Status     | Notes                  |
 | ----------------------- | ------- | ---------- | ---------------------- |

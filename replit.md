@@ -5,7 +5,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 ## Run & Operate
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
-- `pnpm --filter @workspace/annsetu run dev` — run the frontend (port 21683)
+- `pnpm --filter @workspace/sarthaksetu run dev` — run the frontend (port 21683)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -16,7 +16,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- Frontend: React + Vite (artifact: `artifacts/annsetu/`)
+- Frontend: React + Vite (artifact: `artifacts/sarthaksetu/`)
 - API: Express 5 (artifact: `artifacts/api-server/`)
 - DB: PostgreSQL + Drizzle ORM
 - Auth: Clerk (self-managed)
@@ -30,7 +30,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 - `lib/api-spec/openapi.yaml` — single source of truth for all API contracts
 - `lib/db/src/schema/` — DB schema (users.ts, donations.ts, claims.ts)
 - `artifacts/api-server/src/routes/` — Express route handlers (users, donations, claims, stats, health)
-- `artifacts/annsetu/src/` — React frontend (pages/, components/, lib/)
+- `artifacts/sarthaksetu/src/` — React frontend (pages/, components/, lib/)
 - `lib/api-client-react/src/generated/` — generated React Query hooks (do not edit)
 - `lib/api-zod/src/generated/` — generated Zod schemas for server validation (do not edit)
 
