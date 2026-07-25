@@ -116,4 +116,4 @@ COPY --from=builder /app/artifacts/sarthaksetu/dist/public /usr/share/nginx/html
 EXPOSE 80
 
 HEALTHCHECK --interval=15s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/nginx-health || exit 1
+  CMD wget --quiet --tries=1 --spider http://127.0.0.1/nginx-health || exit 1
