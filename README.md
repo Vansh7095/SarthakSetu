@@ -667,8 +667,8 @@ Docker is the easiest way to deploy the entire stack on any system. No local ins
 ### Quick Start
 
 ```bash
-# 1. Configure environment
-cp .env.production.example .env
+# 1. Configure environment (optional setup script does the boilerplate for you)
+bash scripts/setup.sh
 # Edit .env and add your Clerk keys
 
 # 2. Build and start everything (database, backend, frontend, nginx)
@@ -680,6 +680,8 @@ curl http://localhost/api/healthz
 
 # 4. Open http://localhost in your browser
 ```
+
+On Windows, use `scripts/setup.bat` instead of `setup.sh`.
 
 On first startup, the API container automatically waits for PostgreSQL to become healthy, applies the database schema with `drizzle-kit push`, and seeds the verification tables if they are empty.
 

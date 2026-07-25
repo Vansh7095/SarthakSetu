@@ -48,7 +48,9 @@ COPY lib/ ./lib/
 # The frontend embeds the Clerk publishable key at build time.
 # Pass it as a build arg from docker-compose.yml (never hardcode secrets here).
 ARG VITE_CLERK_PUBLISHABLE_KEY
+ARG GIT_COMMIT=unknown
 ENV VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
+ENV GIT_COMMIT=${GIT_COMMIT}
 
 # Generate API clients from OpenAPI spec
 RUN pnpm --filter @workspace/api-spec run codegen
@@ -65,11 +67,20 @@ RUN pnpm --filter @workspace/sarthaksetu run build
 FROM node:24-slim AS runner
 WORKDIR /app
 
+ARG GIT_COMMIT=unknown
+ENV GIT_COMMIT=${GIT_COMMIT}
+
 # Create non-root user for security
 RUN groupadd -r sarthaksetu && useradd -r -g sarthaksetu sarthaksetu
 
-# Install pnpm so the entrypoint can run database migrations
-RUN npm install -g pnpm@10.26.1
+# Copy pnpm from the deps stage so the entrypoint can run database migrations.
+# Avoids another network round-trip and makes the build more resilient.
+COPY --from=deps /usr/local/lib/node_modules/pnpm /usr/local/lib/node_modules/pnpm
+RUN if [ -f /usr/local/lib/node_modules/pnpm/bin/pnpm.cjs ]; then \
+      ln -sf /usr/local/lib/node_modules/pnpm/bin/pnpm.cjs /usr/local/bin/pnpm; \
+    else \
+      ln -sf /usr/local/lib/node_modules/pnpm/bin/pnpm.js /usr/local/bin/pnpm; \
+    fi
 
 # Copy backend bundle
 COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/artifacts/api-server/dist ./api-server/dist

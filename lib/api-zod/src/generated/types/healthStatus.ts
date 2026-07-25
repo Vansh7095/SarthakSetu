@@ -8,7 +8,14 @@
 import type { HealthStatusDatabase } from './healthStatusDatabase';
 
 export interface HealthStatus {
+  /** Overall API status */
   status: string;
   /** Database connectivity status */
   database: HealthStatusDatabase;
+  /** Server uptime in seconds */
+  uptime: number;
+  /** Application version from package.json */
+  version: string;
+  /** Git commit hash the image was built from, if available */
+  gitCommit: string;
 }

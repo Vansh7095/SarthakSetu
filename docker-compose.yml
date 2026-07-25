@@ -37,6 +37,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: runner
+      args:
+        GIT_COMMIT: ${GIT_COMMIT:-unknown}
     container_name: sarthaksetu-api
     restart: unless-stopped
     environment:

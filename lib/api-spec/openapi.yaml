@@ -554,13 +554,31 @@ components:
       properties:
         status:
           type: string
+          description: Overall API status
+          example: ok
         database:
           type: string
           enum: [ok, error]
           description: Database connectivity status
+          example: ok
+        uptime:
+          type: number
+          description: Server uptime in seconds
+          example: 1234.56
+        version:
+          type: string
+          description: Application version from package.json
+          example: 0.0.0
+        gitCommit:
+          type: string
+          description: Git commit hash the image was built from, if available
+          example: abc1234
       required:
         - status
         - database
+        - uptime
+        - version
+        - gitCommit
 
     UserProfile:
       type: object

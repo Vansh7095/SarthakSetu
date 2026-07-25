@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Export the app version from package.json for the health endpoint.
+export APP_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
+
 # Wait for PostgreSQL to be ready before running migrations.
 # The pg module is installed in the @workspace/db package, so run the check from there.
 POSTGRES_HOST="${POSTGRES_HOST:-postgres}"

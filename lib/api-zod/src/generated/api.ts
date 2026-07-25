@@ -13,8 +13,11 @@ import * as zod from 'zod';
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
-  "status": zod.string(),
-  "database": zod.enum(['ok', 'error']).describe('Database connectivity status')
+  "status": zod.string().describe('Overall API status'),
+  "database": zod.enum(['ok', 'error']).describe('Database connectivity status'),
+  "uptime": zod.number().describe('Server uptime in seconds'),
+  "version": zod.string().describe('Application version from package.json'),
+  "gitCommit": zod.string().describe('Git commit hash the image was built from, if available')
 })
 
 

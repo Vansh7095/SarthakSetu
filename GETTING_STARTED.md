@@ -1231,9 +1231,16 @@ Use Docker if you want:
 
 1. Make sure Docker is installed (Step 6).
 2. Make sure you have completed Step 10 (`.env` file with Clerk keys).
-3. Copy the production example:
+3. Run the setup script to create `.env` and required directories:
+   ```bash
+   bash scripts/setup.sh
+   ```
+   On Windows, run `scripts/setup.bat` instead.
+   
+   Alternatively, you can copy the production example manually:
    ```bash
    cp .env.production.example .env
+   mkdir -p backups
    ```
 4. Edit `.env` and replace all `pk_live_your_key_here` and `sk_live_your_key_here` placeholders with your actual Clerk keys.
    - **Important:** Use the same keys you used in development. For local Docker testing, development keys (`pk_test_`) are fine.

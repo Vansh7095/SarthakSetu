@@ -19,6 +19,22 @@ The `/api/healthz` route is used by Docker health checks and the nginx readiness
 
 **How to apply:** Mount `healthRouter` at `/api` before registering `clerkMiddleware` in `artifacts/api-server/src/app.ts`. Do not rely on it being inside the authenticated `/api` router group.
 
+## Copy pnpm from deps stage instead of reinstalling in runner
+
+The runner stage needs `pnpm` only to run `drizzle-kit push` via the entrypoint. Reinstalling it with `npm install -g pnpm` in the runner stage triggers another network round-trip and can fail if the registry is unreachable. Copy the pnpm package from the deps stage and create a symlink.
+
+**Why:** `COPY --from=deps /usr/local/bin/pnpm` copies the content of the symlink, not the symlink itself, so the relative `require('../dist/pnpm.cjs')` inside the wrapper breaks. The package must be copied and `/usr/local/bin/pnpm` must be relinked to the package's real bin file.
+
+**How to apply:** In the Dockerfile runner stage, copy `/usr/local/lib/node_modules/pnpm` from deps and run `ln -sf /usr/local/lib/node_modules/pnpm/bin/pnpm.cjs /usr/local/bin/pnpm`.
+
+## Health endpoint exposes version and git commit
+
+The health endpoint reads `APP_VERSION` from `package.json` (set by the entrypoint) and `GIT_COMMIT` from the build argument. These values are not available at runtime unless explicitly wired through.
+
+**Why:** `process.env.npm_package_version` is only populated when the process is launched by npm, not by `node ...` directly. The git commit is not inside the image because `.git` is excluded by `.dockerignore`.
+
+**How to apply:** Pass `GIT_COMMIT` as a Docker build arg and set it as an `ENV` in the runner stage. In `scripts/docker-entrypoint.sh`, set `export APP_VERSION=$(node -p "require('./package.json').version")`. In `health.ts`, use `process.env.APP_VERSION` and `process.env.GIT_COMMIT`.
+
 ## Replit Docker runtime limits
 
 The Replit container runtime cannot run `docker exec` or `docker compose exec` reliably (OCI runtime exec error), and container health checks fail to execute. This means local Replit testing cannot verify backup/restore scripts or native health checks, but the same compose files and scripts work on a standard Docker host.
