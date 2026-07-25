@@ -649,7 +649,7 @@ Before going live, verify:
 - [ ] `pnpm build` completed without errors
 - [ ] `pnpm start` starts successfully and responds to `/api/healthz`
 - [ ] Frontend static files are built in `artifacts/sarthaksetu/dist/public/`
-- [ ] Reverse proxy (nginx) is configured to serve frontend + proxy API
+- [ ] Reverse proxy (nginx in the `web` container) is configured to serve frontend + proxy API
 - [ ] HTTPS is enabled with a valid SSL certificate
 - [ ] Database is backed up
 
@@ -657,7 +657,7 @@ Before going live, verify:
 
 ## 11. Docker Deployment
 
-Docker is the easiest way to deploy the entire stack on any system.
+Docker is the easiest way to deploy the entire stack on any system. No local installation of Node.js, pnpm, PostgreSQL, or nginx is required.
 
 ### Prerequisites
 
@@ -669,31 +669,35 @@ Docker is the easiest way to deploy the entire stack on any system.
 ```bash
 # 1. Configure environment
 cp .env.production.example .env
-# Edit .env and add your Clerk live keys
+# Edit .env and add your Clerk keys
 
-# 2. Build and start all services
-docker compose up -d
+# 2. Build and start everything (database, backend, frontend, nginx)
+docker compose up -d --build
 
 # 3. Verify everything is running
 docker compose ps
-docker compose logs -f api
+curl http://localhost/api/healthz
 
 # 4. Open http://localhost in your browser
 ```
 
+On first startup, the API container automatically waits for PostgreSQL to become healthy, applies the database schema with `drizzle-kit push`, and seeds the verification tables if they are empty.
+
 ### What Gets Started
 
-| Service    | Container Name         | Port   | Description                     |
-| ---------- | ---------------------- | ------ | ------------------------------- |
-| PostgreSQL | `sarthaksetu-postgres` | `5432` | Database with persistent volume |
-| API Server | `sarthaksetu-api`      | `8080` | Express backend                 |
-| nginx      | `sarthaksetu-nginx`    | `80`   | Reverse proxy + static frontend |
+| Service    | Container Name         | Public Port | Description                                |
+| ---------- | ---------------------- | ----------- | ------------------------------------------ |
+| PostgreSQL | `sarthaksetu-postgres` | —           | Database with persistent volume            |
+| API Server | `sarthaksetu-api`      | —           | Express backend (proxied by nginx)         |
+| Web / nginx | `sarthaksetu-web`     | `80`        | Reverse proxy + static frontend build      |
+
+Only the `web` service is exposed publicly. The database and API communicate internally over the Docker network.
 
 ### Docker Compose Commands
 
 ```bash
-# Start all services in background
-docker compose up -d
+# Start all services in background (build images first)
+docker compose up -d --build
 
 # View logs (all services)
 docker compose logs -f
@@ -701,7 +705,7 @@ docker compose logs -f
 # View logs (specific service)
 docker compose logs -f api
 docker compose logs -f postgres
-docker compose logs -f nginx
+docker compose logs -f web
 
 # Stop all services (keeps data)
 docker compose down
@@ -715,9 +719,6 @@ docker compose up -d
 
 # Restart a specific service
 docker compose restart api
-
-# Execute a command in the API container
-docker compose exec api node -e "console.log('works')"
 ```
 
 ### Persistent Data
@@ -730,14 +731,23 @@ docker compose down -v
 
 ### Updating Docker Containers
 
-After pulling new code:
+After pulling new code, use the provided update script:
+
+```bash
+bash scripts/update.sh
+```
+
+Or, on Windows:
+
+```batch
+scripts\update.bat
+```
+
+Alternatively, run the steps manually:
 
 ```bash
 git pull
-pnpm install
-pnpm build
-docker compose build --no-cache
-docker compose up -d
+docker compose up -d --build
 ```
 
 ---
@@ -936,8 +946,7 @@ pm2 restart sarthaksetu-api
 sudo systemctl restart sarthaksetu
 
 # If using Docker:
-docker compose build --no-cache
-docker compose up -d
+docker compose up -d --build
 ```
 
 ---

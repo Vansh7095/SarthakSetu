@@ -5,7 +5,10 @@
  * SarthakSetu API - Food donation platform connecting donors with NGOs and volunteers
  * OpenAPI spec version: 0.1.0
  */
+import type { HealthStatusDatabase } from './healthStatusDatabase';
 
 export interface HealthStatus {
   status: string;
+  /** Database connectivity status */
+  database: HealthStatusDatabase;
 }

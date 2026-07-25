@@ -1,1 +1,2 @@
 - [Clerk proxy + react-leaflet integration](sarthaksetu-setup.md) — SarthakSetu patterns: Clerk via proxy, leaflet without API key, Vite restart needed after creating new files in src/lib/
+- [Docker self-contained deployment](docker-self-contained.md) — Entrypoint DB probe uses pg from lib/db; health endpoint bypasses Clerk; Replit container exec limits local testing

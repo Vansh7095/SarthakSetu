@@ -554,8 +554,13 @@ components:
       properties:
         status:
           type: string
+        database:
+          type: string
+          enum: [ok, error]
+          description: Database connectivity status
       required:
         - status
+        - database
 
     UserProfile:
       type: object

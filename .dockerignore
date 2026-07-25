@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Git
+.git
+.gitignore
+
+# Build outputs
+dist
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Testing and coverage
+coverage
+.nyc_output
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Replit / local artifacts
+.replit
+.local
+.cache
+.replit-artifact
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Backup directory
+backups

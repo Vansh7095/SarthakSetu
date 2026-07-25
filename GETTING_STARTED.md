@@ -1237,37 +1237,36 @@ Use Docker if you want:
    ```
 4. Edit `.env` and replace all `pk_live_your_key_here` and `sk_live_your_key_here` placeholders with your actual Clerk keys.
    - **Important:** Use the same keys you used in development. For local Docker testing, development keys (`pk_test_`) are fine.
-5. Make sure the database URL in `.env` uses the internal Docker hostname:
-   ```
-   DATABASE_URL=postgres://sarthaksetu:changeme@postgres:5432/sarthaksetu
-   ```
+5. The `docker-compose.yml` file automatically generates the correct `DATABASE_URL` from the `POSTGRES_*` variables, so you do not need to edit it manually.
 
 ### Step 14.2: Build and Start
 
 Run:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 **What this does:**
 - `-d` — runs in the background (detached mode)
+- `--build` — builds the Docker images from the Dockerfile
 - Downloads the PostgreSQL 16 image
-- Builds the API server from the Dockerfile
-- Downloads the nginx image
+- Builds the API server image
+- Builds the nginx image with the production frontend inside it
 - Starts all three services
+- Automatically creates the database schema and seeds it on first run
 
 **How long it takes:** 3–10 minutes on first run.
 
 **Expected output:**
 
 ```
-[+] Running 4/4
+[+] Running 5/5
  ✐ Network sarthaksetu_sarthaksetu-net    Created
  ✐ Volume "sarthaksetu_postgres-data"     Created
  ✐ Container sarthaksetu-postgres         Started
  ✐ Container sarthaksetu-api              Started
- ✐ Container sarthaksetu-nginx            Started
+ ✐ Container sarthaksetu-web              Started
 ```
 
 ### Step 14.3: Verify Docker Is Running
@@ -1280,12 +1279,24 @@ docker compose ps
 
 ```
 NAME                  IMAGE                STATUS          PORTS
-sarthaksetu-api       sarthaksetu-api      Up 30 seconds   0.0.0.0:8080->8080/tcp
-sarthaksetu-nginx     nginx:alpine         Up 30 seconds   0.0.0.0:80->80/tcp
-sarthaksetu-postgres  postgres:16-alpine   Up 30 seconds   0.0.0.0:5432->5432/tcp
+sarthaksetu-api       workspace-api        Up 30 seconds   8080/tcp
+sarthaksetu-web       workspace-web        Up 30 seconds   0.0.0.0:80->80/tcp
+sarthaksetu-postgres  postgres:16-alpine   Up 30 seconds   5432/tcp
 ```
 
 All three containers should show status `Up`.
+
+You can also check the combined health endpoint:
+
+```bash
+curl http://localhost/api/healthz
+```
+
+Expected output:
+
+```json
+{"status":"ok","database":"ok"}
+```
 
 ### Step 14.4: Open the Application
 
@@ -1295,7 +1306,7 @@ Open your browser and go to:
 http://localhost
 ```
 
-**Why port 80?** nginx listens on port 80 and serves the frontend + proxies API requests.
+**Why port 80?** nginx listens on port 80 and serves the frontend + proxies API requests. Only the `web` container is exposed to the public.
 
 ### Step 14.5: View Logs
 
@@ -1319,17 +1330,31 @@ To also delete all data (including the database):
 docker compose down -v
 ```
 
+### Convenience Scripts
+
+For a simpler workflow, use the scripts in the `scripts/` folder:
+
+| Script | Command | What It Does |
+|---------|---------|-------------|
+| Start | `bash scripts/start.sh` or `scripts/start.bat` | Build and start all services |
+| Stop | `bash scripts/stop.sh` or `scripts/stop.bat` | Stop all services |
+| Restart | `bash scripts/restart.sh` or `scripts/restart.bat` | Stop and start all services |
+| Update | `bash scripts/update.sh` or `scripts/update.bat` | Pull latest code and redeploy |
+| Logs | `bash scripts/logs.sh` or `scripts/logs.bat` | Watch all service logs |
+| Backup | `bash scripts/backup.sh` or `scripts/backup.bat` | Create a database backup in `backups/` |
+| Restore | `bash scripts/restore.sh backups/...` or `scripts/restore.bat backups/...` | Restore a database backup |
+
 ### Docker Command Reference
 
 | Command | What It Does |
 |---------|-------------|
-| `docker compose up -d` | Start all services in the background |
+| `docker compose up -d --build` | Build images and start all services |
 | `docker compose down` | Stop all services (keeps data) |
 | `docker compose down -v` | Stop and delete all data |
 | `docker compose ps` | Show running containers |
 | `docker compose logs -f api` | Watch API logs |
 | `docker compose logs -f postgres` | Watch database logs |
-| `docker compose logs -f nginx` | Watch nginx logs |
+| `docker compose logs -f web` | Watch nginx logs |
 | `docker compose build --no-cache` | Rebuild after code changes |
 | `docker compose restart api` | Restart just the API |
 
@@ -1611,8 +1636,24 @@ pg_dump -U sarthaksetu sarthaksetu > backup_$(date +%Y%m%d_%H%M%S).sql
 
 **If using Docker:**
 
+The easiest way is to use the provided backup script:
+
 ```bash
-docker compose exec postgres pg_dump -U sarthaksetu sarthaksetu > backup_$(date +%Y%m%d_%H%M%S).sql
+bash scripts/backup.sh
+```
+
+Or, on Windows:
+
+```batch
+scripts\backup.bat
+```
+
+This saves the backup to the `backups/` directory.
+
+Alternatively, you can run the backup manually:
+
+```bash
+docker compose exec -T postgres pg_dump -U sarthaksetu sarthaksetu > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 **Windows (without WSL):**
@@ -1692,6 +1733,20 @@ psql -U sarthaksetu sarthaksetu < backup_20260723_120000.sql
 **What this does:** Recreates all tables and data from the backup file.
 
 **If using Docker:**
+
+The easiest way is to use the provided restore script:
+
+```bash
+bash scripts/restore.sh backups/sarthaksetu_backup_20240101_120000.sql
+```
+
+Or, on Windows:
+
+```batch
+scripts\restore.bat backups\sarthaksetu_backup_20240101_120000.sql
+```
+
+Alternatively, you can run the restore manually:
 
 ```bash
 docker compose exec -T postgres psql -U sarthaksetu sarthaksetu < backup_20260723_120000.sql

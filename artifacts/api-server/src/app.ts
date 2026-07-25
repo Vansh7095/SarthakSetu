@@ -9,6 +9,7 @@ import {
   getClerkProxyHost,
 } from "./middlewares/clerkProxyMiddleware";
 import router from "./routes";
+import healthRouter from "./routes/health";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -38,6 +39,11 @@ app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Health check must bypass Clerk authentication so Docker can verify readiness
+// without a valid Clerk key. Mount the health router at /api so /api/healthz is
+// handled before the Clerk middleware is registered.
+app.use("/api", healthRouter);
 
 app.use(
   clerkMiddleware((req) => ({

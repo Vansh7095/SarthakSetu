@@ -9,14 +9,13 @@
 /**
  * @nullable
  */
-export type UserProfileDonorCategory =
-  | (typeof UserProfileDonorCategory)[keyof typeof UserProfileDonorCategory]
-  | null;
+export type UserProfileDonorCategory = typeof UserProfileDonorCategory[keyof typeof UserProfileDonorCategory] | null;
+
 
 export const UserProfileDonorCategory = {
-  restaurant: "restaurant",
-  hotel: "hotel",
-  caterer: "caterer",
-  event_org: "event_org",
-  household: "household",
+  restaurant: 'restaurant',
+  hotel: 'hotel',
+  caterer: 'caterer',
+  event_org: 'event_org',
+  household: 'household',
 } as const;

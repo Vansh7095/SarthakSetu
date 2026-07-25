@@ -6,11 +6,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type DonationInputFoodType = typeof DonationInputFoodType[keyof typeof DonationInputFoodType];
+/**
+ * Database connectivity status
+ */
+export type HealthStatusDatabase = typeof HealthStatusDatabase[keyof typeof HealthStatusDatabase];
 
 
-export const DonationInputFoodType = {
-  veg: 'veg',
-  non_veg: 'non_veg',
-  both: 'both',
+export const HealthStatusDatabase = {
+  ok: 'ok',
+  error: 'error',
 } as const;
