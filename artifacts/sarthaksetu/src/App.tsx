@@ -24,6 +24,7 @@ import MyDonations from "./pages/my-donations";
 import MyClaims from "./pages/my-claims";
 import Profile from "./pages/profile";
 import AdminRegistry from "./pages/admin-registry";
+import About from "./pages/about";
 
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -289,6 +290,7 @@ function ClerkProviderWithRoutes() {
             <Route path="/" component={HomeRedirect} />
             <Route path="/sign-in/*?" component={SignInPage} />
             <Route path="/sign-up/*?" component={SignUpPage} />
+            <Route path="/about" component={About} />
 
             <Route path="/dashboard">
               <ProtectedRoute component={Dashboard} />

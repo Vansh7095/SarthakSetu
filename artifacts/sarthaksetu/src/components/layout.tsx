@@ -10,6 +10,7 @@ import {
   Heart,
   List,
   User,
+  Info,
 } from "lucide-react";
 import { useGetMyProfile } from "@workspace/api-client-react";
 import { useState } from "react";
@@ -25,6 +26,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const navigation = isSignedIn
     ? [
+        { name: "About", href: "/about", icon: Info },
         { name: "Dashboard", href: "/dashboard", icon: Home },
         ...(profile?.role === "donor"
           ? [
@@ -38,7 +40,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         { name: "Map View", href: "/map", icon: MapIcon },
         { name: "Profile", href: "/profile", icon: User },
       ]
-    : [{ name: "Home", href: "/", icon: Home }];
+    : [
+        { name: "Home", href: "/", icon: Home },
+        { name: "About", href: "/about", icon: Info },
+      ];
 
   const handleNavClick = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
