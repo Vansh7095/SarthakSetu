@@ -2,13 +2,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
-  Github, 
   Mail, 
   AlertCircle, 
   Heart, 
   Users, 
   ShieldCheck, 
-  Code, 
   Zap, 
   Sprout
 } from "lucide-react";
@@ -64,9 +62,9 @@ const features = [
     bg: "bg-secondary/10"
   },
   {
-    icon: Code,
-    title: "Open-source development",
-    description: "Built in the open, for the public good. Anyone can contribute.",
+    icon: ShieldCheck,
+    title: "Private & secure",
+    description: "A secure platform designed to protect donor, NGO, and community data.",
     color: "text-primary",
     bg: "bg-primary/10"
   },
@@ -191,18 +189,34 @@ export default function About() {
           <motion.p variants={itemVariant} className="text-muted-foreground text-lg">The people building the bridge.</motion.p>
         </div>
         
-        <div className="flex justify-center">
-          <motion.div variants={itemVariant} className="w-full max-w-sm">
-            <Card className="border-border/50 hover:shadow-lg transition-shadow duration-300 text-center overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <motion.div variants={itemVariant}>
+            <Card className="border-border/50 hover:shadow-lg transition-shadow duration-300 text-center overflow-hidden h-full">
               <div className="h-24 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20"></div>
+              <CardContent className="pt-0 -mt-12 flex flex-col items-center">
+                <div className="w-24 h-24 rounded-full border-4 border-background bg-muted flex items-center justify-center mb-4 text-3xl font-serif text-muted-foreground shadow-sm">
+                  AC
+                </div>
+                <CardTitle className="text-2xl mb-1">Advay Chawla</CardTitle>
+                <CardDescription className="text-primary font-medium mb-4">Founder</CardDescription>
+                <p className="text-muted-foreground text-sm">
+                  Leading the vision to connect surplus food with the communities that need it most.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div variants={itemVariant}>
+            <Card className="border-border/50 hover:shadow-lg transition-shadow duration-300 text-center overflow-hidden h-full">
+              <div className="h-24 bg-gradient-to-r from-secondary/20 via-primary/20 to-accent/20"></div>
               <CardContent className="pt-0 -mt-12 flex flex-col items-center">
                 <div className="w-24 h-24 rounded-full border-4 border-background bg-muted flex items-center justify-center mb-4 text-3xl font-serif text-muted-foreground shadow-sm">
                   V
                 </div>
                 <CardTitle className="text-2xl mb-1">Vansh</CardTitle>
-                <CardDescription className="text-primary font-medium mb-4">Founder & Lead Developer</CardDescription>
+                <CardDescription className="text-secondary font-medium mb-4">Co-Founder & Lead Developer</CardDescription>
                 <p className="text-muted-foreground text-sm">
-                  Passionate about leveraging technology for social good and building tools that empower communities.
+                  Building the platform and shaping the technology that powers SarthakSetu.
                 </p>
               </CardContent>
             </Card>
@@ -210,7 +224,7 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* 6. Contributors */}
+      {/* 6. Community */}
       <motion.section 
         className="mb-24 md:mb-32"
         variants={fadeInUp}
@@ -218,19 +232,19 @@ export default function About() {
         whileInView="whileInView"
       >
         <div className="bg-primary/5 rounded-3xl p-8 md:p-12 text-center border border-primary/10">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold mb-4">Contributors</h2>
+          <h2 className="font-serif text-2xl md:text-3xl font-bold mb-4">Community</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-lg">
-            SarthakSetu welcomes developers, designers, testers, NGOs, and volunteers. We're building this together.
+            SarthakSetu welcomes NGOs, volunteers, and community partners. We are building this ecosystem together.
           </p>
           
           <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-border/50 border-dashed">
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 text-muted-foreground">
               <Users className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-medium mb-2">No community contributors yet.</h3>
-            <p className="text-muted-foreground mb-6">Be the first contributor on GitHub and help shape the future of SarthakSetu.</p>
+            <h3 className="text-xl font-medium mb-2">Partnerships opening soon.</h3>
+            <p className="text-muted-foreground mb-6">Join us as an NGO, volunteer, or supporter. Opportunities to collaborate will be announced soon.</p>
             <Button className="rounded-full px-8 gap-2">
-              <Github className="w-4 h-4" /> View on GitHub
+              <Mail className="w-4 h-4" /> Get in Touch
             </Button>
           </div>
         </div>
@@ -273,7 +287,7 @@ export default function About() {
           <motion.p variants={itemVariant} className="text-muted-foreground text-lg">We'd love to hear from you.</motion.p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           <motion.div variants={itemVariant}>
             <Card className="h-full hover:border-primary/40 hover:shadow-md transition-all duration-300 cursor-pointer group">
               <CardContent className="p-6 text-center flex flex-col items-center gap-4">
@@ -289,20 +303,6 @@ export default function About() {
           </motion.div>
           
           <motion.div variants={itemVariant}>
-            <Card className="h-full hover:border-foreground/40 hover:shadow-md transition-all duration-300 cursor-pointer group">
-              <CardContent className="p-6 text-center flex flex-col items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-foreground/5 text-foreground flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Github className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">GitHub Repository</h3>
-                  <p className="text-sm text-muted-foreground">Check out our code and contribute.</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-          
-          <motion.div variants={itemVariant}>
             <Card className="h-full hover:border-destructive/40 hover:shadow-md transition-all duration-300 cursor-pointer group">
               <CardContent className="p-6 text-center flex flex-col items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-destructive/10 text-destructive flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -310,7 +310,7 @@ export default function About() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Report an Issue</h3>
-                  <p className="text-sm text-muted-foreground">Found a bug? Let us know on GitHub.</p>
+                  <p className="text-sm text-muted-foreground">Found a bug or have feedback? Let us know.</p>
                 </div>
               </CardContent>
             </Card>
@@ -318,7 +318,7 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* 9. Open Source */}
+      {/* 9. Join the Mission */}
       <motion.section 
         className="mb-16 md:mb-24"
         variants={fadeInUp}
@@ -329,17 +329,17 @@ export default function About() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
           <div className="relative z-10 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background/10 text-primary-foreground border border-background/20 text-xs font-medium mb-4">
-              <Code className="w-3 h-3" />
-              <span>100% Open Source</span>
+              <Heart className="w-3 h-3" />
+              <span>Join the Mission</span>
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Built in the open.</h2>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Be part of the change.</h2>
             <p className="text-background/70 text-lg leading-relaxed">
-              SarthakSetu is completely open source. We believe transparency and community collaboration are the best ways to solve systemic issues like food waste.
+              SarthakSetu is a private platform dedicated to fighting food waste and hunger. Sign up today to start sharing surplus food with verified NGOs and volunteers.
             </p>
           </div>
           <div className="relative z-10 flex-shrink-0">
             <Button size="lg" variant="secondary" className="rounded-full px-8 gap-2 bg-background text-foreground hover:bg-background/90 font-medium">
-              <Github className="w-5 h-5" /> View on GitHub
+              <Users className="w-5 h-5" /> Join Now
             </Button>
           </div>
         </div>
@@ -353,7 +353,7 @@ export default function About() {
             Made with <span className="text-destructive text-lg">❤️</span> in India
           </div>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4" /> Open Source
+            <ShieldCheck className="w-4 h-4" /> Private Platform
           </div>
         </div>
       </footer>
