@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk } from "@clerk/react";
-import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import {
   Switch,
@@ -26,12 +25,12 @@ import Profile from "./pages/profile";
 import AdminRegistry from "./pages/admin-registry";
 import About from "./pages/about";
 
-const clerkPubKey = publishableKeyFromHost(
-  window.location.hostname,
-  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
-);
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
+const clerkProxyUrl =
+  import.meta.env.PROD && import.meta.env.VITE_CLERK_PROXY_URL
+    ? import.meta.env.VITE_CLERK_PROXY_URL
+    : undefined;
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
