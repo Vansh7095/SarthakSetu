@@ -13,7 +13,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string (provided by Replit)
 - Required secrets: `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — Clerk auth keys (use development keys for Replit dev; production keys must list the Replit domain in the Clerk app's allowed origins)
-- Docker deployment: `cp .env.production.example .env`, fill Clerk keys, then `docker compose up -d --build` — builds frontend, starts API, Postgres, and nginx together with automatic migrations and persistent volume
+- Docker deployment: `cp .env.production.example .env`, fill Clerk keys, then `docker compose up -d --build` — starts separate `postgres`, `api`, and `web` containers with automatic migrations and persistent volume. Dockerfiles are in `docker/`.
 
 ## Stack
 

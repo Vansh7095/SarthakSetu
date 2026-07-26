@@ -146,7 +146,9 @@ sarthaksetu/
 │   ├── SYSTEM_MAINTENANCE.md    # Operations, backups, monitoring
 │   └── SECURITY_AUDIT.md        # Security analysis
 │
-├── Dockerfile                # Multi-stage production Docker build
+├── docker/
+│   ├── api.Dockerfile        # Production API container build
+│   └── web.Dockerfile        # Production frontend container build
 ├── docker-compose.yml        # Full production stack (Postgres + API + nginx)
 ├── nginx.conf                # Reverse proxy configuration
 ├── .env.example              # Development environment template
@@ -161,7 +163,8 @@ sarthaksetu/
 
 | File                    | What It Does                                                                                 |
 | ----------------------- | -------------------------------------------------------------------------------------------- |
-| `Dockerfile`            | Builds backend + frontend into a single production image (3 stages: deps → builder → runner) |
+| `docker/api.Dockerfile` | Builds the backend API container with bundled migrations and health checks                   |
+| `docker/web.Dockerfile` | Builds the static frontend container served by nginx                                          |
 | `docker-compose.yml`    | Orchestrates PostgreSQL, API, and nginx as a complete production stack                       |
 | `nginx.conf`            | Reverse proxy: `/api/*` → backend, `/` → static frontend, SPA fallback, asset caching        |
 | `.env.example`          | Template for all required and optional environment variables                                 |
@@ -1359,7 +1362,7 @@ ports:
 
 **Cause:** The pnpm version in the Docker image may differ from your local version.
 
-**Fix:** The Dockerfile now pins `pnpm@10.26.1`. If you still have issues, ensure `pnpm-lock.yaml` is up to date:
+**Fix:** The Docker images pin `pnpm@10.26.1`. If you still have issues, ensure `pnpm-lock.yaml` is up to date:
 
 ```bash
 pnpm install

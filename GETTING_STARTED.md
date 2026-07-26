@@ -1256,7 +1256,7 @@ docker compose up -d --build
 
 **What this does:**
 - `-d` — runs in the background (detached mode)
-- `--build` — builds the Docker images from the Dockerfile
+- `--build` — builds the Docker images from the `docker/` Dockerfiles
 - Downloads the PostgreSQL 16 image
 - Builds the API server image
 - Builds the nginx image with the production frontend inside it

@@ -35,8 +35,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: runner
+      dockerfile: docker/api.Dockerfile
       args:
         GIT_COMMIT: ${GIT_COMMIT:-unknown}
     container_name: sarthaksetu-api
@@ -71,8 +70,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: web
+      dockerfile: docker/web.Dockerfile
       args:
         VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
     container_name: sarthaksetu-web

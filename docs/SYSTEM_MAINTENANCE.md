@@ -1022,33 +1022,15 @@ sudo ufw delete <rule-number>
 
 ## Docker Maintenance
 
-### Dockerfile (Create if not exists)
+### Dockerfiles
 
-```dockerfile
-# Multi-stage build for the API
-FROM node:24-slim AS builder
-WORKDIR /app
-RUN npm install -g pnpm
-COPY pnpm-workspace.yaml package.json tsconfig*.json ./
-COPY lib/ ./lib/
-COPY artifacts/ ./artifacts/
-RUN pnpm install --frozen-lockfile
-RUN pnpm run typecheck
-RUN pnpm --filter @workspace/api-server run build
-RUN pnpm --filter @workspace/sarthaksetu run build
+Production Dockerfiles are maintained in `docker/`:
 
-FROM node:24-slim AS runner
-WORKDIR /app
-RUN npm install -g pnpm
-COPY --from=builder /app/artifacts/api-server/dist ./api-server/dist
-COPY --from=builder /app/artifacts/sarthaksetu/dist/public ./frontend
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
-ENV NODE_ENV=production
-ENV PORT=8080
-EXPOSE 8080
-CMD ["node", "api-server/dist/index.mjs"]
-```
+- `docker/api.Dockerfile` — multi-stage build for the API container with bundled migrations and health checks.
+- `docker/web.Dockerfile` — multi-stage build for the static frontend container served by nginx.
+- `docker-compose.yml` — orchestrates PostgreSQL, API, and nginx as separate containers.
+
+See `docker-compose.yml` and the files in `docker/` for the current build and runtime configuration.
 
 ### Container Management
 

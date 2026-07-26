@@ -1080,9 +1080,9 @@ No known CVEs for the versions in use. Supply-chain protection is enabled via `m
 
 ### Docker
 
-- No Dockerfile exists in the repository
+- Dockerfiles exist in `docker/` (`api.Dockerfile` and `web.Dockerfile`) and use multi-stage builds
 - The `build.mjs` script bundles the server with esbuild
-- For Docker deployment, a multi-stage build would be needed
+- `docker-compose.yml` orchestrates PostgreSQL, API, and nginx as separate containers
 
 ### Environment Variables
 

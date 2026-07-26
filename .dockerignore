@@ -43,6 +43,7 @@ Thumbs.db
 .replit-artifact
 
 # Docker
+docker/
 Dockerfile
 docker-compose.yml
 .dockerignore
