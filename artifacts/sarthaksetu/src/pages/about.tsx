@@ -224,19 +224,31 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* 6. Community */}
-      <motion.section 
+      {/* 6. Community & Supporters */}
+      <motion.section
         className="mb-24 md:mb-32"
-        variants={fadeInUp}
+        variants={staggerContainer}
         initial="initial"
         whileInView="whileInView"
       >
-        <div className="bg-primary/5 rounded-3xl p-8 md:p-12 text-center border border-primary/10">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold mb-4">Community</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-lg">
-            SarthakSetu welcomes NGOs, volunteers, and community partners. We are building this ecosystem together.
-          </p>
-          
+        <div className="text-center mb-12">
+          <motion.h2 variants={itemVariant} className="font-serif text-3xl md:text-4xl font-bold mb-4">Community & Supporters</motion.h2>
+          <motion.p variants={itemVariant} className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            SarthakSetu welcomes NGOs, volunteers, community partners, and individual supporters. We are building this ecosystem together.
+          </motion.p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {[1, 2, 3, 4].map((i) => (
+            <motion.div key={i} variants={itemVariant}>
+              <div className="h-32 rounded-2xl border-2 border-dashed border-border/60 bg-muted/30 flex items-center justify-center text-muted-foreground p-6 text-center">
+                <span className="text-sm opacity-60">Partners and supporters will be recognized here as the project grows.</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-8 md:p-12 text-center border border-primary/10">
           <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-border/50 border-dashed">
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 text-muted-foreground">
               <Users className="w-8 h-8" />
@@ -247,32 +259,7 @@ export default function About() {
               <Mail className="w-4 h-4" /> Get in Touch
             </Button>
           </div>
-        </div>
-      </motion.section>
-
-      {/* 7. Supporters */}
-      <motion.section 
-        className="mb-24 md:mb-32"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="whileInView"
-      >
-        <div className="text-center mb-12">
-          <motion.h2 variants={itemVariant} className="font-serif text-3xl md:text-4xl font-bold mb-4">Supporters</motion.h2>
-          <motion.p variants={itemVariant} className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Organizations, institutions, and individuals helping us grow.
-          </motion.p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <motion.div key={i} variants={itemVariant}>
-              <div className="h-32 rounded-2xl border-2 border-dashed border-border/60 bg-muted/30 flex items-center justify-center text-muted-foreground p-6 text-center">
-                <span className="text-sm opacity-60">Supporters will be recognized here as the project grows.</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        </motion.div>
       </motion.section>
 
       {/* 8. Contact */}
