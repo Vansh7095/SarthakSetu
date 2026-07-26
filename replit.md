@@ -6,12 +6,13 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm --filter @workspace/sarthaksetu run dev` — run the frontend (port 21683)
+- Replit workflows: **API Server** and **Start application** are configured to run the backend and frontend automatically
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
-- Required env: `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — Clerk auth keys
+- Required env: `DATABASE_URL` — Postgres connection string (provided by Replit)
+- Required secrets: `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — Clerk auth keys (use development keys for Replit dev; production keys must list the Replit domain in the Clerk app's allowed origins)
 - Docker deployment: `cp .env.production.example .env`, fill Clerk keys, then `docker compose up -d --build` — builds frontend, starts API, Postgres, and nginx together with automatic migrations and persistent volume
 
 ## Stack
@@ -61,8 +62,8 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 - Always run `pnpm --filter @workspace/api-spec run codegen` after changing `openapi.yaml`
 - After codegen, grep exact Zod schema names with `grep "^export " lib/api-zod/src/generated/api.ts` before writing routes
-- Clerk dev keys are test-only — swap to live keys on publish
-- The `@clerk/react/internal` `publishableKeyFromHost` is used in `App.tsx` for Clerk custom domain support
+- Clerk dev keys are test-only — swap to live keys on publish; live keys must include the Replit domain in the Clerk app's allowed origins
+- In local/Replit development, the Clerk proxy (`VITE_CLERK_PROXY_URL`) is not used so Clerk loads directly from its CDN; proxying is only enabled in production
 
 ## Pointers
 
