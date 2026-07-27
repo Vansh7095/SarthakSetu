@@ -1,10 +1,11 @@
 # SarthakSetu — Docker Compose Production Stack
-# Starts: PostgreSQL + Backend API + Frontend (nginx)
+# Starts: PostgreSQL + Backend API + Static Frontend + Caddy (HTTPS reverse proxy)
 #
 # Usage:
 #   1. Copy .env.production.example to .env and fill in real values.
-#   2. docker compose up -d --build
-#   3. Open http://localhost
+#   2. Point your DOMAIN (e.g., www.sarthaksetu.app) to the server running Docker.
+#   3. docker compose up -d --build
+#   4. Open https://<DOMAIN>
 
 services:
   # ---------------------------------------------------------------------------
@@ -65,7 +66,7 @@ services:
       - sarthaksetu-net
 
   # ---------------------------------------------------------------------------
-  # Nginx Reverse Proxy + Static Frontend
+  # Static Frontend (nginx)
   # ---------------------------------------------------------------------------
   web:
     build:
@@ -75,16 +76,40 @@ services:
         VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
     container_name: sarthaksetu-web
     restart: unless-stopped
-    ports:
-      - "${HTTP_PORT:-80}:80"
     depends_on:
       api:
         condition: service_healthy
     networks:
       - sarthaksetu-net
 
+  # ---------------------------------------------------------------------------
+  # Caddy Reverse Proxy + HTTPS
+  # ---------------------------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    container_name: sarthaksetu-caddy
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN is required}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    networks:
+      - sarthaksetu-net
+
 volumes:
   postgres-data:
+  caddy-data:
+  caddy-config:
 
 networks:
   sarthaksetu-net:

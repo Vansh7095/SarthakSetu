@@ -1,0 +1,15 @@
+# SarthakSetu — Caddy reverse proxy
+# Serves HTTPS on the public domain and routes traffic to the web and api containers.
+# Set the DOMAIN environment variable in your .env file (e.g., www.sarthaksetu.app).
+
+{$DOMAIN} {
+    # API routes go directly to the backend container.
+    handle /api/* {
+        reverse_proxy api:8080
+    }
+
+    # Everything else is served by the static frontend container.
+    handle {
+        reverse_proxy web:80
+    }
+}

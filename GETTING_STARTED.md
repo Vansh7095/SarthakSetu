@@ -1256,7 +1256,7 @@ docker compose up -d --build
 
 **What this does:**
 - `-d` — runs in the background (detached mode)
-- `--build` — builds the Docker images from the `docker/` Dockerfiles
+- `--build` — builds the Docker images from the `docker/` Dockerfiles and starts the Caddy reverse proxy with automatic HTTPS
 - Downloads the PostgreSQL 16 image
 - Builds the API server image
 - Builds the nginx image with the production frontend inside it

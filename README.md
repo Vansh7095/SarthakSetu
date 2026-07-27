@@ -148,8 +148,9 @@ sarthaksetu/
 │
 ├── docker/
 │   ├── api.Dockerfile        # Production API container build
-│   └── web.Dockerfile        # Production frontend container build
-├── docker-compose.yml        # Full production stack (Postgres + API + nginx)
+│   ├── web.Dockerfile        # Production frontend container build
+│   └── Caddyfile             # HTTPS reverse proxy routing /api to backend and everything else to frontend
+├── docker-compose.yml        # Full production stack (Postgres + API + nginx + Caddy for HTTPS)
 ├── nginx.conf                # Reverse proxy configuration
 ├── .env.example              # Development environment template
 ├── .env.production.example   # Production environment template
@@ -165,7 +166,8 @@ sarthaksetu/
 | ----------------------- | -------------------------------------------------------------------------------------------- |
 | `docker/api.Dockerfile` | Builds the backend API container with bundled migrations and health checks                   |
 | `docker/web.Dockerfile` | Builds the static frontend container served by nginx                                          |
-| `docker-compose.yml`    | Orchestrates PostgreSQL, API, and nginx as a complete production stack                       |
+| `docker-compose.yml`    | Orchestrates PostgreSQL, API, nginx frontend, and Caddy HTTPS reverse proxy as a complete production stack |
+| `docker/Caddyfile`      | Caddy reverse proxy config: `/api/*` → backend, everything else → static frontend, with automatic HTTPS |
 | `nginx.conf`            | Reverse proxy: `/api/*` → backend, `/` → static frontend, SPA fallback, asset caching        |
 | `.env.example`          | Template for all required and optional environment variables                                 |
 | `scripts/src/doctor.ts` | Diagnostic tool that checks Node, pnpm, PostgreSQL, env vars, dependencies, builds           |
