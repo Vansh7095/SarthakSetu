@@ -22,8 +22,8 @@ const c = new Client({ connectionString: process.env.DATABASE_URL });
 c.connect()
   .then(() => c.query('SELECT 1'))
   .then(() => { c.end(); process.exit(0); })
-  .catch((e) => { console.error(e.message); c.end(); process.exit(1); });
-" 2>/dev/null
+  .catch((e) => { console.error('PG_CHECK_ERROR:', e.message); c.end(); process.exit(1); });
+" 2>&1
   ); then
     break
   fi
@@ -31,6 +31,7 @@ c.connect()
   RETRY_COUNT=$((RETRY_COUNT + 1))
   if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
     echo "❌ PostgreSQL at ${POSTGRES_HOST}:${POSTGRES_PORT} is not reachable after ${MAX_RETRIES} retries."
+    echo "   DATABASE_URL host: ${POSTGRES_HOST}"
     exit 1
   fi
 
