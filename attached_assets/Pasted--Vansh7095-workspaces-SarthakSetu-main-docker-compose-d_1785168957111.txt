@@ -1,0 +1,296 @@
+@Vansh7095 ➜ /workspaces/SarthakSetu (main) $ docker compose down -v
+[+] Running 8/8
+ ✔ Container sarthaksetu-caddy          Removed                                                                  0.0s 
+ ✔ Container sarthaksetu-web            Removed                                                                  0.0s 
+ ✔ Container sarthaksetu-api            Removed                                                                 10.1s 
+ ✔ Container sarthaksetu-postgres       Removed                                                                  0.2s 
+ ✔ Network sarthaksetu_sarthaksetu-net  Removed                                                                  0.1s 
+ ✔ Volume sarthaksetu_postgres-data     Removed                                                                  0.1s 
+ ✔ Volume sarthaksetu_caddy-data        Removed                                                                  0.1s 
+ ✔ Volume sarthaksetu_caddy-config      Removed                                                                  0.1s 
+@Vansh7095 ➜ /workspaces/SarthakSetu (main) $ docker compose up -d --build
+[+] Building 1.6s (52/52) FINISHED                                                                                    
+ => [internal] load local bake definitions                                                                       0.0s
+ => => reading from stdin 1.09kB                                                                                 0.0s
+ => [api internal] load build definition from api.Dockerfile                                                     0.0s
+ => => transferring dockerfile: 3.00kB                                                                           0.0s
+ => [web internal] load build definition from web.Dockerfile                                                     0.0s
+ => => transferring dockerfile: 1.69kB                                                                           0.0s
+ => [api internal] load metadata for docker.io/library/node:24-slim                                              0.7s
+ => [web internal] load metadata for docker.io/library/nginx:alpine                                              0.7s
+ => [api internal] load .dockerignore                                                                            0.0s
+ => => transferring context: 561B                                                                                0.0s
+ => [api internal] load build context                                                                            0.1s
+ => => transferring context: 20.16kB                                                                             0.1s
+ => [api builder  1/15] FROM docker.io/library/node:24-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7  0.1s
+ => => resolve docker.io/library/node:24-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b69  0.1s
+ => [web runner 1/3] FROM docker.io/library/nginx:alpine@sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3  0.1s
+ => => resolve docker.io/library/nginx:alpine@sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a47  0.1s
+ => [web internal] load build context                                                                            0.1s
+ => => transferring context: 20.05kB                                                                             0.0s
+ => CACHED [web builder  2/15] WORKDIR /app                                                                      0.0s
+ => CACHED [api runner  3/12] RUN groupadd -r sarthaksetu && useradd -r -g sarthaksetu sarthaksetu               0.0s
+ => CACHED [web builder  3/15] RUN npm install -g pnpm@10.26.1                                                   0.0s
+ => CACHED [api builder  4/15] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./                           0.0s
+ => CACHED [api builder  5/15] COPY tsconfig.base.json tsconfig.json ./                                          0.0s
+ => CACHED [api builder  6/15] COPY artifacts/api-server/package.json ./artifacts/api-server/                    0.0s
+ => CACHED [api builder  7/15] COPY artifacts/sarthaksetu/package.json ./artifacts/sarthaksetu/                  0.0s
+ => CACHED [api builder  8/15] COPY lib/db/package.json ./lib/db/                                                0.0s
+ => CACHED [api builder  9/15] COPY lib/api-spec/package.json ./lib/api-spec/                                    0.0s
+ => CACHED [api builder 10/15] COPY lib/api-zod/package.json ./lib/api-zod/                                      0.0s
+ => CACHED [api builder 11/15] COPY lib/api-client-react/package.json ./lib/api-client-react/                    0.0s
+ => CACHED [api builder 12/15] RUN pnpm install --frozen-lockfile                                                0.0s
+ => CACHED [api builder 13/15] COPY artifacts/ ./artifacts/                                                      0.0s
+ => CACHED [api builder 14/15] COPY lib/ ./lib/                                                                  0.0s
+ => CACHED [api builder 15/15] RUN pnpm --filter @workspace/api-server run build                                 0.0s
+ => CACHED [api runner  4/12] COPY --from=builder /usr/local/lib/node_modules/pnpm /usr/local/lib/node_modules/  0.0s
+ => CACHED [api runner  5/12] RUN if [ -f /usr/local/lib/node_modules/pnpm/bin/pnpm.cjs ]; then       ln -sf /u  0.0s
+ => CACHED [api runner  6/12] COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/package.json ./           0.0s
+ => CACHED [api runner  7/12] COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/pnpm-workspace.yaml ./    0.0s
+ => CACHED [api runner  8/12] COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/pnpm-lock.yaml ./         0.0s
+ => CACHED [api runner  9/12] COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/node_modules ./node_modu  0.0s
+ => CACHED [api runner 10/12] COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/lib/db ./lib/db           0.0s
+ => CACHED [api runner 11/12] COPY --from=builder --chown=sarthaksetu:sarthaksetu /app/artifacts/api-server/dis  0.0s
+ => CACHED [api runner 12/12] COPY --chmod=755 --chown=sarthaksetu:sarthaksetu scripts/docker-entrypoint.sh ./d  0.0s
+ => [api] exporting to image                                                                                     0.3s
+ => => exporting layers                                                                                          0.0s
+ => => exporting manifest sha256:9507c4b853e25369e67dc81f9458d28d1b3b98a2ab09c0e7634d7e6ea8fa6eef                0.0s
+ => => exporting config sha256:779e4ce875fbbef17897ecb5d348d22d1030e0dfe8f2c4ef4e5bb17a0c8951bc                  0.0s
+ => => exporting attestation manifest sha256:00430acb8529399c719a42d4758108b583df0e1b51e0b71c94659958353c09ec    0.0s
+ => => exporting manifest list sha256:6940d076d0420deee237898148945adb75f4638b91171eb04e92238fc3bcd3ca           0.0s
+ => => naming to docker.io/library/sarthaksetu-api:latest                                                        0.0s
+ => => unpacking to docker.io/library/sarthaksetu-api:latest                                                     0.0s
+ => CACHED [web runner 2/3] COPY nginx.conf /etc/nginx/conf.d/default.conf                                       0.0s
+ => CACHED [web builder  4/15] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./                           0.0s
+ => CACHED [web builder  5/15] COPY tsconfig.base.json tsconfig.json ./                                          0.0s
+ => CACHED [web builder  6/15] COPY artifacts/api-server/package.json ./artifacts/api-server/                    0.0s
+ => CACHED [web builder  7/15] COPY artifacts/sarthaksetu/package.json ./artifacts/sarthaksetu/                  0.0s
+ => CACHED [web builder  8/15] COPY lib/db/package.json ./lib/db/                                                0.0s
+ => CACHED [web builder  9/15] COPY lib/api-spec/package.json ./lib/api-spec/                                    0.0s
+ => CACHED [web builder 10/15] COPY lib/api-zod/package.json ./lib/api-zod/                                      0.0s
+ => CACHED [web builder 11/15] COPY lib/api-client-react/package.json ./lib/api-client-react/                    0.0s
+ => CACHED [web builder 12/15] RUN pnpm install --frozen-lockfile                                                0.0s
+ => CACHED [web builder 13/15] COPY artifacts/ ./artifacts/                                                      0.0s
+ => CACHED [web builder 14/15] COPY lib/ ./lib/                                                                  0.0s
+ => CACHED [web builder 15/15] RUN pnpm --filter @workspace/sarthaksetu run build                                0.0s
+ => CACHED [web runner 3/3] COPY --from=builder /app/artifacts/sarthaksetu/dist/public /usr/share/nginx/html     0.0s
+ => [web] exporting to image                                                                                     0.2s
+ => => exporting layers                                                                                          0.0s
+ => => exporting manifest sha256:5c1ce28f14c9ae20cd0c367d854c7bf79aff10a7b9fb63c0274a41ef373311cb                0.0s
+ => => exporting config sha256:697d69c1ff675538cd5384b6742067b1e867fae20baa0a13fcf55b9084ff7207                  0.0s
+ => => exporting attestation manifest sha256:e80ef9801dda888ed5fc9e5150dbdb9a358720bdc663ca8d6718bcf4801be1e1    0.1s
+ => => exporting manifest list sha256:41ee8cb32bf3f191a73ae67d4eeb6a6a75813c978bb3189e3540651152af4ec5           0.0s
+ => => naming to docker.io/library/sarthaksetu-web:latest                                                        0.0s
+ => => unpacking to docker.io/library/sarthaksetu-web:latest                                                     0.0s
+ => [web] resolving provenance for metadata file                                                                 0.0s
+ => [api] resolving provenance for metadata file                                                                 0.0s
+[+] Running 10/10
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 8/10pi                      Built                                                                    0.0s 
+[+] Running 8/10pi                      Built                                                                    0.0s 
+[+] Running 8/10pi                      Built                                                                    0.0s 
+[+] Running 8/10pi                      Built                                                                    0.0s 
+[+] Running 8/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 9/10pi                      Built                                                                    0.0s 
+[+] Running 10/10i                      Built                                                                    0.0s 
+ ✔ sarthaksetu-api                      Built                                                                    0.0s 
+ ✔ sarthaksetu-web                      Built                                                                    0.0s 
+ ✔ Network sarthaksetu_sarthaksetu-net  Created                                                                  0.1s 
+ ✔ Volume sarthaksetu_postgres-data     Created                                                                  0.0s 
+ ✔ Volume sarthaksetu_caddy-data        Created                                                                  0.0s 
+ ✔ Volume sarthaksetu_caddy-config      Created                                                                  0.0s 
+ ✔ Container sarthaksetu-postgres       Healthy                                                                  6.3s 
+ ✔ Container sarthaksetu-api            Healthy                                                                 12.4s 
+ ✔ Container sarthaksetu-web            Healthy                                                                 17.4s 
+ ✔ Container sarthaksetu-caddy          Started                                                                 17.6s 
+@Vansh7095 ➜ /workspaces/SarthakSetu (main) $ docker logs --tail 50 sarthaksetu-api
+⏳ Waiting for PostgreSQL at postgres:5432...
+✅ PostgreSQL is ready
+🔄 Running database migrations...
+
+> @workspace/db@0.0.0 push /app/lib/db
+> drizzle-kit push --config ./drizzle.config.ts
+
+Reading config file '/app/lib/db/drizzle.config.ts'
+Using 'pg' driver for database querying
+[⣷] Pulling schema from database...
+[✓] Pulling schema from database...
+[✓] Changes applied
+✅ Database migrations complete
+🚀 Starting API server...
+{"level":30,"time":1785168884832,"pid":1,"hostname":"aca7b8cf1438","port":8080,"msg":"Server listening"}
+{"level":30,"time":1785168884861,"pid":1,"hostname":"aca7b8cf1438","msg":"Seeding verification tables (first run)"}
+{"level":30,"time":1785168884871,"pid":1,"hostname":"aca7b8cf1438","msg":"Verification tables seeded"}
+{"level":30,"time":1785168886617,"pid":1,"hostname":"aca7b8cf1438","req":{"id":1,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":7,"msg":"request completed"}
+{"level":30,"time":1785168901710,"pid":1,"hostname":"aca7b8cf1438","req":{"id":2,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":13,"msg":"request completed"}
+{"level":30,"time":1785168916803,"pid":1,"hostname":"aca7b8cf1438","req":{"id":3,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":7,"msg":"request completed"}
+{"level":30,"time":1785168931898,"pid":1,"hostname":"aca7b8cf1438","req":{"id":4,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":7,"msg":"request completed"}
+@Vansh7095 ➜ /workspaces/SarthakSetu (main) $ 
