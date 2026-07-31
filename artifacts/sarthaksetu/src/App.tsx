@@ -23,6 +23,7 @@ import MyDonations from "./pages/my-donations";
 import MyClaims from "./pages/my-claims";
 import Profile from "./pages/profile";
 import AdminRegistry from "./pages/admin-registry";
+import AdminUsers from "./pages/admin-users";
 import About from "./pages/about";
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -321,6 +322,9 @@ function ClerkProviderWithRoutes() {
             </Route>
             <Route path="/admin-registry">
               <ProtectedRoute component={AdminRegistry} />
+            </Route>
+            <Route path="/admin-users">
+              <ProtectedRoute component={AdminUsers} />
             </Route>
 
             <Route

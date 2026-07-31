@@ -11,6 +11,7 @@ import {
   List,
   User,
   Info,
+  Users,
 } from "lucide-react";
 import { useGetMyProfile } from "@workspace/api-client-react";
 import { useState } from "react";
@@ -38,6 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ]),
         { name: "Map View", href: "/map", icon: MapIcon },
         { name: "Profile", href: "/profile", icon: User },
+        ...(profile?.role === "admin"
+          ? [{ name: "User Management", href: "/admin-users", icon: Users }]
+          : []),
         { name: "About", href: "/about", icon: Info },
       ]
     : [
