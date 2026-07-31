@@ -224,41 +224,38 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* 6. Community & Supporters */}
+      {/* 6. Unified Community */}
       <motion.section
         className="mb-24 md:mb-32"
         variants={staggerContainer}
         initial="initial"
         whileInView="whileInView"
       >
-        <div className="text-center mb-12">
-          <motion.h2 variants={itemVariant} className="font-serif text-3xl md:text-4xl font-bold mb-4">Community & Supporters</motion.h2>
-          <motion.p variants={itemVariant} className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            SarthakSetu welcomes NGOs, volunteers, community partners, and individual supporters. We are building this ecosystem together.
-          </motion.p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-          {[1, 2, 3, 4].map((i) => (
-            <motion.div key={i} variants={itemVariant}>
-              <div className="h-32 rounded-2xl border-2 border-dashed border-border/60 bg-muted/30 flex items-center justify-center text-muted-foreground p-6 text-center">
-                <span className="text-sm opacity-60">Partners and supporters will be recognized here as the project grows.</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-8 md:p-12 text-center border border-primary/10">
-          <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-border/50 border-dashed">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 text-muted-foreground">
-              <Users className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-medium mb-2">Partnerships opening soon.</h3>
-            <p className="text-muted-foreground mb-6">Join us as an NGO, volunteer, or supporter. Opportunities to collaborate will be announced soon.</p>
-            <Button className="rounded-full px-8 gap-2">
-              <Mail className="w-4 h-4" /> Get in Touch
-            </Button>
+        <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-8 md:p-14 border border-primary/10 text-center flex flex-col items-center gap-6">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+            <Users className="w-8 h-8" />
           </div>
+          <div>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">One community, one mission</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Donors, NGOs, volunteers, and supporters — everyone is equal here. SarthakSetu is built by people who believe no meal should go to waste.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4 w-full max-w-2xl text-left mt-2">
+            {[
+              { label: "Donors", desc: "Restaurants, households & caterers sharing surplus food." },
+              { label: "NGOs & Volunteers", desc: "On-the-ground teams collecting and delivering donations." },
+              { label: "Supporters", desc: "Anyone who spreads the word or contributes to the cause." },
+            ].map((item) => (
+              <div key={item.label} className="bg-background/70 rounded-2xl p-5 border border-border/50">
+                <p className="font-semibold text-foreground mb-1">{item.label}</p>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <Button className="rounded-full px-8 gap-2 mt-2">
+            <Mail className="w-4 h-4" /> Get involved
+          </Button>
         </motion.div>
       </motion.section>
 
