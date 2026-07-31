@@ -213,7 +213,7 @@ export default function About() {
                 <div className="w-24 h-24 rounded-full border-4 border-background bg-muted flex items-center justify-center mb-4 text-3xl font-serif text-muted-foreground shadow-sm">
                   V
                 </div>
-                <CardTitle className="text-2xl mb-1">Vansh</CardTitle>
+                <CardTitle className="text-2xl mb-1">Vansh Sharma</CardTitle>
                 <CardDescription className="text-secondary font-medium mb-4">Co-Founder & Lead Developer</CardDescription>
                 <p className="text-muted-foreground text-sm">
                   Building the platform and shaping the technology that powers SarthakSetu.
