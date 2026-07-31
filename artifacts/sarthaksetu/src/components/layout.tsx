@@ -26,7 +26,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const navigation = isSignedIn
     ? [
-        { name: "About", href: "/about", icon: Info },
         { name: "Dashboard", href: "/dashboard", icon: Home },
         ...(profile?.role === "donor"
           ? [
@@ -39,6 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ]),
         { name: "Map View", href: "/map", icon: MapIcon },
         { name: "Profile", href: "/profile", icon: User },
+        { name: "About", href: "/about", icon: Info },
       ]
     : [
         { name: "Home", href: "/", icon: Home },
