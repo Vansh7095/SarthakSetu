@@ -300,6 +300,13 @@ function AdminDashboard() {
       desc: "Manage FSSAI, Darpan & admin codes",
       color: "bg-slate-50 border-slate-200 text-slate-700",
     },
+    {
+      href: "/admin-users",
+      icon: Users,
+      label: "User Management",
+      desc: "View, edit & delete all user accounts",
+      color: "bg-rose-50 border-rose-200 text-rose-700",
+    },
   ];
 
   return (
