@@ -1,4 +1,4 @@
-import { pgTable, serial, text, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, boolean, timestamp, pgEnum } from "drizzle-orm/pg-core";
 
 export const fssaiLicensesTable = pgTable("fssai_licenses", {
   id: serial("id").primaryKey(),
@@ -30,6 +30,25 @@ export const adminCodesTable = pgTable("admin_codes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const communityTypeEnum = pgEnum("community_type", [
+  "donor",
+  "ngo",
+  "volunteer",
+  "supporter",
+  "people",
+  "partner",
+]);
+
+export const communitySpotlightsTable = pgTable("community_spotlights", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  type: communityTypeEnum("type").notNull(),
+  description: text("description"),
+  location: text("location"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type FssaiLicense = typeof fssaiLicensesTable.$inferSelect;
 export type DarpanId = typeof darpanIdsTable.$inferSelect;
 export type AdminCode = typeof adminCodesTable.$inferSelect;
+export type CommunitySpotlight = typeof communitySpotlightsTable.$inferSelect;

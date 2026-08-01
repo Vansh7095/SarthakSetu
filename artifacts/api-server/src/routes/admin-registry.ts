@@ -7,6 +7,7 @@ import {
   fssaiLicensesTable,
   darpanIdsTable,
   adminCodesTable,
+  communitySpotlightsTable,
 } from "@workspace/db";
 import {
   AddFssaiLicenseBody,
@@ -146,6 +147,50 @@ router.delete("/admin/registry/codes/:id", async (req, res) => {
   await db
     .delete(adminCodesTable)
     .where(eq(adminCodesTable.id, parsed.data.id));
+  res.json({ message: "Deleted" });
+});
+
+// ── Community Spotlights ────────────────────────────────────────────────────
+
+// GET /community/spotlights — public, used by the About page
+router.get("/community/spotlights", async (_req, res) => {
+  const records = await db
+    .select()
+    .from(communitySpotlightsTable)
+    .orderBy(communitySpotlightsTable.createdAt);
+  res.json(records);
+});
+
+// POST /admin/community — admin only
+router.post("/admin/community", async (req, res) => {
+  if (!(await requireAdmin(req, res))) return;
+  const { name, type, description, location } = req.body as Record<string, string>;
+  const VALID_TYPES = new Set(["donor", "ngo", "volunteer", "supporter"]);
+  if (!name?.trim() || !type || !VALID_TYPES.has(type)) {
+    res.status(400).json({ error: "name and a valid type are required" });
+    return;
+  }
+  const [record] = await db
+    .insert(communitySpotlightsTable)
+    .values({
+      name: name.trim(),
+      type: type as any,
+      description: description?.trim() || null,
+      location: location?.trim() || null,
+    })
+    .returning();
+  res.status(201).json(record);
+});
+
+// DELETE /admin/community/:id — admin only
+router.delete("/admin/community/:id", async (req, res) => {
+  if (!(await requireAdmin(req, res))) return;
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid id" });
+    return;
+  }
+  await db.delete(communitySpotlightsTable).where(eq(communitySpotlightsTable.id, id));
   res.json({ message: "Deleted" });
 });
 

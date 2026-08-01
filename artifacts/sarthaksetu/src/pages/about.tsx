@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
@@ -10,6 +11,33 @@ import {
   Zap, 
   Sprout
 } from "lucide-react";
+
+type CommunityType = "donor" | "ngo" | "volunteer" | "supporter" | "people" | "partner";
+interface CommunitySpotlight {
+  id: number;
+  name: string;
+  type: CommunityType;
+  description: string | null;
+  location: string | null;
+  createdAt: string;
+}
+
+const TYPE_LABELS: Record<CommunityType, string> = {
+  donor: "Donor",
+  ngo: "NGO",
+  volunteer: "Volunteer",
+  supporter: "Supporter",
+  people: "People",
+  partner: "Partner",
+};
+const TYPE_COLORS: Record<CommunityType, string> = {
+  donor: "bg-green-100 text-green-800",
+  ngo: "bg-blue-100 text-blue-800",
+  volunteer: "bg-orange-100 text-orange-800",
+  supporter: "bg-purple-100 text-purple-800",
+  people: "bg-pink-100 text-pink-800",
+  partner: "bg-yellow-100 text-yellow-800",
+};
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -76,6 +104,72 @@ const features = [
     bg: "bg-accent/20"
   }
 ];
+
+function CommunitySection() {
+  const { data: spotlights = [] } = useQuery<CommunitySpotlight[]>({
+    queryKey: ["community-spotlights"],
+    queryFn: async () => {
+      const res = await fetch("/api/community/spotlights");
+      if (!res.ok) throw new Error("Failed to load");
+      return res.json();
+    },
+  });
+
+  return (
+    <motion.section
+      className="mb-24 md:mb-32"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="whileInView"
+    >
+      <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-8 md:p-14 border border-primary/10 text-center flex flex-col items-center gap-6">
+        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+          <Users className="w-8 h-8" />
+        </div>
+        <div>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">One community, one mission</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Donors, NGOs, volunteers, and supporters — everyone is equal here. SarthakSetu is built by people who believe no meal should go to waste.
+          </p>
+        </div>
+
+        {spotlights.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full text-left mt-2">
+            {spotlights.map((s) => (
+              <div key={s.id} className="bg-background/70 rounded-2xl p-5 border border-border/50 flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-foreground">{s.name}</p>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${TYPE_COLORS[s.type]}`}>
+                    {TYPE_LABELS[s.type]}
+                  </span>
+                </div>
+                {s.description && <p className="text-sm text-muted-foreground">{s.description}</p>}
+                {s.location && <p className="text-xs text-muted-foreground/70">{s.location}</p>}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-3 gap-4 w-full max-w-2xl text-left mt-2">
+            {[
+              { label: "Donors", desc: "Restaurants, households & caterers sharing surplus food." },
+              { label: "NGOs & Volunteers", desc: "On-the-ground teams collecting and delivering donations." },
+              { label: "Supporters", desc: "Anyone who spreads the word or contributes to the cause." },
+            ].map((item) => (
+              <div key={item.label} className="bg-background/70 rounded-2xl p-5 border border-border/50">
+                <p className="font-semibold text-foreground mb-1">{item.label}</p>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <Button className="rounded-full px-8 gap-2 mt-2">
+          <Mail className="w-4 h-4" /> Get involved
+        </Button>
+      </motion.div>
+    </motion.section>
+  );
+}
 
 export default function About() {
   return (
@@ -225,39 +319,7 @@ export default function About() {
       </motion.section>
 
       {/* 6. Unified Community */}
-      <motion.section
-        className="mb-24 md:mb-32"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="whileInView"
-      >
-        <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-8 md:p-14 border border-primary/10 text-center flex flex-col items-center gap-6">
-          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-            <Users className="w-8 h-8" />
-          </div>
-          <div>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">One community, one mission</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Donors, NGOs, volunteers, and supporters — everyone is equal here. SarthakSetu is built by people who believe no meal should go to waste.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-4 w-full max-w-2xl text-left mt-2">
-            {[
-              { label: "Donors", desc: "Restaurants, households & caterers sharing surplus food." },
-              { label: "NGOs & Volunteers", desc: "On-the-ground teams collecting and delivering donations." },
-              { label: "Supporters", desc: "Anyone who spreads the word or contributes to the cause." },
-            ].map((item) => (
-              <div key={item.label} className="bg-background/70 rounded-2xl p-5 border border-border/50">
-                <p className="font-semibold text-foreground mb-1">{item.label}</p>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-          <Button className="rounded-full px-8 gap-2 mt-2">
-            <Mail className="w-4 h-4" /> Get involved
-          </Button>
-        </motion.div>
-      </motion.section>
+      <CommunitySection />
 
       {/* 8. Contact */}
       <motion.section 

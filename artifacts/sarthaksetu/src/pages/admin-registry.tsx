@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useListFssaiLicenses,
   useAddFssaiLicense,
@@ -587,6 +587,181 @@ function AdminCodesPanel() {
   );
 }
 
+interface CommunitySpotlight {
+  id: number;
+  name: string;
+  type: "donor" | "ngo" | "volunteer" | "supporter";
+  description: string | null;
+  location: string | null;
+  createdAt: string;
+}
+
+function CommunityPanel() {
+  const { toast } = useToast();
+  const [form, setForm] = useState({ name: "", type: "donor", description: "", location: "" });
+  const [items, setItems] = useState<CommunitySpotlight[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/community/spotlights");
+      if (res.ok) setItems(await res.json());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const handleAdd = async () => {
+    if (!form.name.trim()) {
+      toast({ variant: "destructive", title: "Name is required" });
+      return;
+    }
+    setSaving(true);
+    try {
+      const res = await fetch("/api/admin/community", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      toast({ title: "Added to community section" });
+      setForm({ name: "", type: "donor", description: "", location: "" });
+      load();
+    } catch {
+      toast({ variant: "destructive", title: "Failed to add entry" });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await fetch(`/api/admin/community/${id}`, { method: "DELETE" });
+      toast({ title: "Entry removed" });
+      load();
+    } catch {
+      toast({ variant: "destructive", title: "Failed to remove" });
+    }
+  };
+
+  const TYPE_LABELS: Record<string, string> = {
+    donor: "Donor",
+    ngo: "NGO",
+    volunteer: "Volunteer",
+    supporter: "Supporter",
+    people: "People",
+    partner: "Partner",
+  };
+  const TYPE_COLORS: Record<string, string> = {
+    donor: "bg-green-100 text-green-800",
+    ngo: "bg-blue-100 text-blue-800",
+    volunteer: "bg-orange-100 text-orange-800",
+    supporter: "bg-purple-100 text-purple-800",
+    people: "bg-pink-100 text-pink-800",
+    partner: "bg-yellow-100 text-yellow-800",
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="bg-card border rounded-2xl p-5">
+        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+          <Plus className="w-4 h-4 text-primary" /> Add to Community Section
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="text-xs text-muted-foreground mb-1 block">Name *</label>
+            <Input
+              placeholder="e.g. Annapoorna NGO"
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className="text-xs text-muted-foreground mb-1 block">Type *</label>
+            <Select value={form.type} onValueChange={(v) => setForm((f) => ({ ...f, type: v }))}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="donor">Donor</SelectItem>
+                <SelectItem value="ngo">NGO</SelectItem>
+                <SelectItem value="volunteer">Volunteer</SelectItem>
+                <SelectItem value="supporter">Supporter</SelectItem>
+                <SelectItem value="people">People</SelectItem>
+                <SelectItem value="partner">Partner</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs text-muted-foreground mb-1 block">Description</label>
+            <Input
+              placeholder="e.g. Feeding 500+ families in Delhi"
+              value={form.description}
+              onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className="text-xs text-muted-foreground mb-1 block">Location</label>
+            <Input
+              placeholder="e.g. Delhi, India"
+              value={form.location}
+              onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
+            />
+          </div>
+        </div>
+        <Button className="mt-4 gap-2" onClick={handleAdd} disabled={saving}>
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+          Add Entry
+        </Button>
+      </div>
+
+      <div className="bg-card border rounded-2xl p-5">
+        <h3 className="font-semibold mb-4">Current Entries ({items.length})</h3>
+        {loading && (
+          <div className="flex justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        )}
+        {!loading && items.length === 0 && (
+          <p className="text-muted-foreground text-sm text-center py-8">No entries yet. Add one above.</p>
+        )}
+        {!loading && items.length > 0 && (
+          <div className="flex flex-col gap-2">
+            {items.map((item) => (
+              <div key={item.id} className="flex items-center justify-between gap-3 border rounded-xl p-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 ${TYPE_COLORS[item.type]}`}>
+                    {TYPE_LABELS[item.type as keyof typeof TYPE_LABELS]}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm truncate">{item.name}</p>
+                    {item.description && (
+                      <p className="text-xs text-muted-foreground truncate">{item.description}</p>
+                    )}
+                    {item.location && (
+                      <p className="text-xs text-muted-foreground/60">{item.location}</p>
+                    )}
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-destructive hover:text-destructive shrink-0"
+                  onClick={() => handleDelete(item.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function AdminRegistry() {
   const [activeTab, setActiveTab] = useState("FSSAI Licenses");
   const { data: profile, isLoading } = useGetMyProfile();
@@ -631,7 +806,7 @@ export default function AdminRegistry() {
       </div>
 
       <Tabs
-        tabs={["FSSAI Licenses", "Darpan IDs", "Admin Codes"]}
+        tabs={["FSSAI Licenses", "Darpan IDs", "Admin Codes", "Community"]}
         active={activeTab}
         onChange={setActiveTab}
       />
@@ -639,6 +814,7 @@ export default function AdminRegistry() {
       {activeTab === "FSSAI Licenses" && <FssaiPanel />}
       {activeTab === "Darpan IDs" && <DarpanPanel />}
       {activeTab === "Admin Codes" && <AdminCodesPanel />}
+      {activeTab === "Community" && <CommunityPanel />}
     </div>
   );
 }
