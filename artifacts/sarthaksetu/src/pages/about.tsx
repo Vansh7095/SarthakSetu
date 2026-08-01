@@ -105,7 +105,7 @@ const features = [
   }
 ];
 
-function CommunitySection() {
+function AlliesSection() {
   const { data: spotlights = [] } = useQuery<CommunitySpotlight[]>({
     queryKey: ["community-spotlights"],
     queryFn: async () => {
@@ -122,51 +122,59 @@ function CommunitySection() {
       initial="initial"
       whileInView="whileInView"
     >
-      <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-8 md:p-14 border border-primary/10 text-center flex flex-col items-center gap-6">
-        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-          <Users className="w-8 h-8" />
-        </div>
-        <div>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">One community, one mission</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Donors, NGOs, volunteers, and supporters — everyone is equal here. SarthakSetu is built by people who believe no meal should go to waste.
-          </p>
-        </div>
-
-        {spotlights.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full text-left mt-2">
-            {spotlights.map((s) => (
-              <div key={s.id} className="bg-background/70 rounded-2xl p-5 border border-border/50 flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="font-semibold text-foreground">{s.name}</p>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${TYPE_COLORS[s.type]}`}>
-                    {TYPE_LABELS[s.type]}
-                  </span>
-                </div>
-                {s.description && <p className="text-sm text-muted-foreground">{s.description}</p>}
-                {s.location && <p className="text-xs text-muted-foreground/70">{s.location}</p>}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-3 gap-4 w-full max-w-2xl text-left mt-2">
-            {[
-              { label: "Donors", desc: "Restaurants, households & caterers sharing surplus food." },
-              { label: "NGOs & Volunteers", desc: "On-the-ground teams collecting and delivering donations." },
-              { label: "Supporters", desc: "Anyone who spreads the word or contributes to the cause." },
-            ].map((item) => (
-              <div key={item.label} className="bg-background/70 rounded-2xl p-5 border border-border/50">
-                <p className="font-semibold text-foreground mb-1">{item.label}</p>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <Button className="rounded-full px-8 gap-2 mt-2">
-          <Mail className="w-4 h-4" /> Get involved
-        </Button>
+      <motion.div variants={itemVariant} className="text-center mb-10">
+        <h2 className="text-sm font-bold tracking-widest uppercase text-primary mb-4">Our Allies</h2>
+        <h3 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+          Backed by people who believe
+        </h3>
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          Every partner, sponsor, supporter, and community member who stands behind SarthakSetu — together we are the bridge.
+        </p>
       </motion.div>
+
+      {spotlights.length > 0 ? (
+        <motion.div variants={itemVariant} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {spotlights.map((s) => (
+            <div
+              key={s.id}
+              className="group bg-card rounded-2xl p-6 border border-border/50 hover:border-primary/20 hover:shadow-md transition-all duration-300 flex flex-col gap-2"
+            >
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-serif font-bold text-lg mb-1 group-hover:scale-110 transition-transform duration-300">
+                {s.name.charAt(0).toUpperCase()}
+              </div>
+              <p className="font-semibold text-foreground leading-snug">{s.name}</p>
+              {s.description && (
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.description}</p>
+              )}
+              {s.location && (
+                <p className="text-xs text-muted-foreground/60 mt-auto pt-1">{s.location}</p>
+              )}
+            </div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div variants={itemVariant} className="bg-primary/5 rounded-3xl p-10 md:p-16 border border-primary/10 text-center flex flex-col items-center gap-6">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+            <Users className="w-8 h-8" />
+          </div>
+          <div>
+            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+              Donors, NGOs, volunteers, partners, sponsors, and everyone who spreads the word — no labels, one mission.
+            </p>
+          </div>
+          <Button className="rounded-full px-8 gap-2">
+            <Mail className="w-4 h-4" /> Become an Ally
+          </Button>
+        </motion.div>
+      )}
+
+      {spotlights.length > 0 && (
+        <motion.div variants={itemVariant} className="text-center mt-10">
+          <Button variant="outline" className="rounded-full px-8 gap-2">
+            <Mail className="w-4 h-4" /> Become an Ally
+          </Button>
+        </motion.div>
+      )}
     </motion.section>
   );
 }
@@ -318,8 +326,8 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* 6. Unified Community */}
-      <CommunitySection />
+      {/* 6. Our Allies */}
+      <AlliesSection />
 
       {/* 8. Contact */}
       <motion.section 

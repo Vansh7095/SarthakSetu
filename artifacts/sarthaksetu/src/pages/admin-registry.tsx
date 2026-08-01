@@ -806,7 +806,7 @@ export default function AdminRegistry() {
       </div>
 
       <Tabs
-        tabs={["FSSAI Licenses", "Darpan IDs", "Admin Codes", "Community"]}
+        tabs={["FSSAI Licenses", "Darpan IDs", "Admin Codes", "Our Allies"]}
         active={activeTab}
         onChange={setActiveTab}
       />
@@ -814,7 +814,7 @@ export default function AdminRegistry() {
       {activeTab === "FSSAI Licenses" && <FssaiPanel />}
       {activeTab === "Darpan IDs" && <DarpanPanel />}
       {activeTab === "Admin Codes" && <AdminCodesPanel />}
-      {activeTab === "Community" && <CommunityPanel />}
+      {activeTab === "Our Allies" && <CommunityPanel />}
     </div>
   );
 }
