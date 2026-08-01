@@ -100,8 +100,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </SheetContent>
             </Sheet>
             <Link href={isSignedIn ? "/dashboard" : "/"}>
-              <span className="flex items-center gap-2 font-serif text-2xl font-bold text-primary cursor-pointer">
-                SarthakSetu
+              <span className="flex items-center gap-2 cursor-pointer">
+                <img src="/logo-icon.png" alt="SarthakSetu" className="h-8 w-8 object-contain" />
+                <span className="font-serif text-2xl font-bold text-primary hidden sm:inline">SarthakSetu</span>
               </span>
             </Link>
           </div>
@@ -135,7 +136,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             )}
             <img
-              src="/logo.svg"
+              src="/logo-icon.png"
               alt="SarthakSetu logo"
               className="h-8 w-8 object-contain"
             />
@@ -152,12 +153,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {/* Brand */}
             <div className="lg:col-span-1">
-              <div className="font-serif font-bold text-2xl text-primary mb-1">
-                SarthakSetu
-              </div>
-              <div className="text-white/50 text-xs mb-3 font-medium tracking-wide uppercase">
-                अन्नसेतु — Bridge of Food
-              </div>
+              <img
+                src="/logo-full.png"
+                alt="SarthakSetu"
+                className="h-24 w-auto object-contain mb-3 -ml-1"
+              />
               <p className="text-white/60 text-sm leading-relaxed">
                 Connecting surplus food with those who need it most — across
                 restaurants, events, and households in India.
