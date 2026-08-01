@@ -96,10 +96,10 @@ function SignInPage() {
       <div className="hidden lg:flex flex-col justify-between bg-[hsl(20,40%,12%)] p-12 text-white">
         <div>
           <div className="text-primary font-serif font-bold text-2xl mb-1">
-            अन्नसेतु
+            SarthakSetu
           </div>
           <div className="text-white/50 text-sm">
-            SarthakSetu — Bridge of Food
+            Connect · Empower · Uplift
           </div>
         </div>
         <div>
@@ -149,9 +149,9 @@ function SignUpPage() {
     <div className="min-h-[calc(100dvh-4rem)] grid lg:grid-cols-2">
       <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-primary to-orange-600 p-12 text-white">
         <div>
-          <div className="font-serif font-bold text-2xl mb-1">अन्नसेतु</div>
+          <div className="font-serif font-bold text-2xl mb-1">SarthakSetu</div>
           <div className="text-white/70 text-sm">
-            SarthakSetu — Bridge of Food
+            Connect · Empower · Uplift
           </div>
         </div>
         <div className="flex flex-col gap-4">
