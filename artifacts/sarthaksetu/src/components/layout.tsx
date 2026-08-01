@@ -12,6 +12,9 @@ import {
   User,
   Info,
   Users,
+  Mail,
+  Github,
+  Twitter,
 } from "lucide-react";
 import { useGetMyProfile } from "@workspace/api-client-react";
 import { useState } from "react";
@@ -143,6 +146,213 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-8">
         {children}
       </main>
+
+      <footer className="border-t border-border/40 bg-[hsl(20,40%,10%)] text-white mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* Brand */}
+            <div className="lg:col-span-1">
+              <div className="font-serif font-bold text-2xl text-primary mb-1">
+                SarthakSetu
+              </div>
+              <div className="text-white/50 text-xs mb-3 font-medium tracking-wide uppercase">
+                अन्नसेतु — Bridge of Food
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Connecting surplus food with those who need it most — across
+                restaurants, events, and households in India.
+              </p>
+              <div className="flex gap-3 mt-5">
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="h-8 w-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-primary/80 transition-colors"
+                  aria-label="Twitter"
+                >
+                  <Twitter className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="h-8 w-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-primary/80 transition-colors"
+                  aria-label="GitHub"
+                >
+                  <Github className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href="mailto:hello@sarthaksetu.org"
+                  className="h-8 w-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-primary/80 transition-colors"
+                  aria-label="Email"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Platform */}
+            <div>
+              <h3 className="text-white/90 font-semibold text-sm mb-4 uppercase tracking-wide">
+                Platform
+              </h3>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <Link href="/donations">
+                    <span className="hover:text-primary cursor-pointer transition-colors">
+                      Browse Donations
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/map">
+                    <span className="hover:text-primary cursor-pointer transition-colors">
+                      Live Map
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/donate">
+                    <span className="hover:text-primary cursor-pointer transition-colors">
+                      Donate Food
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard">
+                    <span className="hover:text-primary cursor-pointer transition-colors">
+                      Dashboard
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Account */}
+            <div>
+              <h3 className="text-white/90 font-semibold text-sm mb-4 uppercase tracking-wide">
+                Account
+              </h3>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                {isSignedIn ? (
+                  <>
+                    <li>
+                      <Link href="/profile">
+                        <span className="hover:text-primary cursor-pointer transition-colors">
+                          My Profile
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/my-donations">
+                        <span className="hover:text-primary cursor-pointer transition-colors">
+                          My Listings
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/my-claims">
+                        <span className="hover:text-primary cursor-pointer transition-colors">
+                          My Claims
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => signOut({ redirectUrl: "/" })}
+                        className="hover:text-primary transition-colors"
+                      >
+                        Sign Out
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link href="/sign-in">
+                        <span className="hover:text-primary cursor-pointer transition-colors">
+                          Sign In
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/sign-up">
+                        <span className="hover:text-primary cursor-pointer transition-colors">
+                          Create Account
+                        </span>
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </div>
+
+            {/* About */}
+            <div>
+              <h3 className="text-white/90 font-semibold text-sm mb-4 uppercase tracking-wide">
+                About
+              </h3>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li>
+                  <Link href="/about">
+                    <span className="hover:text-primary cursor-pointer transition-colors">
+                      Our Mission
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="mailto:hello@sarthaksetu.org"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Contact Us
+                  </a>
+                </li>
+              </ul>
+
+              {/* Impact stats */}
+              <div className="mt-6 space-y-1">
+                <div className="text-white/30 text-xs uppercase tracking-wide mb-3">
+                  Impact so far
+                </div>
+                <div className="flex gap-6">
+                  <div>
+                    <div className="text-primary font-bold text-lg leading-none">
+                      2.4M+
+                    </div>
+                    <div className="text-white/40 text-xs mt-0.5">Plates</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold text-lg leading-none">
+                      340+
+                    </div>
+                    <div className="text-white/40 text-xs mt-0.5">NGOs</div>
+                  </div>
+                  <div>
+                    <div className="text-primary font-bold text-lg leading-none">
+                      28
+                    </div>
+                    <div className="text-white/40 text-xs mt-0.5">Cities</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-white/30 text-xs">
+            <span>
+              © {new Date().getFullYear()} SarthakSetu. Built to reduce food
+              waste in India.
+            </span>
+            <span className="flex gap-4">
+              <span>Privacy Policy</span>
+              <span>Terms of Use</span>
+            </span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
