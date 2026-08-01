@@ -107,6 +107,37 @@ router.patch("/admin/users/:id", async (req, res) => {
   res.json(updated);
 });
 
+// PATCH /admin/users/:id/password — set a new password for a user via Clerk
+router.patch("/admin/users/:id/password", async (req, res) => {
+  if (!(await requireAdmin(req, res))) return;
+
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid user id" });
+    return;
+  }
+
+  const { password } = req.body as { password?: string };
+  if (!password || password.length < 8) {
+    res.status(400).json({ error: "Password must be at least 8 characters" });
+    return;
+  }
+
+  const [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.id, id))
+    .limit(1);
+
+  if (!user) {
+    res.status(404).json({ error: "User not found" });
+    return;
+  }
+
+  await clerkClient.users.updateUser(user.clerkId, { password });
+  res.json({ message: "Password updated" });
+});
+
 // DELETE /admin/users/:id — delete user from DB and Clerk
 router.delete("/admin/users/:id", async (req, res) => {
   if (!(await requireAdmin(req, res))) return;

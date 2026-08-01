@@ -13,6 +13,7 @@ import {
   Users,
   Search,
   X,
+  KeyRound,
 } from "lucide-react";
 import {
   Select,
@@ -63,6 +64,15 @@ async function patchUser(
 
 async function deleteUser(id: number): Promise<void> {
   const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+async function changePassword(id: number, password: string): Promise<void> {
+  const res = await fetch(`/api/admin/users/${id}/password`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password }),
+  });
   if (!res.ok) throw new Error(await res.text());
 }
 
@@ -223,6 +233,79 @@ function DeleteConfirm({
   );
 }
 
+// ── Change password modal ──────────────────────────────────────────────────
+
+function ChangePasswordModal({
+  user,
+  onClose,
+  onSave,
+  isSaving,
+}: {
+  user: AdminUser;
+  onClose: () => void;
+  onSave: (password: string) => void;
+  isSaving: boolean;
+}) {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const mismatch = confirm.length > 0 && password !== confirm;
+  const tooShort = password.length > 0 && password.length < 8;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+      <div className="bg-background rounded-2xl shadow-xl w-full max-w-sm p-6 flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Change password</h2>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Setting a new password for <strong>{user.name}</strong>.
+        </p>
+        <div className="flex flex-col gap-3">
+          <label className="flex flex-col gap-1 text-sm">
+            New password
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Min. 8 characters"
+            />
+            {tooShort && (
+              <span className="text-xs text-destructive">Must be at least 8 characters</span>
+            )}
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            Confirm password
+            <Input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              placeholder="Repeat password"
+            />
+            {mismatch && (
+              <span className="text-xs text-destructive">Passwords do not match</span>
+            )}
+          </label>
+        </div>
+        <div className="flex gap-2 justify-end pt-2">
+          <Button variant="outline" onClick={onClose} disabled={isSaving}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => onSave(password)}
+            disabled={isSaving || password.length < 8 || password !== confirm}
+          >
+            {isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+            Set password
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main page ──────────────────────────────────────────────────────────────
 
 export default function AdminUsers() {
@@ -234,6 +317,7 @@ export default function AdminUsers() {
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<AdminUser | null>(null);
   const [deleting, setDeleting] = useState<AdminUser | null>(null);
+  const [changingPassword, setChangingPassword] = useState<AdminUser | null>(null);
 
   const { data: users, isLoading, error } = useQuery({
     queryKey: ["admin-users"],
@@ -259,6 +343,16 @@ export default function AdminUsers() {
       toast({ title: "Account deleted" });
     },
     onError: (e: any) => toast({ title: "Delete failed", description: e.message, variant: "destructive" }),
+  });
+
+  const passwordMutation = useMutation({
+    mutationFn: ({ id, password }: { id: number; password: string }) =>
+      changePassword(id, password),
+    onSuccess: () => {
+      setChangingPassword(null);
+      toast({ title: "Password updated" });
+    },
+    onError: (e: any) => toast({ title: "Failed to update password", description: e.message, variant: "destructive" }),
   });
 
   // Guard — non-admin shouldn't reach this page, but be safe
@@ -372,6 +466,14 @@ export default function AdminUsers() {
                         </Button>
                         <Button
                           size="sm"
+                          variant="outline"
+                          onClick={() => setChangingPassword(u)}
+                        >
+                          <KeyRound className="h-3.5 w-3.5 mr-1" />
+                          Password
+                        </Button>
+                        <Button
+                          size="sm"
                           variant="destructive"
                           onClick={() => setDeleting(u)}
                           disabled={u.id === myProfile?.id}
@@ -410,10 +512,14 @@ export default function AdminUsers() {
                     })}
                   </span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing(u)}>
                     <Pencil className="h-3.5 w-3.5 mr-1" />
                     Edit
+                  </Button>
+                  <Button size="sm" variant="outline" className="flex-1" onClick={() => setChangingPassword(u)}>
+                    <KeyRound className="h-3.5 w-3.5 mr-1" />
+                    Password
                   </Button>
                   <Button
                     size="sm"
@@ -447,6 +553,16 @@ export default function AdminUsers() {
           onClose={() => setDeleting(null)}
           onConfirm={() => deleteMutation.mutate(deleting.id)}
           isDeleting={deleteMutation.isPending}
+        />
+      )}
+      {changingPassword && (
+        <ChangePasswordModal
+          user={changingPassword}
+          onClose={() => setChangingPassword(null)}
+          onSave={(password) =>
+            passwordMutation.mutate({ id: changingPassword.id, password })
+          }
+          isSaving={passwordMutation.isPending}
         />
       )}
     </div>
