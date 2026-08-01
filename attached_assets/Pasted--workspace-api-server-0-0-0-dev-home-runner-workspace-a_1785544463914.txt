@@ -1,0 +1,81 @@
+
+> @workspace/api-server@0.0.0 dev /home/runner/workspace/artifacts/api-server
+> export NODE_ENV=development && pnpm run build && pnpm run start
+
+
+> @workspace/api-server@0.0.0 build /home/runner/workspace/artifacts/api-server
+> node ./build.mjs
+
+
+  dist/index.mjs                       2.6mb ⚠️
+  dist/pino-worker.mjs               153.4kb
+  dist/pino-file.mjs                 142.1kb
+  dist/pino-pretty.mjs               114.6kb
+  dist/thread-stream-worker.mjs        7.3kb
+  dist/index.mjs.map                   4.9mb
+  dist/pino-worker.mjs.map           256.9kb
+  dist/pino-file.mjs.map             229.0kb
+  dist/pino-pretty.mjs.map           204.0kb
+  dist/thread-stream-worker.mjs.map   12.0kb
+
+⚡ Done in 285ms
+
+> @workspace/api-server@0.0.0 start /home/runner/workspace/artifacts/api-server
+> node --enable-source-maps ./dist/index.mjs
+
+[00:06:22.884] INFO (1351): Server listening
+    port: 8080
+Attention: Clerk collects telemetry data from its SDKs when connected to development instances.
+The data collected is used to inform Clerk's product roadmap.
+To learn more, including how to opt-out from the telemetry program, visit: https://clerk.com/docs/telemetry.
+
+[00:06:23.355] INFO (1351): request completed
+    req: {
+      "id": 1,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 9
+[00:15:11.218] INFO (1351): request completed
+    req: {
+      "id": 2,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 7
+[00:34:08.813] INFO (1351): request completed
+    req: {
+      "id": 3,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 3
+[00:34:11.476] INFO (1351): request completed
+    req: {
+      "id": 4,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 2
+[00:34:14.418] INFO (1351): request completed
+    req: {
+      "id": 5,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 3
