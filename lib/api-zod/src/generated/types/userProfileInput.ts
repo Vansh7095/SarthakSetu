@@ -7,9 +7,11 @@
  */
 import type { UserProfileInputDonorCategory } from './userProfileInputDonorCategory';
 import type { UserProfileInputRole } from './userProfileInputRole';
+import type { UserProfileInputRolesItem } from './userProfileInputRolesItem';
 
 export interface UserProfileInput {
   role: UserProfileInputRole;
+  roles?: UserProfileInputRolesItem[];
   name: string;
   phone: string;
   address?: string;

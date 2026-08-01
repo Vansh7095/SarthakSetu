@@ -70,6 +70,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserProfile"
 
+  /users/me/active-role:
+    patch:
+      operationId: switchActiveRole
+      tags: [users]
+      summary: Switch the currently active role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SwitchRoleInput"
+      responses:
+        "200":
+          description: Active role updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Role not in user's roles list
+
   /donations:
     get:
       operationId: listDonations
@@ -580,9 +601,17 @@ components:
         - version
         - gitCommit
 
+    SwitchRoleInput:
+      type: object
+      required: [role]
+      properties:
+        role:
+          type: string
+          enum: [donor, ngo, volunteer, admin]
+
     UserProfile:
       type: object
-      required: [id, clerkId, role, name, phone]
+      required: [id, clerkId, role, roles, name, phone]
       properties:
         id:
           type: integer
@@ -591,6 +620,11 @@ components:
         role:
           type: string
           enum: [donor, ngo, volunteer, admin]
+        roles:
+          type: array
+          items:
+            type: string
+            enum: [donor, ngo, volunteer, admin]
         name:
           type: string
         phone:
@@ -631,6 +665,11 @@ components:
         role:
           type: string
           enum: [donor, ngo, volunteer, admin]
+        roles:
+          type: array
+          items:
+            type: string
+            enum: [donor, ngo, volunteer, admin]
         name:
           type: string
         phone:

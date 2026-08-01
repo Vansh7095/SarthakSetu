@@ -29,10 +29,34 @@ export interface HealthStatus {
   gitCommit: string;
 }
 
+export type SwitchRoleInputRole = typeof SwitchRoleInputRole[keyof typeof SwitchRoleInputRole];
+
+
+export const SwitchRoleInputRole = {
+  donor: 'donor',
+  ngo: 'ngo',
+  volunteer: 'volunteer',
+  admin: 'admin',
+} as const;
+
+export interface SwitchRoleInput {
+  role: SwitchRoleInputRole;
+}
+
 export type UserProfileRole = typeof UserProfileRole[keyof typeof UserProfileRole];
 
 
 export const UserProfileRole = {
+  donor: 'donor',
+  ngo: 'ngo',
+  volunteer: 'volunteer',
+  admin: 'admin',
+} as const;
+
+export type UserProfileRolesItem = typeof UserProfileRolesItem[keyof typeof UserProfileRolesItem];
+
+
+export const UserProfileRolesItem = {
   donor: 'donor',
   ngo: 'ngo',
   volunteer: 'volunteer',
@@ -57,6 +81,7 @@ export interface UserProfile {
   id: number;
   clerkId: string;
   role: UserProfileRole;
+  roles: UserProfileRolesItem[];
   name: string;
   phone: string;
   /** @nullable */
@@ -96,6 +121,16 @@ export const UserProfileInputRole = {
   admin: 'admin',
 } as const;
 
+export type UserProfileInputRolesItem = typeof UserProfileInputRolesItem[keyof typeof UserProfileInputRolesItem];
+
+
+export const UserProfileInputRolesItem = {
+  donor: 'donor',
+  ngo: 'ngo',
+  volunteer: 'volunteer',
+  admin: 'admin',
+} as const;
+
 export type UserProfileInputDonorCategory = typeof UserProfileInputDonorCategory[keyof typeof UserProfileInputDonorCategory];
 
 
@@ -109,6 +144,7 @@ export const UserProfileInputDonorCategory = {
 
 export interface UserProfileInput {
   role: UserProfileInputRole;
+  roles?: UserProfileInputRolesItem[];
   name: string;
   phone: string;
   address?: string;

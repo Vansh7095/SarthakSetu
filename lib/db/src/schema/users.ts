@@ -6,6 +6,7 @@ import {
   timestamp,
   pgEnum,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -22,6 +23,10 @@ export const usersTable = pgTable("users", {
   id: serial("id").primaryKey(),
   clerkId: text("clerk_id").notNull().unique(),
   role: roleEnum("role").notNull(),
+  roles: text("roles")
+    .array()
+    .notNull()
+    .default(sql`ARRAY[]::text[]`),
   name: text("name").notNull(),
   phone: text("phone").notNull(),
   address: text("address"),

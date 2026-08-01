@@ -7,11 +7,13 @@
  */
 import type { UserProfileDonorCategory } from './userProfileDonorCategory';
 import type { UserProfileRole } from './userProfileRole';
+import type { UserProfileRolesItem } from './userProfileRolesItem';
 
 export interface UserProfile {
   id: number;
   clerkId: string;
   role: UserProfileRole;
+  roles: UserProfileRolesItem[];
   name: string;
   phone: string;
   /** @nullable */

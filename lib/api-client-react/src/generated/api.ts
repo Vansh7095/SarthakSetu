@@ -44,6 +44,7 @@ import type {
   OtpVerifyInput,
   PlatformStats,
   SuccessMessage,
+  SwitchRoleInput,
   UserProfile,
   UserProfileInput
 } from './api.schemas';
@@ -284,6 +285,77 @@ export const useUpsertMyProfile = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getUpsertMyProfileMutationOptions(options));
+    }
+
+export const getSwitchActiveRoleUrl = () => {
+
+
+
+
+  return `/api/users/me/active-role`
+}
+
+/**
+ * @summary Switch the currently active role
+ */
+export const switchActiveRole = async (switchRoleInput: SwitchRoleInput, options?: RequestInit): Promise<UserProfile> => {
+
+  return customFetch<UserProfile>(getSwitchActiveRoleUrl(),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      switchRoleInput,)
+  }
+);}
+
+
+
+
+export const getSwitchActiveRoleMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof switchActiveRole>>, TError,{data: BodyType<SwitchRoleInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof switchActiveRole>>, TError,{data: BodyType<SwitchRoleInput>}, TContext> => {
+
+const mutationKey = ['switchActiveRole'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof switchActiveRole>>, {data: BodyType<SwitchRoleInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  switchActiveRole(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SwitchActiveRoleMutationResult = NonNullable<Awaited<ReturnType<typeof switchActiveRole>>>
+    export type SwitchActiveRoleMutationBody = BodyType<SwitchRoleInput>
+    export type SwitchActiveRoleMutationError = ErrorType<void>
+
+    /**
+ * @summary Switch the currently active role
+ */
+export const useSwitchActiveRole = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof switchActiveRole>>, TError,{data: BodyType<SwitchRoleInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof switchActiveRole>>,
+        TError,
+        {data: BodyType<SwitchRoleInput>},
+        TContext
+      > => {
+      return useMutation(getSwitchActiveRoleMutationOptions(options));
     }
 
 export const getListDonationsUrl = (params?: ListDonationsParams,) => {
