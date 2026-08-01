@@ -165,7 +165,7 @@ router.get("/community/spotlights", async (_req, res) => {
 router.post("/admin/community", async (req, res) => {
   if (!(await requireAdmin(req, res))) return;
   const { name, type, description, location } = req.body as Record<string, string>;
-  const VALID_TYPES = new Set(["donor", "ngo", "volunteer", "supporter"]);
+  const VALID_TYPES = new Set(["donor", "ngo", "volunteer", "supporter", "people", "partner"]);
   if (!name?.trim() || !type || !VALID_TYPES.has(type)) {
     res.status(400).json({ error: "name and a valid type are required" });
     return;
