@@ -44,4 +44,3 @@ packages = ["tree"]
 LOG_LEVEL = "info"
 NODE_ENV = "development"
 BASE_PATH = "/"
-FRONTEND_PORT = "5173"
