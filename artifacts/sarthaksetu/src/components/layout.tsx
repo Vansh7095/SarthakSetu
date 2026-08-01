@@ -135,11 +135,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </div>
             )}
-            <img
-              src="/logo-icon.png"
-              alt="SarthakSetu logo"
-              className="h-8 w-8 object-contain"
-            />
           </nav>
         </div>
       </header>
