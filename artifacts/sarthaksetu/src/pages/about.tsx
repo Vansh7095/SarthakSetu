@@ -399,18 +399,6 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* 10. Footer */}
-      <footer className="border-t border-border pt-8 mt-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-muted-foreground text-sm">
-          <div>© 2026 SarthakSetu</div>
-          <div className="flex items-center gap-1.5">
-            Made with <span className="text-destructive text-lg">❤️</span> in India
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4" /> Private Platform
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
