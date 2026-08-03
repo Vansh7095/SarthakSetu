@@ -5,6 +5,8 @@ import {
   useGetMyDonations,
   useListDonations,
   useGetPlatformStats,
+  useSwitchActiveRole,
+  getGetMyProfileQueryKey,
 } from "@workspace/api-client-react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -20,10 +22,23 @@ import {
   BarChart3,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+
+type Role = "donor" | "ngo" | "volunteer" | "admin";
+
+const roleLabels: Record<Role, string> = {
+  donor: "Food Donor",
+  ngo: "NGO / Food Bank",
+  volunteer: "Volunteer",
+  admin: "Platform Admin",
+};
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const { data: profile, isLoading, error } = useGetMyProfile();
+  const queryClient = useQueryClient();
+  const switchRole = useSwitchActiveRole();
+  const roles = profile?.roles?.length ? profile.roles : profile ? [profile.role] : [];
 
   useEffect(() => {
     if (error) setLocation("/onboarding");
@@ -36,6 +51,17 @@ export default function Dashboard() {
       </div>
     );
   if (!profile) return null;
+
+  const handleRoleSwitch = (role: Role) => {
+    switchRole.mutate(
+      { data: { role } },
+      {
+        onSuccess: (data) => {
+          queryClient.setQueryData(getGetMyProfileQueryKey(), data);
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -61,6 +87,28 @@ export default function Dashboard() {
               <span className="text-muted-foreground">· {profile.city}</span>
             )}
           </p>
+          {roles.length > 1 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {roles.map((role) => (
+                <Button
+                  key={role}
+                  type="button"
+                  size="sm"
+                  variant={profile.role === role ? "default" : "outline"}
+                  disabled={profile.role === role || switchRole.isPending}
+                  onClick={() => handleRoleSwitch(role as Role)}
+                >
+                  {profile.role === role ? "Using " : "Switch to "}
+                  {roleLabels[role as Role]}
+                </Button>
+              ))}
+              <Link href="/add-role">
+                <Button type="button" size="sm" variant="ghost">
+                  + Add role
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
         {profile.role === "donor" && (
           <Link href="/donate">

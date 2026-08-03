@@ -2,7 +2,9 @@ import {
   useGetMyProfile,
   useUpsertMyProfile,
   getGetMyProfileQueryKey,
+  useSwitchActiveRole,
 } from "@workspace/api-client-react";
+import { Link } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,7 +20,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle2, Plus } from "lucide-react";
+
+type Role = "donor" | "ngo" | "volunteer" | "admin";
+
+const roleLabels: Record<Role, string> = {
+  donor: "Food Donor",
+  ngo: "NGO / Food Bank",
+  volunteer: "Volunteer",
+  admin: "Platform Admin",
+};
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -33,6 +44,30 @@ export default function Profile() {
 
   const { data: profile, isLoading } = useGetMyProfile();
   const upsertProfile = useUpsertMyProfile();
+  const switchRole = useSwitchActiveRole();
+  const roles = profile?.roles?.length ? profile.roles : profile ? [profile.role] : [];
+
+  const handleRoleSwitch = (role: Role) => {
+    switchRole.mutate(
+      { data: { role } },
+      {
+        onSuccess: (data) => {
+          queryClient.setQueryData(getGetMyProfileQueryKey(), data);
+          toast({
+            title: "Active role changed",
+            description: `You are now using SarthakSetu as a ${roleLabels[role]}.`,
+          });
+        },
+        onError: () => {
+          toast({
+            variant: "destructive",
+            title: "Could not change role",
+            description: "Please try again.",
+          });
+        },
+      },
+    );
+  };
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -109,12 +144,43 @@ export default function Profile() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="bg-muted/50 p-4 rounded-xl mb-6">
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Account Role
-              </p>
-              <p className="text-lg font-bold capitalize text-foreground">
-                {profile.role}
-              </p>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    Active Role
+                  </p>
+                  <p className="text-lg font-bold text-foreground">
+                    {roleLabels[profile.role as Role]}
+                  </p>
+                </div>
+                <span className="text-xs rounded-full bg-primary/10 text-primary px-2 py-1 font-medium">
+                  {roles.length} role{roles.length === 1 ? "" : "s"} on this account
+                </span>
+              </div>
+              {roles.length > 1 && (
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {roles.map((role) => (
+                    <Button
+                      key={role}
+                      type="button"
+                      size="sm"
+                      variant={profile.role === role ? "default" : "outline"}
+                      disabled={profile.role === role || switchRole.isPending}
+                      onClick={() => handleRoleSwitch(role as Role)}
+                    >
+                      {profile.role === role && (
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      )}
+                      {roleLabels[role as Role]}
+                    </Button>
+                  ))}
+                </div>
+              )}
+              <Link href="/add-role">
+                <Button type="button" variant="link" className="px-0 mt-3">
+                  <Plus className="w-4 h-4" /> Add another role
+                </Button>
+              </Link>
             </div>
 
             <FormField

@@ -988,22 +988,53 @@ function AdminForm({
 }
 
 export default function Onboarding() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [step, setStep] = useState<"role" | "details">("role");
-  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [selectedRoles, setSelectedRoles] = useState<Role[]>([]);
+  const [detailIndex, setDetailIndex] = useState(0);
+  const [roleValues, setRoleValues] = useState<Record<string, any>>({});
 
   const { data: profile, isLoading } = useGetMyProfile();
   const upsertProfile = useUpsertMyProfile();
+  const addingRole = location === "/add-role";
+  const selectedRole = selectedRoles[detailIndex] ?? null;
+  const availableRoleCards = roleCards.filter(
+    (card) => !addingRole || !profile?.roles?.includes(card.role),
+  );
 
   useEffect(() => {
-    if (profile) setLocation("/dashboard");
-  }, [profile, setLocation]);
+    if (profile && !addingRole) setLocation("/dashboard");
+    if (!profile && addingRole && !isLoading) setLocation("/onboarding");
+  }, [profile, addingRole, isLoading, setLocation]);
 
-  const handleSubmit = (values: any) => {
-    const { adminCode: _adminCode, ...rest } = values;
-    const payload = { ...rest, role: selectedRole! };
+  const handleFinalSubmit = (valuesByRole: Record<string, any>) => {
+    const mergedValues = Object.values(valuesByRole).reduce(
+      (merged, values) => ({ ...merged, ...values }),
+      {},
+    );
+    const { adminCode: _adminCode, ...rest } = mergedValues;
+    const roles = Array.from(
+      new Set([
+        ...(profile ? [profile.role] : []),
+        ...(profile?.roles ?? []),
+        ...selectedRoles,
+      ]),
+    );
+    const payload = {
+      ...rest,
+      ...(profile
+        ? {
+            name: rest.name || profile.name,
+            phone: rest.phone || profile.phone,
+            city: rest.city || profile.city || undefined,
+            address: rest.address || profile.address || undefined,
+          }
+        : {}),
+      role: selectedRoles[selectedRoles.length - 1]!,
+      roles,
+    };
 
     upsertProfile.mutate(
       { data: payload },
@@ -1011,8 +1042,10 @@ export default function Onboarding() {
         onSuccess: (data) => {
           queryClient.setQueryData(getGetMyProfileQueryKey(), data);
           toast({
-            title: "Welcome to SarthakSetu!",
-            description: "Your profile is set up and ready.",
+            title: addingRole ? "Role added" : "Welcome to SarthakSetu!",
+            description: addingRole
+              ? "Your new role is active and ready to use."
+              : "Your profile is set up and ready.",
           });
           setLocation("/dashboard");
         },
@@ -1025,6 +1058,17 @@ export default function Onboarding() {
         },
       },
     );
+  };
+
+  const handleRoleSubmit = (values: any) => {
+    if (!selectedRole) return;
+    const nextRoleValues = { ...roleValues, [selectedRole]: values };
+    setRoleValues(nextRoleValues);
+    if (detailIndex < selectedRoles.length - 1) {
+      setDetailIndex((index) => index + 1);
+      return;
+    }
+    handleFinalSubmit(nextRoleValues);
   };
 
   if (isLoading) {
@@ -1043,54 +1087,101 @@ export default function Onboarding() {
         </div>
         <h1 className="text-3xl font-serif font-bold text-foreground mb-2">
           {step === "role"
-            ? "How will you use SarthakSetu?"
+            ? addingRole
+              ? "Add another role"
+              : "How will you use SarthakSetu?"
             : `Setting up your ${selectedRole === "ngo" ? "NGO" : selectedRole} profile`}
         </h1>
         <p className="text-muted-foreground">
           {step === "role"
-            ? "Choose your role — you can update this later from your profile"
+            ? "Select every role you want on this account. You can add more later from your profile."
             : "We verify your details against our database before activating your account"}
         </p>
       </div>
 
       {step === "role" ? (
-        <div className="grid sm:grid-cols-2 gap-4">
-          {roleCards.map((card) => {
-            const Icon = card.icon;
-            return (
-              <button
-                key={card.role}
+        <>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {availableRoleCards.map((card) => {
+              const Icon = card.icon;
+              const isSelected = selectedRoles.includes(card.role);
+              return (
+                <button
+                  key={card.role}
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() =>
+                    setSelectedRoles((roles) =>
+                      roles.includes(card.role)
+                        ? roles.filter((role) => role !== card.role)
+                        : [...roles, card.role],
+                    )
+                  }
+                  className={`text-left p-5 rounded-2xl border-2 transition-all cursor-pointer ${card.color} group ${
+                    isSelected
+                      ? "ring-2 ring-primary ring-offset-2 border-primary"
+                      : ""
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`mt-0.5 ${card.iconColor}`}>
+                      <Icon className="w-7 h-7" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-foreground text-base">
+                        {card.title}
+                      </p>
+                      <p className="text-muted-foreground text-xs mt-0.5">
+                        {card.subtitle}
+                      </p>
+                      <p className="text-foreground/70 text-sm mt-2">
+                        {card.description}
+                      </p>
+                      <span className="inline-block mt-3 text-xs bg-white/80 border border-border rounded-full px-2 py-0.5 font-medium text-muted-foreground">
+                        {card.badge}
+                      </span>
+                    </div>
+                    {isSelected ? (
+                      <CheckCircle2 className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground mt-1 flex-shrink-0 transition-colors" />
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          {availableRoleCards.length === 0 ? (
+            <div className="mt-6 rounded-xl border border-dashed border-border p-5 text-center">
+              <p className="font-medium">You already have every available role.</p>
+              <Button
                 type="button"
-                onClick={() => {
-                  setSelectedRole(card.role);
-                  setStep("details");
-                }}
-                className={`text-left p-5 rounded-2xl border-2 transition-all cursor-pointer ${card.color} group`}
+                variant="link"
+                onClick={() => setLocation("/profile")}
               >
-                <div className="flex items-start gap-3">
-                  <div className={`mt-0.5 ${card.iconColor}`}>
-                    <Icon className="w-7 h-7" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-foreground text-base">
-                      {card.title}
-                    </p>
-                    <p className="text-muted-foreground text-xs mt-0.5">
-                      {card.subtitle}
-                    </p>
-                    <p className="text-foreground/70 text-sm mt-2">
-                      {card.description}
-                    </p>
-                    <span className="inline-block mt-3 text-xs bg-white/80 border border-border rounded-full px-2 py-0.5 font-medium text-muted-foreground">
-                      {card.badge}
-                    </span>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground mt-1 flex-shrink-0 transition-colors" />
-                </div>
-              </button>
-            );
-          })}
-        </div>
+                Return to profile
+              </Button>
+            </div>
+          ) : (
+          <div className="mt-6 flex items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              {selectedRoles.length === 0
+                ? "Choose at least one role to continue."
+                : `${selectedRoles.length} role${selectedRoles.length === 1 ? "" : "s"} selected`}
+            </p>
+            <Button
+              type="button"
+              disabled={selectedRoles.length === 0}
+              onClick={() => {
+                setDetailIndex(0);
+                setStep("details");
+              }}
+            >
+              Continue <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+          )}
+        </>
       ) : (
         <div className="bg-card border border-border p-6 rounded-2xl shadow-sm">
           {selectedRole && (
@@ -1112,30 +1203,46 @@ export default function Onboarding() {
           )}
 
           {selectedRole === "donor" && (
-            <DonorForm
-              onBack={() => setStep("role")}
-              onSubmit={handleSubmit}
+              <DonorForm
+                onBack={() =>
+                  detailIndex > 0
+                    ? setDetailIndex((index) => index - 1)
+                    : setStep("role")
+                }
+                onSubmit={handleRoleSubmit}
               isPending={upsertProfile.isPending}
             />
           )}
           {selectedRole === "ngo" && (
             <NgoForm
-              onBack={() => setStep("role")}
-              onSubmit={handleSubmit}
+              onBack={() =>
+                detailIndex > 0
+                  ? setDetailIndex((index) => index - 1)
+                  : setStep("role")
+              }
+              onSubmit={handleRoleSubmit}
               isPending={upsertProfile.isPending}
             />
           )}
           {selectedRole === "volunteer" && (
             <VolunteerForm
-              onBack={() => setStep("role")}
-              onSubmit={handleSubmit}
+              onBack={() =>
+                detailIndex > 0
+                  ? setDetailIndex((index) => index - 1)
+                  : setStep("role")
+              }
+              onSubmit={handleRoleSubmit}
               isPending={upsertProfile.isPending}
             />
           )}
           {selectedRole === "admin" && (
             <AdminForm
-              onBack={() => setStep("role")}
-              onSubmit={handleSubmit}
+              onBack={() =>
+                detailIndex > 0
+                  ? setDetailIndex((index) => index - 1)
+                  : setStep("role")
+              }
+              onSubmit={handleRoleSubmit}
               isPending={upsertProfile.isPending}
             />
           )}

@@ -42,6 +42,15 @@ router.post("/donations/:id/claim", async (req, res) => {
     res.status(403).json({ error: "Profile not found" });
     return;
   }
+  if (
+    user.role !== "ngo" &&
+    user.role !== "volunteer" &&
+    !(user.roles ?? []).includes("ngo") &&
+    !(user.roles ?? []).includes("volunteer")
+  ) {
+    res.status(403).json({ error: "NGO or volunteer role required" });
+    return;
+  }
 
   const [donation] = await db
     .select()

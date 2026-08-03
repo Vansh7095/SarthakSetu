@@ -31,7 +31,7 @@ async function requireAdmin(req: any, res: any): Promise<boolean> {
     .from(usersTable)
     .where(eq(usersTable.clerkId, clerkId))
     .limit(1);
-  if (!user || user.role !== "admin") {
+  if (!user || (user.role !== "admin" && !(user.roles ?? []).includes("admin"))) {
     res.status(403).json({ error: "Admin access required" });
     return false;
   }

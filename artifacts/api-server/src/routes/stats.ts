@@ -154,9 +154,11 @@ router.get("/stats/platform", async (_req, res) => {
   const allUsers = await db.select().from(usersTable);
   const allDonations = await db.select().from(donationsTable);
 
-  const totalDonors = allUsers.filter((u) => u.role === "donor").length;
+  const hasRole = (user: (typeof allUsers)[number], role: string) =>
+    user.role === role || (user.roles ?? []).includes(role);
+  const totalDonors = allUsers.filter((u) => hasRole(u, "donor")).length;
   const totalNgos = allUsers.filter(
-    (u) => u.role === "ngo" || u.role === "volunteer",
+    (u) => hasRole(u, "ngo") || hasRole(u, "volunteer"),
   ).length;
   const totalDonations = allDonations.length;
   const totalPlatesSaved = allDonations

@@ -299,6 +299,9 @@ function ClerkProviderWithRoutes() {
             <Route path="/onboarding">
               <ProtectedRoute component={Onboarding} />
             </Route>
+            <Route path="/add-role">
+              <ProtectedRoute component={Onboarding} />
+            </Route>
 
             <Route path="/donate">
               <ProtectedRoute component={Donate} />

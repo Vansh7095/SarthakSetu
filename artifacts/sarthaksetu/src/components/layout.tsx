@@ -31,18 +31,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const navigation = isSignedIn
     ? [
         { name: "Dashboard", href: "/dashboard", icon: Home },
-        ...(profile?.role === "donor"
+        ...(profile?.role === "donor" || profile?.roles?.includes("donor")
           ? [
               { name: "Donate Food", href: "/donate", icon: Heart },
               { name: "My Listings", href: "/my-donations", icon: List },
             ]
-          : [
+          : []),
+        ...(profile?.role === "ngo" ||
+        profile?.role === "volunteer" ||
+        profile?.roles?.includes("ngo") ||
+        profile?.roles?.includes("volunteer")
+          ? [
               { name: "Available Food", href: "/donations", icon: List },
               { name: "My Claims", href: "/my-claims", icon: Heart },
-            ]),
+            ]
+          : []),
         { name: "Map View", href: "/map", icon: MapIcon },
         { name: "Profile", href: "/profile", icon: User },
-        ...(profile?.role === "admin"
+        ...(profile?.role === "admin" ||
+        profile?.roles?.includes("admin")
           ? [{ name: "User Management", href: "/admin-users", icon: Users }]
           : []),
         { name: "About", href: "/about", icon: Info },

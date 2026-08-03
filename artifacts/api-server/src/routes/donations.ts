@@ -126,6 +126,10 @@ router.post("/donations", async (req, res) => {
     res.status(403).json({ error: "Profile not found" });
     return;
   }
+  if (user.role !== "donor" && !(user.roles ?? []).includes("donor")) {
+    res.status(403).json({ error: "Donor role required" });
+    return;
+  }
 
   const parsed = CreateDonationBody.safeParse(req.body);
   if (!parsed.success) {
@@ -273,7 +277,8 @@ router.delete("/donations/:id", async (req, res) => {
   }
 
   // Admins can delete any donation; donors can only delete their own
-  const isAdmin = user.role === "admin";
+  const isAdmin =
+    user.role === "admin" || (user.roles ?? []).includes("admin");
   if (!isAdmin && existing.donorId !== user.id) {
     res.status(403).json({ error: "Not authorized to delete this donation" });
     return;
