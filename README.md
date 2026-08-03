@@ -4,7 +4,9 @@ A food donation platform connecting surplus food donors (restaurants, hotels, ca
 
 **Built with:** React + Vite · Express 5 · PostgreSQL · Drizzle ORM · Clerk Auth · OpenStreetMap
 
-> **New to this project?** Start with [GETTING_STARTED.md](GETTING_STARTED.md) — a complete, beginner-friendly, step-by-step setup guide that assumes zero prior knowledge of Node.js, PostgreSQL, Docker, or Clerk.
+> **New to this project?** Start with the [Getting Started guide](./docs/GETTING_STARTED.md) — a complete, beginner-friendly, step-by-step setup guide that assumes zero prior knowledge of Node.js, PostgreSQL, Docker, or Clerk.
+>
+> **Looking for a specific reference?** See the [documentation index](./docs/README.md).
 
 ---
 
@@ -142,6 +144,9 @@ sarthaksetu/
 │       └── doctor.ts         # Environment diagnostic tool
 │
 ├── docs/                     # Additional documentation
+│   ├── README.md                # Documentation index and reading guide
+│   ├── GETTING_STARTED.md       # Beginner setup and first-run guide
+│   ├── TECHNICAL_DOCUMENTATION.md # Detailed architecture and API reference
 │   ├── DATABASE_DICTIONARY.md   # Full database schema reference
 │   ├── SYSTEM_MAINTENANCE.md    # Operations, backups, monitoring
 │   └── SECURITY_AUDIT.md        # Security analysis
@@ -1452,10 +1457,13 @@ A: Not currently. The frontend is a responsive web application that works on mob
 
 | Document                                                       | What's Inside                                                      |
 | -------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [`replit.md`](./replit.md)                                     | Original project overview, architecture decisions, stack details   |
-| [`docs/DATABASE_DICTIONARY.md`](./docs/DATABASE_DICTIONARY.md) | Complete database schema — tables, columns, enums, relationships   |
-| [`docs/SYSTEM_MAINTENANCE.md`](./docs/SYSTEM_MAINTENANCE.md)   | Operations guide — monitoring, backups, logging, scaling, security |
-| [`docs/SECURITY_AUDIT.md`](./docs/SECURITY_AUDIT.md)           | Security analysis and findings                                     |
+| [`docs/README.md`](./docs/README.md)                            | Documentation index and recommended reading order                  |
+| [`docs/GETTING_STARTED.md`](./docs/GETTING_STARTED.md)          | Beginner-friendly local setup, first run, Docker, and deployment   |
+| [`docs/TECHNICAL_DOCUMENTATION.md`](./docs/TECHNICAL_DOCUMENTATION.md) | Detailed architecture, API, configuration, and deployment reference |
+| [`docs/DATABASE_DICTIONARY.md`](./docs/DATABASE_DICTIONARY.md)  | Complete database schema — tables, columns, enums, relationships   |
+| [`docs/SYSTEM_MAINTENANCE.md`](./docs/SYSTEM_MAINTENANCE.md)    | Operations guide — monitoring, backups, logging, scaling, security |
+| [`docs/SECURITY_AUDIT.md`](./docs/SECURITY_AUDIT.md)            | Security analysis, risks, and recommended mitigations              |
+| [`replit.md`](./replit.md)                                      | Replit-specific run commands, architecture decisions, and setup   |
 
 ---
 

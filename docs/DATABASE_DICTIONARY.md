@@ -5,6 +5,10 @@
 > **Project**: Food donation platform connecting donors with NGOs and volunteers
 > **Generated**: June 2026
 
+For setup instructions, see the [Getting Started guide](./GETTING_STARTED.md).
+For architecture and API context, see the
+[Technical Documentation](./TECHNICAL_DOCUMENTATION.md).
+
 ---
 
 ## Table of Contents

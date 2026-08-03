@@ -4,6 +4,11 @@
 > **Scope**: Full-stack application — React frontend (Vite), Express 5 backend, PostgreSQL database, Clerk authentication
 > **Auditor**: Automated source-code analysis
 
+> **Documentation note:** This is a point-in-time assessment dated June 2026.
+> Revalidate the findings against the current source before using them as a
+> production sign-off. See the [documentation index](./README.md) for related
+> setup, architecture, database, and operations references.
+
 ---
 
 ## Executive Summary

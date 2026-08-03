@@ -4,6 +4,10 @@
 > **Repository Type**: pnpm monorepo with TypeScript
 > **Last Updated**: June 2026
 
+This document is the detailed architecture reference. For a first-time setup,
+start with the [Getting Started guide](./GETTING_STARTED.md). For the complete
+documentation map, see the [documentation index](./README.md).
+
 ---
 
 ## Table of Contents

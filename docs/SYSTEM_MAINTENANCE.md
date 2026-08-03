@@ -5,6 +5,10 @@
 > **Auth**: Clerk (self-managed), OTP-based claim handover
 > **Runtime**: Node.js 24, pnpm monorepo
 
+Use the [Getting Started guide](./GETTING_STARTED.md) for a first-time setup,
+and the [Technical Documentation](./TECHNICAL_DOCUMENTATION.md) for application
+architecture and API details.
+
 ---
 
 ## Table of Contents

@@ -5,6 +5,13 @@
 > No prior knowledge of Node.js, PostgreSQL, Docker, Clerk, or pnpm is assumed.
 > Follow every numbered step in order. Do not skip steps.
 
+This guide is stored in the [`docs/`](./) folder. Run the commands below from the
+repository root unless a step explicitly tells you to change directories. For
+the full documentation map, see the [documentation index](./README.md).
+
+> **Replit users:** The project also includes [Replit-specific notes](../replit.md).
+> This guide focuses on a conventional local or Docker-based setup.
+
 ---
 
 ## Table of Contents
