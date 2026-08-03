@@ -1,0 +1,37 @@
+I will use Replit only as my development environment. My production deployment will be on a self-hosted Ubuntu Server LTS machine using Docker Compose.
+
+Please review the entire project and ensure it is fully production-ready for this setup while preserving compatibility with Replit development.
+
+My production architecture is:
+
+• Ubuntu Server LTS
+• Docker Engine + Docker Compose
+• One Docker Compose stack containing:
+  - PostgreSQL database
+  - API container
+  - Frontend container
+  - Caddy reverse proxy
+• Caddy should be the only service exposed publicly (ports 80/443) and should automatically handle HTTPS using Let's Encrypt or Cloudflare DNS if configured.
+• PostgreSQL, API and Frontend should communicate only through the internal Docker network and must never be publicly exposed.
+• Cloudflare will proxy the domain to Caddy.
+• Environment variables must work correctly for both development and production.
+• Clerk production authentication must work correctly with custom domains.
+• The application should be restart-safe and survive host reboots.
+• Database data, uploads (if any), Caddy certificates and other persistent data must survive container recreation through Docker volumes.
+• Docker health checks should be present for every service.
+• Containers should automatically restart on failure.
+• Startup order should be reliable (database → API → frontend → Caddy) without race conditions.
+• Production logging should be clean and useful.
+• Deployment should require only:
+  docker compose up -d --build
+
+Please make only the changes that genuinely improve reliability, maintainability and production readiness.
+
+Do NOT:
+- Restructure the project unnecessarily.
+- Change the existing architecture.
+- Migrate frameworks.
+- Replace technologies already being used.
+- Break compatibility with Replit development.
+
+If you find improvements that are optional or would significantly change the architecture, list them separately instead of implementing them automatically.

@@ -45,11 +45,14 @@ services:
       NODE_ENV: production
       PORT: 8080
       BASE_PATH: /
-      DATABASE_URL: postgres://${POSTGRES_USER:-sarthaksetu}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-sarthaksetu}
+      # Set DATABASE_URL directly when using an external database or a password
+      # that needs URL encoding. Otherwise Compose builds it from the local DB.
+      DATABASE_URL: ${DATABASE_URL:-postgres://${POSTGRES_USER:-sarthaksetu}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-sarthaksetu}}
       CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
       CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:?CLERK_SECRET_KEY is required}
       VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY}
       VITE_CLERK_PROXY_URL: ${VITE_CLERK_PROXY_URL:-}
+      CORS_ORIGIN: ${CORS_ORIGIN:-}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
@@ -80,6 +83,12 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/nginx-health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - sarthaksetu-net
 
@@ -104,6 +113,12 @@ services:
         condition: service_healthy
       web:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate --quiet --tries=1 --spider --header=\"Host: $${DOMAIN}\" https://127.0.0.1/_health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - sarthaksetu-net
 

@@ -14,6 +14,11 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+// The API is only reachable from the internal Docker network in production.
+// Trust the forwarding chain from Caddy/Cloudflare so secure URLs and client
+// addresses are interpreted correctly behind the reverse proxy.
+app.set("trust proxy", true);
+
 app.use(
   pinoHttp({
     logger,
@@ -36,7 +41,24 @@ app.use(
 
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 
-app.use(cors({ credentials: true, origin: true }));
+const configuredCorsOrigins = (process.env.CORS_ORIGIN ?? "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    credentials: true,
+    // Keep Replit/local development permissive unless production explicitly
+    // provides a comma-separated allowlist.
+    origin:
+      configuredCorsOrigins.length > 0
+        ? configuredCorsOrigins
+        : process.env.NODE_ENV === "production"
+          ? false
+          : true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

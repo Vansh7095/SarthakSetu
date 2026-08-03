@@ -14,6 +14,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 - Required env: `DATABASE_URL` — Postgres connection string (provided by Replit)
 - Required secrets: `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — Clerk auth keys (use development keys for Replit dev; production keys must list the Replit domain in the Clerk app's allowed origins)
 - Docker deployment: `cp .env.production.example .env`, fill in `DOMAIN`, Clerk keys, and Postgres password, then `docker compose up -d --build` — starts `postgres`, `api`, `web`, and `caddy` containers with automatic HTTPS, migrations, and persistent volumes. Dockerfiles and the Caddyfile are in `docker/`.
+- Production `CORS_ORIGIN` should be the public HTTPS origin (for example `https://www.sarthaksetu.app`). `DATABASE_URL` may override the generated local-Postgres URL when using an external database.
 
 ## Stack
 

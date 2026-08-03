@@ -2,7 +2,19 @@
 # Serves HTTPS on the public domain and routes traffic to the web and api containers.
 # Set the DOMAIN environment variable in your .env file (e.g., www.sarthaksetu.app).
 
+{
+    # Emit structured logs to Docker stdout so they are collected by the host.
+    log {
+        output stdout
+        format json
+    }
+}
+
 {$DOMAIN} {
+    # Internal liveness endpoint used by the Compose health check.
+    @health path /_health
+    respond @health 200
+
     # API routes go directly to the backend container.
     handle /api/* {
         reverse_proxy api:8080
@@ -11,5 +23,10 @@
     # Everything else is served by the static frontend container.
     handle {
         reverse_proxy web:80
+    }
+
+    log {
+        output stdout
+        format json
     }
 }

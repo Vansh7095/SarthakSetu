@@ -1,7 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { seedVerificationsIfEmpty } from "./lib/seed";
-import { db, donationsTable } from "@workspace/db";
+import { db, donationsTable, pool } from "@workspace/db";
 import { and, lte, eq, not } from "drizzle-orm";
 
 const rawPort = process.env["PORT"] ?? "8080";
@@ -39,9 +39,10 @@ async function cleanupExpiredDonations() {
 cleanupExpiredDonations().catch((err) =>
   logger.error({ err }, "Initial cleanup failed"),
 );
-setInterval(cleanupExpiredDonations, 5 * 60 * 1000);
+const cleanupTimer = setInterval(cleanupExpiredDonations, 5 * 60 * 1000);
+cleanupTimer.unref();
 
-app.listen(port, (err) => {
+const server = app.listen(port, (err) => {
   if (err) {
     logger.error({ err }, "Error listening on port");
     process.exit(1);
@@ -49,3 +50,25 @@ app.listen(port, (err) => {
 
   logger.info({ port }, "Server listening");
 });
+
+async function shutdown(signal: string) {
+  logger.info({ signal }, "Shutdown requested");
+
+  await new Promise<void>((resolve) => {
+    server.close(() => resolve());
+  });
+
+  await pool.end();
+  logger.info("Shutdown complete");
+}
+
+for (const signal of ["SIGTERM", "SIGINT"] as const) {
+  process.once(signal, () => {
+    shutdown(signal)
+      .then(() => process.exit(0))
+      .catch((err) => {
+        logger.error({ err }, "Graceful shutdown failed");
+        process.exit(1);
+      });
+  });
+}
