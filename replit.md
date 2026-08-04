@@ -13,7 +13,7 @@ SarthakSetu is a food donation platform that connects surplus food donors (resta
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string (provided by Replit)
 - Required secrets: `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — Clerk auth keys (use development keys for Replit dev; production keys must list the Replit domain in the Clerk app's allowed origins)
-- Docker deployment: `cp .env.production.example .env`, fill in `DOMAIN`, Clerk keys, and Postgres password, then `bash scripts/deploy.sh` — validates the configuration, handles Fedora/RHEL SELinux labeling, starts `postgres`, `api`, `web`, and `caddy` in health-checked order, repairs an existing database password mismatch without deleting the volume, and enables automatic HTTPS. Dockerfiles and the Caddyfile are in `docker/`.
+- Docker deployment: `cp .env.production.example .env`, fill in `DOMAIN`, `PUBLIC_MODE=tunnel`, the Cloudflare Tunnel token, Clerk keys, and Postgres password, then `bash scripts/deploy.sh` — validates the configuration, handles Fedora/RHEL SELinux labeling, starts `postgres`, `api`, `web`, and `cloudflared` in health-checked order, repairs an existing database password mismatch without deleting the volume, and serves the public HTTPS hostname through Cloudflare. Set `PUBLIC_MODE=direct` later when using a router with inbound TCP 80/443. Dockerfiles and the Caddyfile are in `docker/`.
 - Production `CORS_ORIGIN` should be the public HTTPS origin (for example `https://sarthaksetu.app`). `DATABASE_URL` may override the generated local-Postgres URL when using an external database.
 
 ## Stack

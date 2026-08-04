@@ -50,3 +50,11 @@ The production Compose stack must use `:Z` on the bind-mounted Caddyfile (`./doc
 **Why:** SELinux otherwise blocks Caddy from reading its configuration, and Docker's official PostgreSQL image only applies initialization credentials on a new data directory. Both failures previously appeared as downstream service health/dependency errors.
 
 **How to apply:** Use `scripts/deploy.sh` as the single production entrypoint. It validates domain/Clerk/database settings, preserves the database volume, synchronizes the configured role password, starts services in health-checked order, and builds with the SELinux-safe Caddy mount.
+
+## Cloudflare Tunnel on hotspot/CGNAT
+
+Cloudflare Tunnel mode should route the public hostname to the internal `web:80` service, with `PUBLIC_MODE=tunnel` and a remotely managed tunnel token. Nginx must forward `X-Forwarded-Proto: https` to the API because the tunnel-to-nginx hop is HTTP even though the public request is HTTPS.
+
+**Why:** Phone hotspots and CGNAT cannot accept inbound 80/443 connections, and an internal HTTP hop otherwise makes the production Clerk proxy construct an `http://` proxy URL.
+
+**How to apply:** Run `bash scripts/deploy.sh` with the tunnel profile; reserve Caddy/direct mode for a host with router port forwarding.

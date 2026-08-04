@@ -55,6 +55,32 @@ wait_for_container_health() {
   fail "$container did not become healthy within ${seconds} seconds"
 }
 
+wait_for_container_running() {
+  local container="$1"
+  local seconds="${2:-60}"
+  local elapsed=0
+  local status
+
+  while [ "$elapsed" -lt "$seconds" ]; do
+    status="$(docker inspect --format '{{.State.Status}}' "$container" 2>/dev/null || true)"
+    case "$status" in
+      running)
+        return 0
+        ;;
+      exited|dead)
+        docker compose logs --tail=100 "${container#sarthaksetu-}" >&2 || true
+        fail "$container exited before becoming available"
+        ;;
+    esac
+    sleep 3
+    elapsed=$((elapsed + 3))
+  done
+
+  docker compose ps -a >&2 || true
+  docker compose logs --tail=100 "${container#sarthaksetu-}" >&2 || true
+  fail "$container did not start within ${seconds} seconds"
+}
+
 command -v docker >/dev/null 2>&1 || fail "Docker is not installed"
 docker compose version >/dev/null 2>&1 || fail "Docker Compose is not available"
 command -v openssl >/dev/null 2>&1 || fail "openssl is required"
@@ -67,6 +93,8 @@ require_env CLERK_SECRET_KEY
 require_env VITE_CLERK_PUBLISHABLE_KEY
 
 DOMAIN="$(read_env DOMAIN)"
+PUBLIC_MODE="$(read_env PUBLIC_MODE)"
+PUBLIC_MODE="${PUBLIC_MODE:-tunnel}"
 POSTGRES_USER="$(read_env POSTGRES_USER)"
 POSTGRES_DB="$(read_env POSTGRES_DB)"
 POSTGRES_PASSWORD="$(read_env POSTGRES_PASSWORD)"
@@ -76,6 +104,14 @@ POSTGRES_DB="${POSTGRES_DB:-sarthaksetu}"
 case "$DOMAIN" in
   http://*|https://*|*/|*/*)
     fail "DOMAIN must be a hostname only, for example sarthaksetu.app"
+    ;;
+esac
+
+case "$PUBLIC_MODE" in
+  tunnel|direct)
+    ;;
+  *)
+    fail "PUBLIC_MODE must be tunnel or direct"
     ;;
 esac
 
@@ -97,6 +133,10 @@ if [ -n "$VITE_CLERK_PROXY_URL" ] && [ "$VITE_CLERK_PROXY_URL" != "https://${DOM
 fi
 if [ -n "$CORS_ORIGIN" ] && [ "$CORS_ORIGIN" != "https://${DOMAIN}" ]; then
   fail "CORS_ORIGIN must be https://${DOMAIN}"
+fi
+
+if [ "$PUBLIC_MODE" = "tunnel" ]; then
+  require_env CLOUDFLARE_TUNNEL_TOKEN
 fi
 
 [[ "$POSTGRES_USER" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || fail "POSTGRES_USER contains unsupported characters"
@@ -138,10 +178,21 @@ echo "▶ Building and starting the API..."
 docker compose up -d --build --force-recreate api
 wait_for_container_health sarthaksetu-api
 
-echo "▶ Building and starting the website and HTTPS proxy..."
-docker compose up -d --build web caddy
+echo "▶ Building and starting the website and public access..."
+if [ "$PUBLIC_MODE" = "tunnel" ]; then
+  docker compose --profile direct stop caddy >/dev/null 2>&1 || true
+  docker compose --profile tunnel up -d --build web cloudflared
+else
+  docker compose --profile tunnel stop cloudflared >/dev/null 2>&1 || true
+  docker compose --profile direct up -d --build web caddy
+fi
 wait_for_container_health sarthaksetu-web
-wait_for_container_health sarthaksetu-caddy
+
+if [ "$PUBLIC_MODE" = "tunnel" ]; then
+  wait_for_container_running sarthaksetu-cloudflared
+else
+  wait_for_container_health sarthaksetu-caddy
+fi
 
 echo ""
 echo "✅ SarthakSetu is running."

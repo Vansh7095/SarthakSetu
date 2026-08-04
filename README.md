@@ -681,7 +681,7 @@ Docker is the easiest way to deploy the entire stack on any system. No local ins
 bash scripts/setup.sh
 # Edit .env and add your Clerk keys
 
-# 2. Build and start everything (database, backend, frontend, nginx)
+# 2. Build and start everything (database, backend, frontend, Cloudflare Tunnel)
 bash scripts/deploy.sh
 
 # 3. Verify everything is running
@@ -703,7 +703,9 @@ On first startup, the API container automatically waits for PostgreSQL to become
 | API Server | `sarthaksetu-api`      | —           | Express backend (proxied by nginx)         |
 | Web / nginx | `sarthaksetu-web`     | `80`        | Reverse proxy + static frontend build      |
 
-Only the `web` service is exposed publicly. The database and API communicate internally over the Docker network.
+Only the selected public access service is exposed publicly. In the recommended
+Cloudflare Tunnel mode, the tunnel connects outbound to Cloudflare and routes
+the public hostname to `http://web:80`; no router port forwarding is required.
 
 ### Docker Compose Commands
 

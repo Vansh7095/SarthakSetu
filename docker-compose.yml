@@ -1,9 +1,9 @@
 # SarthakSetu — Docker Compose Production Stack
-# Starts: PostgreSQL + Backend API + Static Frontend + Caddy (HTTPS reverse proxy)
+# Starts: PostgreSQL + Backend API + Static Frontend + Cloudflare Tunnel or Caddy
 #
 # Usage:
 #   1. Copy .env.production.example to .env and fill in real values.
-#   2. Point your DOMAIN (e.g., sarthaksetu.app) to the server running Docker.
+#   2. Configure a Cloudflare Tunnel to send your hostname to http://web:80.
 #   3. bash scripts/deploy.sh
 #   4. Open https://<DOMAIN>
 
@@ -96,6 +96,7 @@ services:
   # Caddy Reverse Proxy + HTTPS
   # ---------------------------------------------------------------------------
   caddy:
+    profiles: ["direct"]
     image: caddy:2-alpine
     container_name: sarthaksetu-caddy
     restart: unless-stopped
@@ -120,6 +121,23 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - sarthaksetu-net
+
+  # ---------------------------------------------------------------------------
+  # Cloudflare Tunnel (recommended when the host is behind CGNAT/hotspot)
+  # ---------------------------------------------------------------------------
+  cloudflared:
+    profiles: ["tunnel"]
+    image: cloudflare/cloudflared:latest
+    container_name: sarthaksetu-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN:?CLOUDFLARE_TUNNEL_TOKEN is required}
+    environment:
+      CLOUDFLARE_TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on:
+      web:
+        condition: service_healthy
     networks:
       - sarthaksetu-net
 

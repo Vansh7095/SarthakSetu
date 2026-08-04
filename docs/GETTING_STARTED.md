@@ -1227,6 +1227,11 @@ Click **"Map"** in the navigation bar to see all donations on an interactive map
 
 This is an alternative way to run the application. If you already have it running with `pnpm dev`, you can skip this section.
 
+> **Phone hotspot / CGNAT:** For a public deployment without router port
+> forwarding, set `PUBLIC_MODE=tunnel` and use the Cloudflare Tunnel steps below.
+> Do not use Caddy/direct mode until the server has reachable inbound ports 80
+> and 443.
+
 ### When to Use Docker
 
 Use Docker if you want:
