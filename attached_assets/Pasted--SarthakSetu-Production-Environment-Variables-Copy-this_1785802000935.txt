@@ -1,0 +1,76 @@
+# SarthakSetu — Production Environment Variables
+#
+# Copy this file to .env and fill in your production values.
+# Never commit production secrets to version control.
+#
+# Then run: docker compose up -d --build
+
+# ---------------------------------------------------------------------------
+# Public Domain
+# ---------------------------------------------------------------------------
+# The domain you own and will point at this server. Caddy uses it to request
+# a Let's Encrypt certificate and serve HTTPS.
+# Example: www.sarthaksetu.app
+DOMAIN=sarthaksetu.app
+
+# ---------------------------------------------------------------------------
+# HTTP Ports
+# ---------------------------------------------------------------------------
+HTTP_PORT=80
+HTTPS_PORT=443
+
+# ---------------------------------------------------------------------------
+# PostgreSQL
+# ---------------------------------------------------------------------------
+# In Docker Compose, DATABASE_URL is generated automatically from these values.
+# For an external managed database, override DATABASE_URL below instead.
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=sarthaksetu
+POSTGRES_PASSWORD=NewPass123
+POSTGRES_DB=sarthaksetu
+
+# Override only if you are NOT using the included postgres service, or when
+# POSTGRES_PASSWORD contains URL-significant characters that need encoding.
+# DATABASE_URL=postgres://sarthaksetu:encoded_password@db.example.com:5432/sarthaksetu
+
+# ---------------------------------------------------------------------------
+# Clerk Authentication
+# ---------------------------------------------------------------------------
+# Use "Production" instance keys from Clerk Dashboard.
+# Add your DOMAIN to the Clerk app's allowed origins and redirect URLs.
+#
+# Frontend publishable key (starts with pk_live_)
+CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuc2FydGhha3NldHUuYXBwJA
+
+# Backend secret key (starts with sk_live_)
+CLERK_SECRET_KEY=sk_live_RaWSfhdlnqHhXNYh5Xw0oQAmpxJCxcR32Fg1yufuMs
+
+# Vite-specific frontend key (same as CLERK_PUBLISHABLE_KEY)
+VITE_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuc2FydGhha3NldHUuYXBwJA
+
+# Clerk proxy URL — must be your domain + /api/__clerk. This lets Clerk run
+# on your own domain without DNS CNAME changes.
+VITE_CLERK_PROXY_URL=https://www.sarthaksetu.app/api/__clerk
+
+# ---------------------------------------------------------------------------
+# API access control
+# ---------------------------------------------------------------------------
+# Comma-separated browser origins allowed to call the API. In this stack the
+# frontend and API share DOMAIN, so this is normally the public HTTPS origin.
+# Leave empty only for local/Replit development; production defaults to deny
+# cross-origin browser requests when this is not configured.
+CORS_ORIGIN=https://www.sarthaksetu.app
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+# Log level: trace, debug, info, warn, error, fatal
+LOG_LEVEL=info
+
+
+
+
+
+
+
