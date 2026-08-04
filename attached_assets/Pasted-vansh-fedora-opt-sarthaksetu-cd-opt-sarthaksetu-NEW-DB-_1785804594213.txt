@@ -1,0 +1,37 @@
+vansh@fedora:/opt/sarthaksetu$ cd /opt/sarthaksetu
+
+NEW_DB_PASSWORD="$(openssl rand -hex 32)"
+
+docker compose exec -T postgres \
+  psql -U postgres -d postgres \
+  -c "ALTER ROLE sarthaksetu WITH PASSWORD '$NEW_DB_PASSWORD';"
+
+sed -i -E "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=$NEW_DB_PASSWORD/" .env
+
+unset NEW_DB_PASSWORD
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "postgres" does not exist
+vansh@fedora:/opt/sarthaksetu$ cd /opt/sarthaksetu 
+
+NEW_DB_PASSWORD="$(openssl rand -hex 32)"
+
+docker compose exec -T -u postgres postgres \
+  psql -d sarthaksetu \
+  -c "ALTER ROLE sarthaksetu WITH PASSWORD '$NEW_DB_PASSWORD'"
+
+sed -i -E "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=$NEW_DB_PASSWORD/" .env
+
+unset NEW_DB_PASSWORD
+
+docker compose up -d --force-recreate api web caddy
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "postgres" does not exist
+[+] up 4/4
+ ✔ Container sarthaksetu-postgres Healthy                                                                                                                                                                                                                                                                                                                                            16.4s
+ ✘ Container sarthaksetu-api      Error dependency api failed to start                                                                                                                                                                                                                                                                                                              196.0s
+ ✔ Container sarthaksetu-web      Recreated                                                                                                                                                                                                                                                                                                                                           0.1s
+ ✔ Container sarthaksetu-caddy    Recreated                                                                                                                                                                                                                                                                                                                                           0.2s
+dependency failed to start: container sarthaksetu-api is unhealthy
+vansh@fedora:/opt/sarthaksetu$ docker compose ps
+NAME                   IMAGE                COMMAND                  SERVICE    CREATED          STATUS                             PORTS
+sarthaksetu-api        sarthaksetu-api      "docker-entrypoint.s…"   api        12 minutes ago   Up 58 seconds (health: starting)   8080/tcp
+sarthaksetu-postgres   postgres:16-alpine   "docker-entrypoint.s…"   postgres   12 minutes ago   Up 12 minutes (healthy)            5432/tcp
+vansh@fedora:/opt/sarthaksetu$ 
