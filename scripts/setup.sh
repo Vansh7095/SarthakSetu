@@ -2,14 +2,14 @@
 set -e
 # SarthakSetu first-time setup for Linux/macOS.
 
-REQUIRED_ENV="CLERK_PUBLISHABLE_KEY CLERK_SECRET_KEY VITE_CLERK_PUBLISHABLE_KEY"
+REQUIRED_ENV="DOMAIN POSTGRES_PASSWORD CLERK_PUBLISHABLE_KEY CLERK_SECRET_KEY VITE_CLERK_PUBLISHABLE_KEY"
 
 command -v docker >/dev/null 2>&1 || {
   echo "❌ Docker is not installed. Please install Docker first: https://docs.docker.com/get-docker/"
   exit 1
 }
 
-command -v docker-compose >/dev/null 2>&1 || command -v "docker compose" >/dev/null 2>&1 || {
+docker compose version >/dev/null 2>&1 || {
   echo "❌ Docker Compose is not installed. Please install Docker Compose first: https://docs.docker.com/compose/install/"
   exit 1
 }
@@ -41,4 +41,4 @@ for var in ${REQUIRED_ENV}; do
 done
 echo ""
 echo "Then run:"
-echo "  docker compose up -d --build"
+echo "  bash scripts/deploy.sh"

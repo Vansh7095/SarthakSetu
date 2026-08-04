@@ -3,8 +3,8 @@
 #
 # Usage:
 #   1. Copy .env.production.example to .env and fill in real values.
-#   2. Point your DOMAIN (e.g., www.sarthaksetu.app) to the server running Docker.
-#   3. docker compose up -d --build
+#   2. Point your DOMAIN (e.g., sarthaksetu.app) to the server running Docker.
+#   3. bash scripts/deploy.sh
 #   4. Open https://<DOMAIN>
 
 services:
@@ -105,7 +105,8 @@ services:
     environment:
       DOMAIN: ${DOMAIN:?DOMAIN is required}
     volumes:
-      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      # :Z is required on Fedora/RHEL systems with SELinux enabled.
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro,Z
       - caddy-data:/data
       - caddy-config:/config
     depends_on:

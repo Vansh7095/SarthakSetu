@@ -42,3 +42,11 @@ The Replit container runtime cannot run `docker exec` or `docker compose exec` r
 **Why:** `docker compose exec` and health checks use container exec under the hood, which is blocked in this environment.
 
 **How to apply:** Test the stack with `docker compose up` and external curl checks; verify `docker-entrypoint.sh` logic and `scripts/*.sh` syntax on the host; assume backup/restore scripts are correct for normal Docker environments.
+
+## Fedora production deployment
+
+The production Compose stack must use `:Z` on the bind-mounted Caddyfile (`./docker/Caddyfile:/etc/caddy/Caddyfile:ro,Z`) when deployed on Fedora/RHEL with SELinux enabled. A PostgreSQL named volume initialized with one password ignores later `POSTGRES_PASSWORD` changes; repair the existing application role through the container's local socket rather than deleting the volume.
+
+**Why:** SELinux otherwise blocks Caddy from reading its configuration, and Docker's official PostgreSQL image only applies initialization credentials on a new data directory. Both failures previously appeared as downstream service health/dependency errors.
+
+**How to apply:** Use `scripts/deploy.sh` as the single production entrypoint. It validates domain/Clerk/database settings, preserves the database volume, synchronizes the configured role password, starts services in health-checked order, and builds with the SELinux-safe Caddy mount.

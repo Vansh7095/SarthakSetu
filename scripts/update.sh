@@ -14,7 +14,7 @@ echo "📥 Pulling latest code..."
 git pull
 
 echo "🐳 Rebuilding and restarting containers..."
-docker compose up -d --build
+bash "${SCRIPT_DIR}/deploy.sh"
 
 echo "🧹 Cleaning up old Docker images..."
 docker image prune -f

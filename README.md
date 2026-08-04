@@ -682,13 +682,13 @@ bash scripts/setup.sh
 # Edit .env and add your Clerk keys
 
 # 2. Build and start everything (database, backend, frontend, nginx)
-docker compose up -d --build
+bash scripts/deploy.sh
 
 # 3. Verify everything is running
 docker compose ps
-curl http://localhost/api/healthz
+curl https://your-domain.example/api/healthz
 
-# 4. Open http://localhost in your browser
+# 4. Open https://your-domain.example in your browser
 ```
 
 On Windows, use `scripts/setup.bat` instead of `setup.sh`.
@@ -708,8 +708,8 @@ Only the `web` service is exposed publicly. The database and API communicate int
 ### Docker Compose Commands
 
 ```bash
-# Start all services in background (build images first)
-docker compose up -d --build
+# Validate, build, and start the production stack
+bash scripts/deploy.sh
 
 # View logs (all services)
 docker compose logs -f
@@ -759,7 +759,7 @@ Alternatively, run the steps manually:
 
 ```bash
 git pull
-docker compose up -d --build
+bash scripts/deploy.sh
 ```
 
 ---
@@ -958,7 +958,7 @@ pm2 restart sarthaksetu-api
 sudo systemctl restart sarthaksetu
 
 # If using Docker:
-docker compose up -d --build
+bash scripts/deploy.sh
 ```
 
 ---

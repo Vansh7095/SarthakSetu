@@ -1258,12 +1258,15 @@ Use Docker if you want:
 Run:
 
 ```bash
-docker compose up -d --build
+bash scripts/deploy.sh
 ```
 
 **What this does:**
-- `-d` — runs in the background (detached mode)
-- `--build` — builds the Docker images from the `docker/` Dockerfiles and starts the Caddy reverse proxy with automatic HTTPS
+- Validates `.env` before starting
+- Applies the Fedora/RHEL SELinux label to the Caddyfile mount
+- Starts PostgreSQL first and waits for it to be ready
+- Repairs an existing PostgreSQL password mismatch without deleting the database volume
+- Builds the Docker images from the `docker/` Dockerfiles and starts the Caddy reverse proxy with automatic HTTPS
 - Downloads the PostgreSQL 16 image
 - Builds the API server image
 - Builds the nginx image with the production frontend inside it
@@ -1362,7 +1365,7 @@ For a simpler workflow, use the scripts in the `scripts/` folder:
 
 | Command | What It Does |
 |---------|-------------|
-| `docker compose up -d --build` | Build images and start all services |
+| `bash scripts/deploy.sh` | Validate, build, and start the production stack safely |
 | `docker compose down` | Stop all services (keeps data) |
 | `docker compose down -v` | Stop and delete all data |
 | `docker compose ps` | Show running containers |
