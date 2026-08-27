@@ -229,9 +229,15 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClaimDonationInput"
       responses:
         "200":
-          description: Claim created, OTP sent
+          description: Claim created with a one-time pickup QR token
           content:
             application/json:
               schema:
@@ -263,6 +269,36 @@ paths:
                 $ref: "#/components/schemas/Donation"
         "400":
           description: Invalid OTP
+
+  /donations/{id}/verify-qr:
+    post:
+      operationId: verifyPickupQr
+      tags: [claims]
+      summary: Verify a pickup QR code and complete a donation
+      description: The authenticated donor scans the QR shown by the claimant or pickup representative.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PickupQrVerifyInput"
+      responses:
+        "200":
+          description: Pickup QR verified, donation marked completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+        "400":
+          description: Invalid, expired, or already used QR
+        "403":
+          description: Only the donation owner can verify pickup
 
   /donations/{id}/unclaim:
     post:
@@ -748,6 +784,15 @@ components:
           oneOf:
             - type: string
             - type: "null"
+        pickupMode:
+          oneOf:
+            - type: string
+              enum: [self, representative]
+            - type: "null"
+        pickupPersonName:
+          type: ["string", "null"]
+        pickupPersonPhone:
+          type: ["string", "null"]
         createdAt:
           type: string
           format: date-time
@@ -820,7 +865,7 @@ components:
 
     Claim:
       type: object
-      required: [id, donationId, claimedByUserId, otp, createdAt]
+      required: [id, donationId, claimedByUserId, pickupMode, pickupPersonName, pickupPersonPhone, pickupQrToken, createdAt]
       properties:
         id:
           type: integer
@@ -831,6 +876,15 @@ components:
         claimedBy:
           $ref: "#/components/schemas/UserProfile"
         otp:
+          type: ["string", "null"]
+        pickupMode:
+          type: string
+          enum: [self, representative]
+        pickupPersonName:
+          type: string
+        pickupPersonPhone:
+          type: string
+        pickupQrToken:
           type: string
         otpVerified:
           type: boolean
@@ -851,6 +905,28 @@ components:
       properties:
         otp:
           type: string
+
+    ClaimDonationInput:
+      type: object
+      required: [pickupMode]
+      properties:
+        pickupMode:
+          type: string
+          enum: [self, representative]
+        pickupPersonName:
+          type: string
+          description: Required when pickupMode is representative
+        pickupPersonPhone:
+          type: string
+          description: Required when pickupMode is representative
+
+    PickupQrVerifyInput:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+          minLength: 20
 
     DonorStats:
       type: object

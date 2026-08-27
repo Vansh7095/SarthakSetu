@@ -5,6 +5,7 @@
  * SarthakSetu API - Food donation platform connecting donors with NGOs and volunteers
  * OpenAPI spec version: 0.1.0
  */
+import type { ClaimPickupMode } from './claimPickupMode';
 import type { Donation } from './donation';
 import type { UserProfile } from './userProfile';
 
@@ -13,7 +14,12 @@ export interface Claim {
   donationId: number;
   claimedByUserId: number;
   claimedBy?: UserProfile;
-  otp: string;
+  /** @nullable */
+  otp?: string | null;
+  pickupMode: ClaimPickupMode;
+  pickupPersonName: string;
+  pickupPersonPhone: string;
+  pickupQrToken: string;
   otpVerified?: boolean;
   createdAt: Date;
   /** @nullable */

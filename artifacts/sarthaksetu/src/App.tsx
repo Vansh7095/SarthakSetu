@@ -10,6 +10,7 @@ import {
 } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider, useQueryClient } from "@tanstack/react-query";
+import { Bike, Handshake, Store } from "lucide-react";
 
 import { Layout } from "./components/layout";
 import Home from "./pages/home";
@@ -21,6 +22,7 @@ import DonationDetail from "./pages/donation-detail";
 import MapView from "./pages/map";
 import MyDonations from "./pages/my-donations";
 import MyClaims from "./pages/my-claims";
+import ScanPickup from "./pages/scan-pickup";
 import Profile from "./pages/profile";
 import AdminRegistry from "./pages/admin-registry";
 import AdminUsers from "./pages/admin-users";
@@ -168,17 +170,17 @@ function SignUpPage() {
           <div className="grid grid-cols-1 gap-3 mt-2">
             {[
               {
-                emoji: "🏪",
+                icon: Store,
                 title: "Donors",
                 desc: "List surplus food in under 2 minutes",
               },
               {
-                emoji: "🤝",
+                icon: Handshake,
                 title: "NGOs",
                 desc: "Discover & claim nearby donations",
               },
               {
-                emoji: "🚴",
+                icon: Bike,
                 title: "Volunteers",
                 desc: "Help transport food to those in need",
               },
@@ -187,7 +189,7 @@ function SignUpPage() {
                 key={item.title}
                 className="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3"
               >
-                <span className="text-xl">{item.emoji}</span>
+                <item.icon className="h-5 w-5 text-white/80" />
                 <div>
                   <div className="font-semibold text-sm">{item.title}</div>
                   <div className="text-white/70 text-xs">{item.desc}</div>
@@ -320,6 +322,9 @@ function ClerkProviderWithRoutes() {
             </Route>
             <Route path="/my-claims">
               <ProtectedRoute component={MyClaims} />
+            </Route>
+            <Route path="/scan-pickup">
+              <ProtectedRoute component={ScanPickup} />
             </Route>
             <Route path="/profile">
               <ProtectedRoute component={Profile} />

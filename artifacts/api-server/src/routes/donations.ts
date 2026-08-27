@@ -32,6 +32,9 @@ async function enrichDonation(donation: typeof donationsTable.$inferSelect) {
 
   let claimedBy = null;
   let otp: string | null = null;
+  let pickupMode: "self" | "representative" | null = null;
+  let pickupPersonName: string | null = null;
+  let pickupPersonPhone: string | null = null;
 
   if (donation.claimedByUserId) {
     const [claimer] = await db
@@ -48,9 +51,20 @@ async function enrichDonation(donation: typeof donationsTable.$inferSelect) {
       .orderBy(desc(claimsTable.createdAt))
       .limit(1);
     otp = latestClaim?.otp ?? null;
+    pickupMode = latestClaim?.pickupMode ?? null;
+    pickupPersonName = latestClaim?.pickupPersonName ?? null;
+    pickupPersonPhone = latestClaim?.pickupPersonPhone ?? null;
   }
 
-  return { ...donation, donor: donor ?? null, claimedBy, otp };
+  return {
+    ...donation,
+    donor: donor ?? null,
+    claimedBy,
+    otp,
+    pickupMode,
+    pickupPersonName,
+    pickupPersonPhone,
+  };
 }
 
 router.get("/donations/my", async (req, res) => {

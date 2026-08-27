@@ -25,6 +25,7 @@ import type {
   AdminCodeVerifyRequest,
   AdminCodeVerifyResult,
   Claim,
+  ClaimDonationInput,
   DarpanIdEntry,
   DarpanIdInput,
   DarpanVerifyRequest,
@@ -42,6 +43,7 @@ import type {
   ListDonationsParams,
   NgoStats,
   OtpVerifyInput,
+  PickupQrVerifyInput,
   PlatformStats,
   SuccessMessage,
   SwitchRoleInput,
@@ -743,14 +745,16 @@ export const getClaimDonationUrl = (id: number,) => {
 /**
  * @summary NGO/volunteer claims a donation
  */
-export const claimDonation = async (id: number, options?: RequestInit): Promise<Claim> => {
+export const claimDonation = async (id: number,
+    claimDonationInput: ClaimDonationInput, options?: RequestInit): Promise<Claim> => {
 
   return customFetch<Claim>(getClaimDonationUrl(id),
   {
     ...options,
-    method: 'POST'
-
-
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      claimDonationInput,)
   }
 );}
 
@@ -758,8 +762,8 @@ export const claimDonation = async (id: number, options?: RequestInit): Promise<
 
 
 export const getClaimDonationMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof claimDonation>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof claimDonation>>, TError,{id: number}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof claimDonation>>, TError,{id: number;data: BodyType<ClaimDonationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof claimDonation>>, TError,{id: number;data: BodyType<ClaimDonationInput>}, TContext> => {
 
 const mutationKey = ['claimDonation'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -771,10 +775,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof claimDonation>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof claimDonation>>, {id: number;data: BodyType<ClaimDonationInput>}> = (props) => {
+          const {id,data} = props ?? {};
 
-          return  claimDonation(id,requestOptions)
+          return  claimDonation(id,data,requestOptions)
         }
 
 
@@ -785,18 +789,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ClaimDonationMutationResult = NonNullable<Awaited<ReturnType<typeof claimDonation>>>
-
+    export type ClaimDonationMutationBody = BodyType<ClaimDonationInput>
     export type ClaimDonationMutationError = ErrorType<unknown>
 
     /**
  * @summary NGO/volunteer claims a donation
  */
 export const useClaimDonation = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof claimDonation>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof claimDonation>>, TError,{id: number;data: BodyType<ClaimDonationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
         Awaited<ReturnType<typeof claimDonation>>,
         TError,
-        {id: number},
+        {id: number;data: BodyType<ClaimDonationInput>},
         TContext
       > => {
       return useMutation(getClaimDonationMutationOptions(options));
@@ -872,6 +876,79 @@ export const useVerifyPickup = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getVerifyPickupMutationOptions(options));
+    }
+
+export const getVerifyPickupQrUrl = (id: number,) => {
+
+
+
+
+  return `/api/donations/${id}/verify-qr`
+}
+
+/**
+ * The authenticated donor scans the QR shown by the claimant or pickup representative.
+ * @summary Verify a pickup QR code and complete a donation
+ */
+export const verifyPickupQr = async (id: number,
+    pickupQrVerifyInput: PickupQrVerifyInput, options?: RequestInit): Promise<Donation> => {
+
+  return customFetch<Donation>(getVerifyPickupQrUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      pickupQrVerifyInput,)
+  }
+);}
+
+
+
+
+export const getVerifyPickupQrMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyPickupQr>>, TError,{id: number;data: BodyType<PickupQrVerifyInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof verifyPickupQr>>, TError,{id: number;data: BodyType<PickupQrVerifyInput>}, TContext> => {
+
+const mutationKey = ['verifyPickupQr'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyPickupQr>>, {id: number;data: BodyType<PickupQrVerifyInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  verifyPickupQr(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type VerifyPickupQrMutationResult = NonNullable<Awaited<ReturnType<typeof verifyPickupQr>>>
+    export type VerifyPickupQrMutationBody = BodyType<PickupQrVerifyInput>
+    export type VerifyPickupQrMutationError = ErrorType<void>
+
+    /**
+ * @summary Verify a pickup QR code and complete a donation
+ */
+export const useVerifyPickupQr = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyPickupQr>>, TError,{id: number;data: BodyType<PickupQrVerifyInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof verifyPickupQr>>,
+        TError,
+        {id: number;data: BodyType<PickupQrVerifyInput>},
+        TContext
+      > => {
+      return useMutation(getVerifyPickupQrMutationOptions(options));
     }
 
 export const getUnclaimDonationUrl = (id: number,) => {

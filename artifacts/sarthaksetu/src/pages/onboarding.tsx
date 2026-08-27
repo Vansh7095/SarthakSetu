@@ -249,11 +249,11 @@ function DonorForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="restaurant">🍽️ Restaurant</SelectItem>
-                  <SelectItem value="hotel">🏨 Hotel / Resort</SelectItem>
-                  <SelectItem value="caterer">🍱 Caterer</SelectItem>
-                  <SelectItem value="event_org">🎉 Event Organizer</SelectItem>
-                  <SelectItem value="household">🏠 Household</SelectItem>
+                  <SelectItem value="restaurant">Restaurant</SelectItem>
+                  <SelectItem value="hotel">Hotel / Resort</SelectItem>
+                  <SelectItem value="caterer">Caterer</SelectItem>
+                  <SelectItem value="event_org">Event Organizer</SelectItem>
+                  <SelectItem value="household">Household</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -370,7 +370,7 @@ function DonorForm({
                   state={verifyState}
                   validMsg={
                     verifiedBusiness?.businessName
-                      ? `✓ ${verifiedBusiness.businessName}, ${verifiedBusiness.city}`
+                      ? `Verified: ${verifiedBusiness.businessName}, ${verifiedBusiness.city}`
                       : "License verified"
                   }
                 />
@@ -386,7 +386,7 @@ function DonorForm({
 
         {category === "household" && (
           <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-sm text-green-800">
-            ✅ Households are exempt from FSSAI licensing — no documentation
+                    Household note: FSSAI licensing is not required for this role.
             required.
           </div>
         )}
@@ -603,7 +603,7 @@ function NgoForm({
                 state={verifyState}
                 validMsg={
                   verifiedOrg?.orgName
-                    ? `✓ ${verifiedOrg.orgName}, ${verifiedOrg.city}`
+                    ? `Verified: ${verifiedOrg.orgName}, ${verifiedOrg.city}`
                     : "Darpan ID verified"
                 }
               />
@@ -753,11 +753,11 @@ function VolunteerForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="on_foot">🚶 On Foot</SelectItem>
-                    <SelectItem value="bike">🛵 Bike / Scooter</SelectItem>
-                    <SelectItem value="auto">🛺 Auto Rickshaw</SelectItem>
-                    <SelectItem value="car">🚗 Car</SelectItem>
-                    <SelectItem value="truck">🚛 Truck / Van</SelectItem>
+                    <SelectItem value="on_foot">On Foot</SelectItem>
+                    <SelectItem value="bike">Bike / Scooter</SelectItem>
+                    <SelectItem value="auto">Auto Rickshaw</SelectItem>
+                    <SelectItem value="car">Car</SelectItem>
+                    <SelectItem value="truck">Truck / Van</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -779,11 +779,11 @@ function VolunteerForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="available">✅ Full time</SelectItem>
+                    <SelectItem value="available">Full time</SelectItem>
                     <SelectItem value="part_time">
-                      🕐 Part time / weekends
+                      Part time / weekends
                     </SelectItem>
-                    <SelectItem value="busy">⏸️ Currently busy</SelectItem>
+                    <SelectItem value="busy">Currently busy</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -868,7 +868,7 @@ function AdminForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
-          <p className="text-sm text-purple-800 font-medium">🔐 Admin Access</p>
+          <p className="text-sm text-purple-800 font-medium">Admin Access</p>
           <p className="text-xs text-purple-700 mt-1">
             Admin accounts require a valid access code from the SarthakSetu
             operations team. Codes are stored and verified against our secure

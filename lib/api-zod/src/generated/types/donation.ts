@@ -36,6 +36,11 @@ export interface Donation {
   claimedByUserId?: number | null;
   claimedBy?: UserProfile | null;
   otp?: string | null;
+  pickupMode?: 'self' | 'representative' | null;
+  /** @nullable */
+  pickupPersonName?: string | null;
+  /** @nullable */
+  pickupPersonPhone?: string | null;
   createdAt: Date;
   updatedAt?: Date;
 }

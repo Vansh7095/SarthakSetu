@@ -207,6 +207,11 @@ export interface Donation {
   claimedByUserId?: number | null;
   claimedBy?: UserProfile | null;
   otp?: string | null;
+  pickupMode?: 'self' | 'representative' | null;
+  /** @nullable */
+  pickupPersonName?: string | null;
+  /** @nullable */
+  pickupPersonPhone?: string | null;
   createdAt: string;
   updatedAt?: string;
 }
@@ -269,12 +274,25 @@ export interface DonationUpdate {
   status?: DonationUpdateStatus;
 }
 
+export type ClaimPickupMode = typeof ClaimPickupMode[keyof typeof ClaimPickupMode];
+
+
+export const ClaimPickupMode = {
+  self: 'self',
+  representative: 'representative',
+} as const;
+
 export interface Claim {
   id: number;
   donationId: number;
   claimedByUserId: number;
   claimedBy?: UserProfile;
-  otp: string;
+  /** @nullable */
+  otp?: string | null;
+  pickupMode: ClaimPickupMode;
+  pickupPersonName: string;
+  pickupPersonPhone: string;
+  pickupQrToken: string;
   otpVerified?: boolean;
   createdAt: string;
   /** @nullable */
@@ -284,6 +302,27 @@ export interface Claim {
 
 export interface OtpVerifyInput {
   otp: string;
+}
+
+export type ClaimDonationInputPickupMode = typeof ClaimDonationInputPickupMode[keyof typeof ClaimDonationInputPickupMode];
+
+
+export const ClaimDonationInputPickupMode = {
+  self: 'self',
+  representative: 'representative',
+} as const;
+
+export interface ClaimDonationInput {
+  pickupMode: ClaimDonationInputPickupMode;
+  /** Required when pickupMode is representative */
+  pickupPersonName?: string;
+  /** Required when pickupMode is representative */
+  pickupPersonPhone?: string;
+}
+
+export interface PickupQrVerifyInput {
+  /** @minLength 20 */
+  token: string;
 }
 
 export interface DonorStats {

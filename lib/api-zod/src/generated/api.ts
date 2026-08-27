@@ -198,6 +198,9 @@ export const ListDonationsResponseItem = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -291,6 +294,9 @@ export const GetDonationResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -377,6 +383,9 @@ export const UpdateDonationResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -395,6 +404,12 @@ export const DeleteDonationParams = zod.object({
  */
 export const ClaimDonationParams = zod.object({
   "id": zod.coerce.number()
+})
+
+export const ClaimDonationBody = zod.object({
+  "pickupMode": zod.enum(['self', 'representative']),
+  "pickupPersonName": zod.string().optional().describe('Required when pickupMode is representative'),
+  "pickupPersonPhone": zod.string().optional().describe('Required when pickupMode is representative')
 })
 
 export const ClaimDonationResponse = zod.object({
@@ -422,7 +437,11 @@ export const ClaimDonationResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
-  "otp": zod.string(),
+  "otp": zod.string().nullish(),
+  "pickupMode": zod.enum(['self', 'representative']),
+  "pickupPersonName": zod.string(),
+  "pickupPersonPhone": zod.string(),
+  "pickupQrToken": zod.string(),
   "otpVerified": zod.boolean().optional(),
   "createdAt": zod.coerce.date(),
   "completedAt": zod.coerce.date().nullish(),
@@ -485,6 +504,9 @@ export const ClaimDonationResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 }),zod.null()]).optional()
@@ -561,6 +583,92 @@ export const VerifyPickupResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date().optional()
+})
+
+
+/**
+ * The authenticated donor scans the QR shown by the claimant or pickup representative.
+ * @summary Verify a pickup QR code and complete a donation
+ */
+export const VerifyPickupQrParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const verifyPickupQrBodyTokenMin = 20;
+
+
+
+export const VerifyPickupQrBody = zod.object({
+  "token": zod.string().min(verifyPickupQrBodyTokenMin)
+})
+
+export const VerifyPickupQrResponse = zod.object({
+  "id": zod.number(),
+  "donorId": zod.number(),
+  "donor": zod.object({
+  "id": zod.number(),
+  "clerkId": zod.string(),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
+  "roles": zod.array(zod.enum(['donor', 'ngo', 'volunteer', 'admin'])),
+  "name": zod.string(),
+  "phone": zod.string(),
+  "address": zod.string().nullish(),
+  "city": zod.string().nullish(),
+  "lat": zod.number().nullish(),
+  "lng": zod.number().nullish(),
+  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
+  "licenseNumber": zod.string().nullish(),
+  "orgName": zod.string().nullish(),
+  "registrationNumber": zod.string().nullish(),
+  "operatingRadiusKm": zod.number().nullish(),
+  "vehicleType": zod.string().nullish(),
+  "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
+  "createdAt": zod.coerce.date().optional()
+}).optional(),
+  "foodName": zod.string(),
+  "foodType": zod.enum(['veg', 'non_veg', 'both']),
+  "quantityPlates": zod.number(),
+  "estimatedServings": zod.number().nullish(),
+  "preparedAt": zod.coerce.date().nullish(),
+  "pickupDeadline": zod.coerce.date().optional(),
+  "description": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "address": zod.string().nullish(),
+  "lat": zod.number().nullish(),
+  "lng": zod.number().nullish(),
+  "status": zod.enum(['available', 'claimed', 'picked_up', 'completed']),
+  "claimedByUserId": zod.number().nullish(),
+  "claimedBy": zod.union([zod.object({
+  "id": zod.number(),
+  "clerkId": zod.string(),
+  "role": zod.enum(['donor', 'ngo', 'volunteer', 'admin']),
+  "roles": zod.array(zod.enum(['donor', 'ngo', 'volunteer', 'admin'])),
+  "name": zod.string(),
+  "phone": zod.string(),
+  "address": zod.string().nullish(),
+  "city": zod.string().nullish(),
+  "lat": zod.number().nullish(),
+  "lng": zod.number().nullish(),
+  "donorCategory": zod.union([zod.literal('restaurant'),zod.literal('hotel'),zod.literal('caterer'),zod.literal('event_org'),zod.literal('household'),zod.literal(null)]).nullish(),
+  "licenseNumber": zod.string().nullish(),
+  "orgName": zod.string().nullish(),
+  "registrationNumber": zod.string().nullish(),
+  "operatingRadiusKm": zod.number().nullish(),
+  "vehicleType": zod.string().nullish(),
+  "availabilityStatus": zod.string().nullish(),
+  "darpanId": zod.string().nullish(),
+  "createdAt": zod.coerce.date().optional()
+}),zod.null()]).optional(),
+  "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -632,6 +740,9 @@ export const UnclaimDonationResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -705,6 +816,9 @@ export const GetDonorStatsResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })).optional()
@@ -744,7 +858,11 @@ export const GetNgoStatsResponse = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
-  "otp": zod.string(),
+  "otp": zod.string().nullish(),
+  "pickupMode": zod.enum(['self', 'representative']),
+  "pickupPersonName": zod.string(),
+  "pickupPersonPhone": zod.string(),
+  "pickupQrToken": zod.string(),
   "otpVerified": zod.boolean().optional(),
   "createdAt": zod.coerce.date(),
   "completedAt": zod.coerce.date().nullish(),
@@ -807,6 +925,9 @@ export const GetNgoStatsResponse = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 }),zod.null()]).optional()
@@ -892,6 +1013,9 @@ export const GetMyDonationsResponseItem = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 })
@@ -926,7 +1050,11 @@ export const GetMyClaimsResponseItem = zod.object({
   "darpanId": zod.string().nullish(),
   "createdAt": zod.coerce.date().optional()
 }).optional(),
-  "otp": zod.string(),
+  "otp": zod.string().nullish(),
+  "pickupMode": zod.enum(['self', 'representative']),
+  "pickupPersonName": zod.string(),
+  "pickupPersonPhone": zod.string(),
+  "pickupQrToken": zod.string(),
   "otpVerified": zod.boolean().optional(),
   "createdAt": zod.coerce.date(),
   "completedAt": zod.coerce.date().nullish(),
@@ -989,6 +1117,9 @@ export const GetMyClaimsResponseItem = zod.object({
   "createdAt": zod.coerce.date().optional()
 }),zod.null()]).optional(),
   "otp": zod.union([zod.string(),zod.null()]).optional(),
+  "pickupMode": zod.union([zod.enum(['self', 'representative']),zod.null()]).optional(),
+  "pickupPersonName": zod.string().nullish(),
+  "pickupPersonPhone": zod.string().nullish(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date().optional()
 }),zod.null()]).optional()

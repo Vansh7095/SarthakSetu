@@ -308,7 +308,7 @@ export default function Donate() {
             />
 
             <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-4 py-2 text-green-800 text-sm font-medium">
-              🌿 SarthakSetu lists only <strong>vegetarian food</strong> — all
+              SarthakSetu lists only <strong>vegetarian food</strong> — all
               donations are 100% veg.
             </div>
 

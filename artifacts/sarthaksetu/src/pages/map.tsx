@@ -240,7 +240,7 @@ export default function MapView() {
             <Marker position={userPos} icon={userLocationIcon}>
               <Popup>
                 <div className="font-medium text-indigo-600">
-                  📍 Your Location
+                  Your Location
                 </div>
               </Popup>
             </Marker>
@@ -262,7 +262,7 @@ export default function MapView() {
             <Marker position={routeDest} icon={destinationIcon}>
               <Popup>
                 <div className="font-medium text-orange-600">
-                  📍 Destination
+                  Destination
                 </div>
               </Popup>
             </Marker>
@@ -289,15 +289,15 @@ export default function MapView() {
                       {donation.foodName}
                     </h3>
                     <p className="text-primary font-medium text-sm mb-2">
-                      {donation.quantityPlates} plates · 🌿 Veg
+                      {donation.quantityPlates} plates · Vegetarian
                     </p>
                     <div className="text-xs text-muted-foreground space-y-1 mb-3">
                       <p className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {hoursLeft <= 0
-                          ? "⚠️ Expired"
+                          ? "Expired"
                           : hoursLeft <= 2
-                            ? `⚠️ ${Math.round(hoursLeft * 60)}m left`
+                            ? `${Math.round(hoursLeft * 60)}m left`
                             : `Due ${donation.pickupDeadline ? new Date(donation.pickupDeadline).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "N/A"}`}
                       </p>
                       <p className="flex items-start gap-1">

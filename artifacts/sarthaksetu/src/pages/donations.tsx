@@ -40,7 +40,7 @@ export default function Donations() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Donations</SelectItem>
-              <SelectItem value="veg">🌿 Vegetarian</SelectItem>
+              <SelectItem value="veg">Vegetarian</SelectItem>
             </SelectContent>
           </Select>
 

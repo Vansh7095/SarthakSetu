@@ -14,6 +14,7 @@ import {
   Mail,
   Github,
   Twitter,
+  ScanLine,
 } from "lucide-react";
 import { useGetMyProfile } from "@workspace/api-client-react";
 import { useState } from "react";
@@ -34,6 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           ? [
               { name: "Donate Food", href: "/donate", icon: Heart },
               { name: "My Listings", href: "/my-donations", icon: List },
+              { name: "Verify Pickup", href: "/scan-pickup", icon: ScanLine },
             ]
           : []),
         ...(profile?.role === "ngo" ||
