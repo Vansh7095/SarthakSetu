@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -57,92 +57,94 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  /* A warm, paper-like canvas with deep teal trust cues and saffron action */
-  --background: 44 43% 95%;
-  --foreground: 195 28% 16%;
-  --border: 38 24% 84%;
+  /* Warm cream/off-white background */
+  --background: 40 33% 98%;
+  --foreground: 20 14% 16%;
+  --border: 30 20% 88%;
 
-  --card: 44 47% 98%;
-  --card-foreground: 195 28% 16%;
-  --card-border: 38 24% 84%;
+  /* White cards with slight warmth */
+  --card: 0 0% 100%;
+  --card-foreground: 20 14% 16%;
+  --card-border: 30 20% 88%;
 
-  --sidebar: 183 35% 19%;
-  --sidebar-foreground: 44 43% 95%;
-  --sidebar-border: 183 26% 28%;
-  --sidebar-primary: 40 91% 57%;
-  --sidebar-primary-foreground: 195 28% 16%;
-  --sidebar-accent: 183 26% 27%;
-  --sidebar-accent-foreground: 44 43% 95%;
-  --sidebar-ring: 40 91% 57%;
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 20 14% 16%;
+  --sidebar-border: 30 20% 88%;
+  --sidebar-primary: 28 90% 55%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 40 33% 94%;
+  --sidebar-accent-foreground: 20 14% 16%;
+  --sidebar-ring: 28 90% 55%;
 
-  --popover: 44 47% 98%;
-  --popover-foreground: 195 28% 16%;
-  --popover-border: 38 24% 84%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14% 16%;
+  --popover-border: 30 20% 88%;
 
-  /* Deep teal = trust at the point of handoff */
-  --primary: 183 61% 28%;
-  --primary-foreground: 44 43% 97%;
+  /* Saffron orange */
+  --primary: 28 90% 55%;
+  --primary-foreground: 0 0% 100%;
 
-  /* Leafy mint for completed rescue work */
-  --secondary: 162 42% 39%;
-  --secondary-foreground: 44 43% 97%;
+  /* Fresh green */
+  --secondary: 120 40% 40%;
+  --secondary-foreground: 0 0% 100%;
 
-  --muted: 39 26% 89%;
-  --muted-foreground: 195 16% 42%;
+  /* Earthy muted tone */
+  --muted: 30 20% 92%;
+  --muted-foreground: 25 15% 45%;
 
-  /* Saffron marks decisions and time-sensitive work */
-  --accent: 40 91% 57%;
-  --accent-foreground: 195 28% 16%;
+  /* Turmeric yellow accent */
+  --accent: 45 95% 55%;
+  --accent-foreground: 20 14% 16%;
 
-  --destructive: 4 68% 48%;
-  --destructive-foreground: 44 43% 97%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
 
-  --input: 38 24% 84%;
-  --ring: 183 61% 28%;
+  --input: 30 20% 88%;
+  --ring: 28 90% 55%;
 
-  --app-font-sans: 'DM Sans', sans-serif;
-  --app-font-serif: 'Fraunces', Georgia, serif;
+  --app-font-sans: 'Outfit', 'Inter', sans-serif;
+  --app-font-serif: 'Playfair Display', Georgia, serif;
   --app-font-mono: 'Space Mono', Menlo, monospace;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: 187 27% 11%;
-  --foreground: 44 43% 95%;
-  --border: 183 22% 24%;
-  --card: 186 25% 15%;
-  --card-foreground: 44 43% 95%;
-  --card-border: 183 22% 24%;
-  --popover: 186 25% 15%;
-  --popover-foreground: 44 43% 95%;
-  --popover-border: 183 22% 24%;
+  --background: 20 14% 12%;
+  --foreground: 40 33% 96%;
+  --border: 20 14% 22%;
+  --card: 20 14% 14%;
+  --card-foreground: 40 33% 96%;
+  --card-border: 20 14% 22%;
+  --popover: 20 14% 14%;
+  --popover-foreground: 40 33% 96%;
+  --popover-border: 20 14% 22%;
   
-  --primary: 40 91% 57%;
-  --primary-foreground: 187 27% 11%;
+  --primary: 28 90% 55%;
+  --primary-foreground: 0 0% 100%;
   
-  --secondary: 162 42% 45%;
-  --secondary-foreground: 187 27% 11%;
+  --secondary: 120 40% 40%;
+  --secondary-foreground: 0 0% 100%;
 
-  --muted: 183 22% 20%;
-  --muted-foreground: 39 20% 72%;
+  --muted: 20 14% 20%;
+  --muted-foreground: 30 20% 70%;
   
-  --accent: 40 91% 57%;
-  --accent-foreground: 187 27% 11%;
+  --accent: 45 95% 55%;
+  --accent-foreground: 20 14% 16%;
 
-  --destructive: 4 68% 56%;
-  --destructive-foreground: 187 27% 11%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
 
-  --input: 183 22% 24%;
-  --ring: 40 91% 57%;
+  --input: 20 14% 22%;
+  --ring: 28 90% 55%;
 
-  --sidebar: 183 35% 13%;
-  --sidebar-foreground: 44 43% 95%;
-  --sidebar-border: 183 22% 24%;
-  --sidebar-primary: 40 91% 57%;
-  --sidebar-primary-foreground: 187 27% 11%;
-  --sidebar-accent: 183 22% 20%;
-  --sidebar-accent-foreground: 44 43% 95%;
-  --sidebar-ring: 40 91% 57%;
+  --sidebar: 20 14% 14%;
+  --sidebar-foreground: 40 33% 96%;
+  --sidebar-border: 20 14% 22%;
+  --sidebar-primary: 28 90% 55%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 20 14% 20%;
+  --sidebar-accent-foreground: 40 33% 96%;
+  --sidebar-ring: 28 90% 55%;
 }
 
 @layer base {
@@ -151,8 +153,6 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    background-image: radial-gradient(hsl(var(--primary) / 0.07) 0.7px, transparent 0.7px);
-    background-size: 18px 18px;
   }
 }
 
