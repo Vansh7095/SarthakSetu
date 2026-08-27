@@ -29,7 +29,9 @@ function statusLabel(status: string, verified?: boolean) {
 
 export default function MyClaims() {
   const { data: claims, isLoading, isError, refetch } = useGetMyClaims();
-  const visibleClaims = claims?.filter((claim) => claim.donation);
+  const visibleClaims = claims?.filter(
+    (claim) => claim.donation && claim.donation.status !== "available",
+  );
   const activeClaims = visibleClaims?.filter((claim) => claim.donation?.status !== "completed") || [];
   const completedClaims = visibleClaims?.filter((claim) => claim.donation?.status === "completed") || [];
 

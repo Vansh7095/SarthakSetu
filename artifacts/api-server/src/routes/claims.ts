@@ -400,7 +400,13 @@ router.get("/claims/my", async (req, res) => {
     }),
   );
 
-  res.json(enriched);
+  // A released claim remains in the audit trail, but its old QR must not be
+  // presented as an active pickup pass after the donation is available again.
+  res.json(
+    enriched.filter(
+      (claim) => claim.donation && claim.donation.status !== "available",
+    ),
+  );
 });
 
 export default router;
