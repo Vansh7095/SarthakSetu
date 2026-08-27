@@ -11,7 +11,6 @@ import {
   List,
   User,
   Info,
-  Users,
   Mail,
   Github,
   Twitter,
@@ -48,10 +47,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           : []),
         { name: "Map View", href: "/map", icon: MapIcon },
         { name: "Profile", href: "/profile", icon: User },
-        ...(profile?.role === "admin" ||
-        profile?.roles?.includes("admin")
-          ? [{ name: "User Management", href: "/admin-users", icon: Users }]
-          : []),
         { name: "About", href: "/about", icon: Info },
       ]
     : [
