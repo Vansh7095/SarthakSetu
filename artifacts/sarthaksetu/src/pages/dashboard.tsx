@@ -17,7 +17,6 @@ import {
   MapPin,
   Clock,
   ShieldCheck,
-  Users,
   Utensils,
   BarChart3,
 } from "lucide-react";
@@ -321,13 +320,6 @@ function AdminDashboard() {
       color: "bg-orange-50 border-orange-200 text-orange-700",
     },
     {
-      href: "/map",
-      icon: MapPin,
-      label: "Live Map",
-      desc: "See all active donations on the map",
-      color: "bg-blue-50 border-blue-200 text-blue-700",
-    },
-    {
       href: "/my-claims",
       icon: BarChart3,
       label: "Claims",
@@ -335,25 +327,11 @@ function AdminDashboard() {
       color: "bg-green-50 border-green-200 text-green-700",
     },
     {
-      href: "/profile",
-      icon: Users,
-      label: "My Profile",
-      desc: "Manage your admin account",
-      color: "bg-purple-50 border-purple-200 text-purple-700",
-    },
-    {
       href: "/admin-registry",
       icon: ShieldCheck,
       label: "Verification Registry",
       desc: "Manage FSSAI, Darpan & admin codes",
       color: "bg-slate-50 border-slate-200 text-slate-700",
-    },
-    {
-      href: "/admin-users",
-      icon: Users,
-      label: "User Management",
-      desc: "View, edit & delete all user accounts",
-      color: "bg-rose-50 border-rose-200 text-rose-700",
     },
   ];
 
