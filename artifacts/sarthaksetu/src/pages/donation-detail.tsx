@@ -99,6 +99,11 @@ export default function DonationDetail() {
   const isDonor = donation.donor?.clerkId === currentUserId;
   const isClaimer = donation.claimedBy?.clerkId === currentUserId;
   const isAdmin = myProfile?.role === "admin";
+  const canClaim =
+    myProfile?.role === "ngo" ||
+    myProfile?.role === "volunteer" ||
+    myProfile?.roles?.includes("ngo") ||
+    myProfile?.roles?.includes("volunteer");
   const activeQrToken = claimResult?.pickupQrToken;
   const pickupPersonName = claimResult?.pickupPersonName || donation.pickupPersonName || donation.claimedBy?.name;
   const pickupPersonPhone = claimResult?.pickupPersonPhone || donation.pickupPersonPhone || donation.claimedBy?.phone;
@@ -134,7 +139,7 @@ export default function DonationDetail() {
           invalidateDonation();
           toast({ title: "Claim confirmed", description: "Your one-time pickup QR is ready to present at handoff." });
         },
-        onError: () => toast({ variant: "destructive", title: "Could not claim donation", description: "It may have just been claimed by someone else. Please try again." }),
+        onError: (error) => toast({ variant: "destructive", title: "Could not claim donation", description: error instanceof Error ? error.message : "It may have just been claimed by someone else. Please try again." }),
       },
     );
   });
@@ -217,7 +222,7 @@ export default function DonationDetail() {
 
         {donation.description && <div className="mx-6 mb-7 rounded-2xl bg-muted/60 px-5 py-4 sm:mx-10"><p className="mb-1 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Pickup notes</p><p className="text-sm leading-relaxed">{donation.description}</p></div>}
 
-        {!isDonor && donation.status === "available" && (
+        {canClaim && donation.status === "available" && (
           <div className="mx-6 mb-8 rounded-[1.5rem] border border-primary/20 bg-primary/5 p-6 sm:mx-10" data-testid="card-claim-start">
             {!claimOpen ? (
               <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
@@ -257,7 +262,7 @@ export default function DonationDetail() {
           </div>
         )}
 
-        {!isDonor && donation.status === "claimed" && isClaimer && (
+        {isClaimer && donation.status === "claimed" && (
           <div className="mx-6 mb-8 rounded-[1.5rem] border border-primary/20 bg-primary/5 p-6 sm:mx-10" data-testid="card-claim-confirmed">
             <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
               <div className="flex h-[188px] w-[188px] items-center justify-center rounded-2xl bg-card p-3 text-center shadow-sm">{activeQrToken ? <QRCodeSVG value={qrPayload} size={164} bgColor="hsl(var(--card))" fgColor="hsl(var(--foreground))" includeMargin data-testid="img-pickup-qr" /> : <p className="text-xs text-muted-foreground" data-testid="state-pickup-qr-unavailable">Your pickup pass is available in My claims.</p>}</div>
@@ -272,7 +277,7 @@ export default function DonationDetail() {
           </div>
         )}
 
-        {isDonor && donation.status === "claimed" && (
+        {isDonor && !isClaimer && donation.status === "claimed" && (
           <div className="mx-6 mb-8 rounded-[1.5rem] border border-accent/40 bg-accent/10 p-6 sm:mx-10" data-testid="card-donor-verify">
             <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
               <div>
