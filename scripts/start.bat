@@ -1,3 +1,3 @@
 @echo off
-REM Start SarthakSetu in detached mode, rebuilding images if needed.
-docker compose up -d --build
+REM Start SarthakSetu through the profile-aware deployment flow.
+bash scripts/deploy.sh

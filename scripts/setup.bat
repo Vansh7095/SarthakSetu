@@ -38,4 +38,4 @@ echo   1. Edit .env and set CLERK_PUBLISHABLE_KEY
  echo   3. Edit .env and set VITE_CLERK_PUBLISHABLE_KEY
  echo.
 echo Then run:
-echo   docker compose up -d --build
+echo   bash scripts/deploy.sh

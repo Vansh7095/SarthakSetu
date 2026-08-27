@@ -4,8 +4,10 @@
 > **Architecture**: React + Vite frontend, Express 5 + Drizzle ORM backend, PostgreSQL database
 > **Auth**: Clerk (self-managed), OTP-based claim handover
 > **Runtime**: Node.js 24, pnpm monorepo
+> **Last reviewed**: August 2026
 
-Use the [Getting Started guide](./GETTING_STARTED.md) for a first-time setup,
+Use the [root README](../README.md#19-documentation) for the documentation index,
+the [Getting Started guide](./GETTING_STARTED.md) for a first-time setup,
 and the [Technical Documentation](./TECHNICAL_DOCUMENTATION.md) for application
 architecture and API details.
 
@@ -70,6 +72,7 @@ architecture and API details.
 | Frontend    | Vite (dev) / Static (prod) | `PORT` env  | `/*` (non-API)   | SPA              |
 | PostgreSQL  | Database                   | 5432        | Internal         | Data persistence |
 | Clerk Proxy | Express middleware         | Same as API | `/api/__clerk/*` | Auth proxy       |
+| Cloudflared | Outbound tunnel            | —           | Public hostname  | Cloudflare Tunnel access |
 
 ### Runtime
 
@@ -86,6 +89,8 @@ architecture and API details.
 5. **Cleanup job starts** ↔ `setInterval(cleanupExpiredDonations, 300000)` ↔ deletes expired donations
 6. **Frontend builds** ↔ `vite build` produces static files in `dist/public/`
 7. **Reverse proxy routes** ↔ `/api/*` to API server, everything else to frontend static files
+8. **Public access** ↔ tunnel mode sends an outbound connection to `web:80`;
+   direct mode uses Caddy on host ports 80/443
 
 ---
 
@@ -1147,19 +1152,22 @@ pm2 save
 
 ### Cloudflare Tunnel (for public access)
 
+For the supported production setup, run `cloudflared` with the Docker Compose
+`tunnel` profile rather than tunneling the API port directly:
+
 ```bash
-# Install cloudflared
-pkg install cloudflared
-
-# Create tunnel
-cloudflared tunnel create sarthaksetu
-
-# Configure tunnel to localhost:8080
-cloudflared tunnel route dns sarthaksetu your-domain.workers.dev
-
-# Run tunnel
-cloudflared tunnel run sarthaksetu
+cp .env.production.example .env
+# Set DOMAIN, PUBLIC_MODE=tunnel, Clerk values, CORS_ORIGIN,
+# VITE_CLERK_PROXY_URL, and CLOUDFLARE_TUNNEL_TOKEN.
+bash scripts/deploy.sh
+docker compose logs -f cloudflared
 ```
+
+In Cloudflare Zero Trust, the remotely managed tunnel's public hostname must
+point to `http://web:80`. The tunnel connects outbound, so no public host port
+or router port forwarding is required. Keep PostgreSQL and `api:8080` private.
+See the [Cloudflare Tunnel section in the root README](../README.md#cloudflare-tunnel-mode)
+for the complete configuration and health-check procedure.
 
 ### Auto-Start on Boot
 

@@ -4,10 +4,12 @@
 >
 > No prior knowledge of Node.js, PostgreSQL, Docker, Clerk, or pnpm is assumed.
 > Follow every numbered step in order. Do not skip steps.
+>
+> **Last reviewed:** August 2026
 
 This guide is stored in the [`docs/`](./) folder. Run the commands below from the
 repository root unless a step explicitly tells you to change directories. For
-the full documentation map, see the [documentation index](./README.md).
+the full documentation map, see the [root README](../README.md#19-documentation).
 
 > **Replit users:** The project also includes [Replit-specific notes](../replit.md).
 > This guide focuses on a conventional local or Docker-based setup.
@@ -1268,15 +1270,15 @@ bash scripts/deploy.sh
 
 **What this does:**
 - Validates `.env` before starting
-- Applies the Fedora/RHEL SELinux label to the Caddyfile mount
 - Starts PostgreSQL first and waits for it to be ready
 - Repairs an existing PostgreSQL password mismatch without deleting the database volume
-- Builds the Docker images from the `docker/` Dockerfiles and starts the Caddy reverse proxy with automatic HTTPS
-- Downloads the PostgreSQL 16 image
-- Builds the API server image
-- Builds the nginx image with the production frontend inside it
-- Starts all three services
+- Builds the API, frontend, and selected public-access service
 - Automatically creates the database schema and seeds it on first run
+- Starts Cloudflare Tunnel mode by default, or Caddy direct mode when selected
+
+In `PUBLIC_MODE=tunnel`, the `cloudflared` container makes the outbound
+connection to Cloudflare. In `PUBLIC_MODE=direct`, Caddy listens on the host's
+ports 80 and 443 and obtains certificates itself.
 
 **How long it takes:** 3–10 minutes on first run.
 
@@ -1289,7 +1291,38 @@ bash scripts/deploy.sh
  ✐ Container sarthaksetu-postgres         Started
  ✐ Container sarthaksetu-api              Started
  ✐ Container sarthaksetu-web              Started
+  ✐ Container sarthaksetu-cloudflared      Started
 ```
+
+### Step 14.2a: Configure Cloudflare Tunnel mode
+
+Use this mode when the server is behind a phone hotspot, CGNAT, or a router
+where inbound ports cannot be forwarded.
+
+1. In Cloudflare Zero Trust, create a **remotely managed tunnel**.
+2. Add a public hostname such as `app.example.com`.
+3. Set its service to `http://web:80`. The `web` name is the Docker Compose
+   service name; do not use `localhost`, `api:8080`, or the API port.
+4. Copy the tunnel token into `.env` and set:
+
+```dotenv
+DOMAIN=app.example.com
+PUBLIC_MODE=tunnel
+CLOUDFLARE_TUNNEL_TOKEN=replace_with_your_token
+VITE_CLERK_PROXY_URL=https://app.example.com/api/__clerk
+CORS_ORIGIN=https://app.example.com
+```
+
+5. Start the stack:
+
+```bash
+bash scripts/deploy.sh
+docker compose logs -f cloudflared
+```
+
+The tunnel profile does not require an A or AAAA record, router port forwarding,
+or host ports 80 and 443 to be open. Open the Cloudflare hostname after the
+tunnel reports that it is connected.
 
 ### Step 14.3: Verify Docker Is Running
 
@@ -1300,18 +1333,20 @@ docker compose ps
 **Expected output:**
 
 ```
-NAME                  IMAGE                STATUS          PORTS
-sarthaksetu-api       workspace-api        Up 30 seconds   8080/tcp
-sarthaksetu-web       workspace-web        Up 30 seconds   0.0.0.0:80->80/tcp
-sarthaksetu-postgres  postgres:16-alpine   Up 30 seconds   5432/tcp
+NAME                       IMAGE                STATUS          PORTS
+sarthaksetu-api            workspace-api        Up 30 seconds   8080/tcp
+sarthaksetu-web            workspace-web        Up 30 seconds   80/tcp
+sarthaksetu-postgres       postgres:16-alpine   Up 30 seconds   5432/tcp
+sarthaksetu-cloudflared    cloudflared           Up 30 seconds
 ```
 
-All three containers should show status `Up`.
+In tunnel mode, all four containers should show status `Up`. In direct mode,
+the `cloudflared` row is replaced by `sarthaksetu-caddy`.
 
-You can also check the combined health endpoint:
+You can check the API through the public hostname:
 
 ```bash
-curl http://localhost/api/healthz
+curl https://app.example.com/api/healthz
 ```
 
 Expected output:
@@ -1322,13 +1357,15 @@ Expected output:
 
 ### Step 14.4: Open the Application
 
-Open your browser and go to:
+For tunnel mode, open your Cloudflare hostname:
 
 ```
-http://localhost
+https://app.example.com
 ```
 
-**Why port 80?** nginx listens on port 80 and serves the frontend + proxies API requests. Only the `web` container is exposed to the public.
+For direct mode, open `http://localhost` locally or the configured public
+domain. nginx listens inside the `web` container and serves the frontend while
+proxying API requests.
 
 ### Step 14.5: View Logs
 
@@ -1579,12 +1616,14 @@ For a Raspberry Pi or home Linux server:
 2. For external access without port forwarding, use a tunnel:
 
 ```bash
-# Cloudflare Tunnel (free)
-npx cloudflared tunnel --url http://localhost:80
-
-# ngrok (free tier)
-npx ngrok http 80
+cp .env.production.example .env
+# Edit DOMAIN, Clerk values, CORS_ORIGIN, and CLOUDFLARE_TUNNEL_TOKEN.
+bash scripts/deploy.sh
 ```
+
+The Compose tunnel service must target the combined frontend origin
+`http://web:80`. Do not tunnel `localhost:8080` directly because that bypasses
+nginx and prevents the frontend's `/api/*` requests from reaching the API.
 
 ---
 
@@ -2162,9 +2201,9 @@ Use this checklist to verify your setup. Tick each box only after you have confi
 ### Optional: Docker
 
 - [ ] Docker is installed (`docker --version` works)
-- [ ] `docker compose up -d` starts all three services
+- [ ] `bash scripts/deploy.sh` starts the services and selected public-access mode
 - [ ] `docker compose ps` shows all containers `Up`
-- [ ] Application loads at `http://localhost`
+- [ ] Tunnel mode application loads at the configured HTTPS hostname, or direct mode at `http://localhost`
 
 ---
 

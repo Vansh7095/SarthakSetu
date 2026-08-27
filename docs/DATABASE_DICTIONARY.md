@@ -3,8 +3,9 @@
 > **Database**: PostgreSQL
 > **ORM**: Drizzle ORM 0.45.2
 > **Project**: Food donation platform connecting donors with NGOs and volunteers
-> **Generated**: June 2026
+> **Last reviewed**: August 2026
 
+For the documentation index, see the [root README](../README.md#19-documentation).
 For setup instructions, see the [Getting Started guide](./GETTING_STARTED.md).
 For architecture and API context, see the
 [Technical Documentation](./TECHNICAL_DOCUMENTATION.md).
@@ -64,6 +65,14 @@ export const db = drizzle(pool, { schema });
 - Push command: `pnpm --filter @workspace/db run push`
 - **No tracked migration files** — schema is pushed directly to the database
 - Migration approach: **Schema-first push** (not versioned migrations)
+
+### Deployment note
+
+Cloudflare Tunnel changes public network access only; it does not change the
+PostgreSQL schema or the database connection path. In Compose tunnel mode,
+PostgreSQL remains private on the Docker network, the API connects to
+`postgres:5432`, and browsers reach the database only through authenticated
+API requests routed by nginx.
 
 ### Schema Organization
 

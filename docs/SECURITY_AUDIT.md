@@ -1,12 +1,12 @@
 # Security Audit — SarthakSetu (सार्थकसेतु)
 
-> **Audit Date**: June 2026
+> **Audit Date**: August 2026
 > **Scope**: Full-stack application — React frontend (Vite), Express 5 backend, PostgreSQL database, Clerk authentication
 > **Auditor**: Automated source-code analysis
 
 > **Documentation note:** This is a point-in-time assessment dated June 2026.
 > Revalidate the findings against the current source before using them as a
-> production sign-off. See the [documentation index](./README.md) for related
+> production sign-off. See the [root README](../README.md#19-documentation) for related
 > setup, architecture, database, and operations references.
 
 ---
@@ -1102,6 +1102,24 @@ No known CVEs for the versions in use. Supply-chain protection is enabled via `m
   - Allow port 80/443 (web)
   - Allow port 22 (SSH, restrict to known IPs)
   - Block direct database port (5432) from public internet
+
+### Cloudflare Tunnel Security Review
+
+The supported Tunnel configuration runs `cloudflared` inside the Compose
+network and routes the public hostname to `http://web:80`. Cloudflare
+terminates public HTTPS, while nginx forwards the original HTTPS protocol to
+the API. This is appropriate for hosts behind CGNAT because the tunnel is
+outbound-only.
+
+Operational requirements:
+
+- Keep `CLOUDFLARE_TUNNEL_TOKEN` in a secrets manager or an untracked `.env`.
+- Point the public hostname only to `http://web:80`; never expose
+  `api:8080` or PostgreSQL.
+- Keep `CORS_ORIGIN` and `VITE_CLERK_PROXY_URL` on the same public HTTPS
+  origin.
+- Rotate the tunnel token immediately if it is logged, committed, or shared.
+- Confirm `/api/healthz` works through the public hostname after every deploy.
 
 ### SSH
 

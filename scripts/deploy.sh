@@ -180,11 +180,12 @@ wait_for_container_health sarthaksetu-api
 
 echo "▶ Building and starting the website and public access..."
 if [ "$PUBLIC_MODE" = "tunnel" ]; then
+  echo "   Cloudflare Tunnel origin: http://web:80"
   docker compose --profile direct stop caddy >/dev/null 2>&1 || true
-  docker compose --profile tunnel up -d --build web cloudflared
+  docker compose --profile tunnel up -d --build --remove-orphans web cloudflared
 else
   docker compose --profile tunnel stop cloudflared >/dev/null 2>&1 || true
-  docker compose --profile direct up -d --build web caddy
+  docker compose --profile direct up -d --build --remove-orphans web caddy
 fi
 wait_for_container_health sarthaksetu-web
 

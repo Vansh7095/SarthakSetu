@@ -2,11 +2,11 @@
 
 > **Project**: SarthakSetu — A food donation platform connecting surplus food donors (restaurants, hotels, caterers, households) with NGOs and volunteers to reduce food waste in India.
 > **Repository Type**: pnpm monorepo with TypeScript
-> **Last Updated**: June 2026
+> **Last Updated**: August 2026
 
 This document is the detailed architecture reference. For a first-time setup,
 start with the [Getting Started guide](./GETTING_STARTED.md). For the complete
-documentation map, see the [documentation index](./README.md).
+documentation map, see the [root README](../README.md#19-documentation).
 
 ---
 
@@ -972,6 +972,10 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 | `CLERK_SECRET_KEY`           | Yes      | API Server           | Clerk secret key              |
 | `VITE_CLERK_PUBLISHABLE_KEY` | Yes      | Frontend             | Vite-exposed Clerk public key |
 | `VITE_CLERK_PROXY_URL`       | No       | Frontend             | Clerk proxy URL override      |
+| `CORS_ORIGIN`                | No       | API Server           | Comma-separated browser origin allowlist |
+| `DOMAIN`                     | Tunnel   | Compose/deploy script | Public Cloudflare or Caddy hostname |
+| `PUBLIC_MODE`                | No       | Compose/deploy script | `tunnel` (default) or `direct` |
+| `CLOUDFLARE_TUNNEL_TOKEN`    | Tunnel   | Cloudflared          | Remotely managed tunnel token |
 | `SESSION_SECRET`             | No       | —                    | Session encryption (optional) |
 | `NODE_ENV`                   | Yes      | Build scripts        | `development` or `production` |
 
@@ -1006,10 +1010,42 @@ setInterval(cleanupExpiredDonations, 300000) // every 5 minutes
 
 **Docker Deployment**:
 
-- `docker-compose.yml` orchestrates PostgreSQL + API + nginx
+- `docker-compose.yml` orchestrates PostgreSQL + API + nginx plus either
+  Cloudflare Tunnel or Caddy
 - Frontend served as static files from `dist/public/`
 - API server runs as background process
 - nginx reverse proxy routes `/api/*` to the API server
+- In tunnel mode, `cloudflared` connects to the internal `web:80` origin and
+  no host ports need to be exposed
+- In direct mode, Caddy terminates HTTPS on host ports 80/443
+
+### 10.5 Cloudflare Tunnel request flow
+
+The supported Tunnel deployment uses a remotely managed Cloudflare Tunnel
+running as the `cloudflared` Compose service:
+
+```text
+Browser (HTTPS)
+    │
+    ▼
+Cloudflare public hostname
+    │ outbound tunnel connection
+    ▼
+cloudflared ──HTTP──▶ web:80 (nginx)
+                         ├── /api/* ──HTTP──▶ api:8080
+                         └── /*     ──▶ static React app
+```
+
+The public hostname must point to `http://web:80`, not `api:8080`. nginx
+forwards `X-Forwarded-Proto: https` because Cloudflare terminates TLS before
+the internal origin hop. This preserves secure Clerk proxy URLs and browser
+cookie behavior. The database and API ports remain internal to the Docker
+network.
+
+Set `PUBLIC_MODE=tunnel`, `DOMAIN`, `CORS_ORIGIN`, and
+`VITE_CLERK_PROXY_URL` to the same public HTTPS origin before running
+`bash scripts/deploy.sh`. The deployment script validates the required tunnel
+token and starts the tunnel only after the web health check passes.
 
 ---
 

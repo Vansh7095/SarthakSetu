@@ -3,9 +3,10 @@
 #
 # Usage:
 #   1. Copy .env.production.example to .env and fill in real values.
-#   2. Configure a Cloudflare Tunnel to send your hostname to http://web:80.
-#   3. bash scripts/deploy.sh
-#   4. Open https://<DOMAIN>
+#   2. For Cloudflare Tunnel mode, create a remotely-managed tunnel whose
+#      public hostname points to http://web:80, then add its token to .env.
+#   3. Run bash scripts/deploy.sh.
+#   4. Open https://<DOMAIN>.
 
 services:
   # ---------------------------------------------------------------------------
@@ -132,7 +133,15 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: sarthaksetu-cloudflared
     restart: unless-stopped
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN:?CLOUDFLARE_TUNNEL_TOKEN is required}
+    # The tunnel makes an outbound connection, so the host does not need
+    # inbound port forwarding. Configure the public hostname in Cloudflare
+    # Zero Trust with the origin service http://web:80.
+    command:
+      - tunnel
+      - --no-autoupdate
+      - run
+      - --token
+      - ${CLOUDFLARE_TUNNEL_TOKEN:?CLOUDFLARE_TUNNEL_TOKEN is required}
     environment:
       CLOUDFLARE_TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
     depends_on:

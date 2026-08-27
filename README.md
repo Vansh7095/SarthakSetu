@@ -6,7 +6,7 @@ A food donation platform connecting surplus food donors (restaurants, hotels, ca
 
 > **New to this project?** Start with the [Getting Started guide](./docs/GETTING_STARTED.md) — a complete, beginner-friendly, step-by-step setup guide that assumes zero prior knowledge of Node.js, PostgreSQL, Docker, or Clerk.
 >
-> **Looking for a specific reference?** See the [documentation index](./docs/README.md).
+> **Looking for a specific reference?** See the [documentation index](#19-documentation).
 
 ---
 
@@ -30,7 +30,7 @@ A food donation platform connecting surplus food donors (restaurants, hotels, ca
 - [16. Updating](#16-updating)
 - [17. Troubleshooting](#17-troubleshooting)
 - [18. FAQ](#18-faq)
-- [19. Additional Documentation](#19-additional-documentation)
+- [19. Documentation](#19-documentation)
 
 ---
 
@@ -144,7 +144,6 @@ sarthaksetu/
 │       └── doctor.ts         # Environment diagnostic tool
 │
 ├── docs/                     # Additional documentation
-│   ├── README.md                # Documentation index and reading guide
 │   ├── GETTING_STARTED.md       # Beginner setup and first-run guide
 │   ├── TECHNICAL_DOCUMENTATION.md # Detailed architecture and API reference
 │   ├── DATABASE_DICTIONARY.md   # Full database schema reference
@@ -707,6 +706,48 @@ Only the selected public access service is exposed publicly. In the recommended
 Cloudflare Tunnel mode, the tunnel connects outbound to Cloudflare and routes
 the public hostname to `http://web:80`; no router port forwarding is required.
 
+### Cloudflare Tunnel mode
+
+Cloudflare Tunnel is the recommended public-access mode for a home server,
+phone hotspot, CGNAT connection, or any host where inbound ports 80 and 443
+cannot be opened. The tunnel runs inside the Compose network and exposes only
+the frontend container, which already routes `/api/*` to the API.
+
+1. In Cloudflare Zero Trust, create a **remotely managed tunnel**.
+2. Add a public hostname for the value of `DOMAIN` in `.env`.
+3. Set the tunnel service to `http://web:80` — do not point it at the API
+   container or at port 8080.
+4. Copy the tunnel token into `.env` and use the tunnel profile:
+
+```dotenv
+DOMAIN=app.example.com
+PUBLIC_MODE=tunnel
+CLOUDFLARE_TUNNEL_TOKEN=replace_with_your_token
+VITE_CLERK_PROXY_URL=https://app.example.com/api/__clerk
+CORS_ORIGIN=https://app.example.com
+```
+
+```bash
+bash scripts/deploy.sh
+docker compose ps
+docker compose logs -f cloudflared
+curl https://app.example.com/api/healthz
+```
+
+Tunnel mode does not require an A/AAAA record, router port forwarding, or
+host ports 80/443 to be open. Cloudflare terminates public HTTPS; the internal
+Tunnel-to-nginx hop is HTTP, and `nginx.conf` forwards the original HTTPS
+protocol to the API so Clerk generates secure URLs correctly. Keep the token
+out of Git and rotate it from Cloudflare Zero Trust if it is exposed.
+
+To switch back to direct Caddy mode on a host with reachable ports:
+
+```dotenv
+PUBLIC_MODE=direct
+```
+
+Then run `bash scripts/deploy.sh` again.
+
 ### Docker Compose Commands
 
 ```bash
@@ -727,9 +768,9 @@ docker compose down
 # Stop and remove all data (including database)
 docker compose down -v
 
-# Rebuild after code changes
+# Rebuild after code changes and preserve the selected public-access mode
 docker compose build --no-cache
-docker compose up -d
+bash scripts/deploy.sh
 
 # Restart a specific service
 docker compose restart api
@@ -877,10 +918,9 @@ pm2 startup
 
 For automatic startup, create a Windows Scheduled Task that runs `pnpm start` on boot.
 
-For external access, use:
-
-- **Cloudflare Tunnel** (free): `npx cloudflared tunnel --url http://localhost:8080`
-- **ngrok** (free tier): `npx ngrok http 8080`
+For external access, use the [Cloudflare Tunnel mode](#cloudflare-tunnel-mode)
+described in the Docker deployment section. It must target the combined
+frontend origin (`http://web:80` in Compose), not the API port by itself.
 
 ### Linux Home Server (Raspberry Pi, NAS, etc.)
 
@@ -1455,17 +1495,42 @@ A: Not currently. The frontend is a responsive web application that works on mob
 
 ---
 
-## 19. Additional Documentation
+## 19. Documentation
 
-| Document                                                       | What's Inside                                                      |
-| -------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [`docs/README.md`](./docs/README.md)                            | Documentation index and recommended reading order                  |
-| [`docs/GETTING_STARTED.md`](./docs/GETTING_STARTED.md)          | Beginner-friendly local setup, first run, Docker, and deployment   |
-| [`docs/TECHNICAL_DOCUMENTATION.md`](./docs/TECHNICAL_DOCUMENTATION.md) | Detailed architecture, API, configuration, and deployment reference |
-| [`docs/DATABASE_DICTIONARY.md`](./docs/DATABASE_DICTIONARY.md)  | Complete database schema — tables, columns, enums, relationships   |
-| [`docs/SYSTEM_MAINTENANCE.md`](./docs/SYSTEM_MAINTENANCE.md)    | Operations guide — monitoring, backups, logging, scaling, security |
-| [`docs/SECURITY_AUDIT.md`](./docs/SECURITY_AUDIT.md)            | Security analysis, risks, and recommended mitigations              |
-| [`replit.md`](./replit.md)                                      | Replit-specific run commands, architecture decisions, and setup   |
+This root README is the documentation index. The detailed guides remain in
+`docs/`, so there is only one README and it is located here.
+
+### Start here
+
+| If you are... | Read this |
+| --- | --- |
+| Setting up the project for the first time | [Getting Started](./docs/GETTING_STARTED.md) |
+| Learning how the application is structured | [Technical Documentation](./docs/TECHNICAL_DOCUMENTATION.md) |
+| Working with the database or schema | [Database Dictionary](./docs/DATABASE_DICTIONARY.md) |
+| Deploying or operating a live instance | [System Maintenance](./docs/SYSTEM_MAINTENANCE.md) |
+| Reviewing production-readiness risks | [Security Audit](./docs/SECURITY_AUDIT.md) |
+| Working specifically in Replit | [Replit project notes](./replit.md) |
+
+### Documentation conventions
+
+- Commands are shown from the repository root unless a section says otherwise.
+- Keep secrets, local `.env` files, database passwords, Clerk keys, and
+  Cloudflare tunnel tokens out of documentation and source control.
+- Update the relevant guide when a workflow, environment variable, API
+  contract, schema, or deployment procedure changes.
+- Treat the security audit as a point-in-time assessment and revalidate it
+  before production sign-off.
+- Generated API clients under `lib/api-client-react/src/generated/` and
+  `lib/api-zod/src/generated/` must not be edited manually; update the
+  OpenAPI contract and run `pnpm codegen` instead.
+
+### Recommended reading order
+
+1. [Getting Started](./docs/GETTING_STARTED.md)
+2. [Technical Documentation](./docs/TECHNICAL_DOCUMENTATION.md)
+3. [Database Dictionary](./docs/DATABASE_DICTIONARY.md)
+4. [System Maintenance](./docs/SYSTEM_MAINTENANCE.md)
+5. [Security Audit](./docs/SECURITY_AUDIT.md)
 
 ---
 
