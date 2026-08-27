@@ -67,7 +67,6 @@ const donorSchema = baseSchema.extend({
 
 const ngoSchema = baseSchema.extend({
   orgName: z.string().min(2, "Organization name is required"),
-  registrationNumber: z.string().min(4, "NGO Registration Number is required"),
   darpanId: z.string().min(4, "NITI Aayog Darpan ID is required"),
   operatingRadiusKm: z.coerce
     .number()
@@ -107,7 +106,7 @@ const roleCards = [
     description: "Claim food donations and serve communities",
     color: "bg-green-50 border-green-200 hover:border-green-400",
     iconColor: "text-green-600",
-    badge: "Registration & Darpan ID required",
+    badge: "NITI Aayog Darpan verified",
   },
   {
     role: "volunteer" as Role,
@@ -426,7 +425,6 @@ function NgoForm({
       phone: "",
       city: "",
       orgName: "",
-      registrationNumber: "",
       darpanId: "",
       operatingRadiusKm: 10,
     },
@@ -524,42 +522,21 @@ function NgoForm({
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="registrationNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  NGO Registration No.{" "}
-                  <span className="text-destructive">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. MH/2010/0012345" {...field} />
-                </FormControl>
-                <p className="text-xs text-muted-foreground mt-1">
-                  State-issued registration number
-                </p>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  City <span className="text-destructive">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. Delhi" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                City <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="e.g. Delhi" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -572,7 +549,7 @@ function NgoForm({
               <div className="flex gap-2">
                 <FormControl>
                   <Input
-                    placeholder="e.g. MH/2010/0012345"
+                    placeholder="Enter your Darpan ID"
                     {...field}
                     onChange={(e) => {
                       field.onChange(e);
@@ -608,7 +585,7 @@ function NgoForm({
                 }
               />
               <p className="text-xs text-muted-foreground mt-1">
-                From{" "}
+                This is the single NGO identifier we verify. From{" "}
                 <a
                   href="https://ngodarpan.gov.in"
                   target="_blank"
