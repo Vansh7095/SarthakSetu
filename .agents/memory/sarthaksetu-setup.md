@@ -9,6 +9,12 @@ Clerk is proxied through the Express API server at `/api/__clerk`. The `clerkPro
 
 **Why:** Replit's shared proxy doesn't route Clerk SDK calls natively; proxying through Express lets both dev and prod share the same auth setup.
 
+Published builds may omit `VITE_CLERK_PROXY_URL` even when the API proxy is healthy. The frontend must fall back to `/api/__clerk` whenever the Vite mode is production, rather than relying only on the injected variable.
+
+**Why:** Without the fallback, Clerk can remain unloaded in production; `Show` renders neither signed-in nor signed-out content, making the homepage and Clerk sign-in/sign-up cards appear blank.
+
+**How to apply:** Keep the fallback relative to the deployed artifact path and republish after changing it; verify the live `/api/__clerk/v1/client` endpoint returns JSON.
+
 ## Missing queryClient file causes Vite to loop
 
 If `src/lib/queryClient.ts` doesn't exist when Vite first loads, it caches the error and won't recover even after the file is created. **Always restart the Vite workflow** after creating a new file in `src/lib/` to clear the stale cache.
